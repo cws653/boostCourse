@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D65E4ED24F23B0B0093BAF1 /* DelegatePractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D65E4EC24F23B0B0093BAF1 /* DelegatePractice.swift */; };
+		9D65E4EF24F23EFB0093BAF1 /* PracticeViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D65E4EE24F23EFB0093BAF1 /* PracticeViewController2.swift */; };
 		9DE2415924F0CA61006A2D69 /* ImageZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE2415824F0CA61006A2D69 /* ImageZoomViewController.swift */; };
 		9DEB9EE024EEB010001610D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB9EDF24EEB010001610D5 /* AppDelegate.swift */; };
 		9DEB9EE224EEB010001610D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB9EE124EEB010001610D5 /* SceneDelegate.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9D65E4EC24F23B0B0093BAF1 /* DelegatePractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatePractice.swift; sourceTree = "<group>"; };
+		9D65E4EE24F23EFB0093BAF1 /* PracticeViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeViewController2.swift; sourceTree = "<group>"; };
 		9DE2415824F0CA61006A2D69 /* ImageZoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomViewController.swift; sourceTree = "<group>"; };
 		9DEB9EDC24EEB010001610D5 /* MyAlbumV4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAlbumV4.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DEB9EDF24EEB010001610D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 				9DEB9EDF24EEB010001610D5 /* AppDelegate.swift */,
 				9DEB9EE124EEB010001610D5 /* SceneDelegate.swift */,
 				9DEB9EE324EEB010001610D5 /* ViewController.swift */,
+				9D65E4EC24F23B0B0093BAF1 /* DelegatePractice.swift */,
+				9D65E4EE24F23EFB0093BAF1 /* PracticeViewController2.swift */,
 				9DE2415824F0CA61006A2D69 /* ImageZoomViewController.swift */,
 				9DEB9EF324EEBDAB001610D5 /* FirstCollectionViewCell.swift */,
 				9DEB9EE524EEB010001610D5 /* Main.storyboard */,
@@ -144,11 +150,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D65E4EF24F23EFB0093BAF1 /* PracticeViewController2.swift in Sources */,
 				9DEB9EE424EEB010001610D5 /* ViewController.swift in Sources */,
 				9DEB9EE024EEB010001610D5 /* AppDelegate.swift in Sources */,
 				9DE2415924F0CA61006A2D69 /* ImageZoomViewController.swift in Sources */,
 				9DEB9EE224EEB010001610D5 /* SceneDelegate.swift in Sources */,
 				9DEB9EF424EEBDAB001610D5 /* FirstCollectionViewCell.swift in Sources */,
+				9D65E4ED24F23B0B0093BAF1 /* DelegatePractice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +301,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8PBQD47VFZ;
 				INFOPLIST_FILE = MyAlbumV4/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -310,7 +320,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8PBQD47VFZ;
 				INFOPLIST_FILE = MyAlbumV4/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

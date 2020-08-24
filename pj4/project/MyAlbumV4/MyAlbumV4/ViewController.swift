@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class ViewController: UIViewController {
     
     let reuseIdentifier = "cell"
     @IBOutlet weak var firstCollectionView: UICollectionView!
@@ -44,6 +44,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         // collectionview 설정
         self.firstCollectionView.delegate = self
         self.firstCollectionView.dataSource = self
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 100, height: 100)
+        self.firstCollectionView.collectionViewLayout = layout
         // collectionview UX 설정
         firstCollectionView.backgroundColor = UIColor.white
         
@@ -76,53 +80,11 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             print("접근 제한")
         }
         
+        self.firstCollectionView.backgroundColor = .red
+        
 //        PHPhotoLibrary.shared().register(self)
     }
-    
-    // collection view가 처리되는 과정은 아래 메소드의 순서대로이다.
-    // 1. numberOfSectionsCollectionView 가 가장 먼저 실행되어 section의 개수를 파악한다.
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-     // 2. numberOfItemsInSection가 실행되어 Section당 Item의 개수를 파악한다.
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResult?.count ?? 0
-    }
-    
-    // 3. 셀의 크기 설정이 이루어진다.
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        targetSizeX = firstCollectionView.frame.width / 3 - 1
-        
-        return CGSize(width: targetSizeX, height: targetSizeX)
-    }
-    
-    // 4. cell 내부 아이템의 최소 스페이싱을 설정한다. 셀간의 가로 간격이라고 생각하면 된다.
-    // 자세한 내용은 애플문서나 부스트코스를 보자.
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-    
-    // 5. cell 간 라인 스페이싱을 설정한다. 셀간의 세로 간격이라고 생각하면 된다.
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
-    }
-    
-    // 6. 셀의 내용을 설정하는 메소드
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? FirstCollectionViewCell {
-            
-            cell.imageManager = imageManager
-            cell.targetSizeX = targetSizeX
-            cell.imageAsset = fetchResult[indexPath.item]
-            
-            return cell
-        }
-        else {
-            return UICollectionViewCell()
-        }
-    }
+
     
     // 다음 컨트롤뷰 적용
     // MARK: - Navigation
@@ -147,3 +109,59 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
 }
 
+// MARK: - UICollectionViewDelegate
+extension ViewController: UICollectionViewDelegate {
+
+}
+
+// MARK: - UICollectionViewDataSource
+extension ViewController: UICollectionViewDataSource {
+    // collection view가 처리되는 과정은 아래 메소드의 순서대로이다.
+    // 1. numberOfSectionsCollectionView 가 가장 먼저 실행되어 section의 개수를 파악한다.
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+     // 2. numberOfItemsInSection가 실행되어 Section당 Item의 개수를 파악한다.
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return fetchResult?.count ?? 0
+    }
+
+    // 6. 셀의 내용을 설정하는 메소드
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? FirstCollectionViewCell {
+
+            cell.imageManager = imageManager
+            //cell.targetSizeX = targetSizeX
+            cell.imageAsset = fetchResult[indexPath.item]
+
+            return cell
+        }
+        else {
+            return UICollectionViewCell()
+        }
+    }
+}
+
+// MARK: -
+extension ViewController: UICollectionViewDelegateFlowLayout {
+    
+    // 3. 셀의 크기 설정이 이루어진다.
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        targetSizeX = firstCollectionView.frame.width / 3 - 1
+        
+        return CGSize(width: targetSizeX, height: targetSizeX)
+    }
+    
+    // 4. cell 내부 아이템의 최소 스페이싱을 설정한다. 셀간의 가로 간격이라고 생각하면 된다.
+    // 자세한 내용은 애플문서나 부스트코스를 보자.
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
+    // 5. cell 간 라인 스페이싱을 설정한다. 셀간의 세로 간격이라고 생각하면 된다.
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+}

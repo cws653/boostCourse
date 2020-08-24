@@ -6,19 +6,28 @@
 //  Copyright © 2020 최원석. All rights reserved.
 //
 
+
 import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UITextViewDelegate {
     
     // 프로퍼티
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView! {
+        didSet {
+            if self.imageView.image != nil {
+                    print("image is not nil")
+            }
+        }
+    }
     
-    @IBOutlet weak var touchNextButton: UIButton!
-    @IBOutlet weak var touchIDTextField: UITextField!
-    @IBOutlet weak var touchPasswordField: UITextField!
-    @IBOutlet weak var touchCheckPasswordField: UITextField!
-    @IBOutlet weak var touchTextView: UITextView!
+    @IBOutlet private weak var touchNextButton: UIButton!
+    @IBOutlet private weak var touchIDTextField: UITextField!
+    @IBOutlet private weak var touchPasswordField: UITextField!
+    @IBOutlet private weak var touchCheckPasswordField: UITextField!
+    @IBOutlet private weak var touchTextView: UITextView!
     
+    // 10-200 룰
+    // 함수는 10줄안에, 클래스는 200줄안에
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +46,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         touchIDTextField.addTarget(self, action: #selector(objectsIsNotEmpty_v1), for: .editingChanged)
         touchPasswordField.addTarget(self, action: #selector(objectsIsNotEmpty_v2), for: .editingChanged)
         touchCheckPasswordField.addTarget(self, action: #selector(objectsIsNotEmpty_v3), for: .editingChanged)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
     }
     
@@ -68,6 +81,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         if let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.imageView.image = originalImage
+
+            self.touchNextButton.isEnabled = self.isValidCheckButton() ? true : false
         }
         self.dismiss(animated: true, completion: nil)
         // 이 메소드가 실행이 되면 나머지 값들 데이터를 검증하는 소스를 추가해준다.
@@ -99,6 +114,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     //        }
     //        touchNextButton.isEnabled = true
     //    }
+    
+    private func isValidCheckButton() -> Bool {
+        guard
+            let id = touchIDTextField.text, !id.isEmpty,
+            let password = touchPasswordField.text, !password.isEmpty,
+            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
+            let textfield = touchTextView.text, !textfield.isEmpty,
+            self.imageView.image != nil
+            else {
+                return false
+        }
+        
+        return true
+    }
     
     @objc func objectsIsNotEmpty_v1(sender: UITextField) {
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
@@ -150,17 +179,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        guard
-            let id = touchIDTextField.text, !id.isEmpty,
-            let password = touchPasswordField.text, !password.isEmpty,
-            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
-            let textfield = touchTextView.text, !textfield.isEmpty
-            else
-        {
+        if self.isValidCheckButton() {
+            touchNextButton.isEnabled = true
+        } else {
             self.touchNextButton.isEnabled = false
-            return
         }
-        touchNextButton.isEnabled = true
     }
     
 }

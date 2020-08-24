@@ -20,7 +20,8 @@ class FirstCollectionViewCell: UICollectionViewCell {
         didSet {
             // 여기서 CGSize를 정하는 것과 BurstAlbum의 CollectionView에서 CGSize를 정하는 것의 차이는 무엇일까?
             // imgView의 크기가 유동적으로 변할텐데 이상하게 최초의 값만 가지고 있어서 써먹을 수가 없다.
-            self.imageManager?.requestImage(for: imageAsset!, targetSize: CGSize(width: targetSizeX!, height: targetSizeX!), contentMode: .aspectFill, options: nil, resultHandler: { image, _ in self.imageView.image = image})
+            self.imageManager?.requestImage(for: imageAsset!, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFit, options: nil, resultHandler: { image, _ in self.imageView.image = image})
+        
         }
     }
 }
