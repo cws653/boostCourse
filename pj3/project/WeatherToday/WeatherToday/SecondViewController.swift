@@ -74,7 +74,6 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         let weather: Weather = self.weathers[indexPath.row]
         
-        
         cell.customFirstLabel.text = weather.city_name
         cell.customSecondLabel.text = weather.celsiusString
         cell.customThirdLabel.text = weather.rainfallProbabilityString

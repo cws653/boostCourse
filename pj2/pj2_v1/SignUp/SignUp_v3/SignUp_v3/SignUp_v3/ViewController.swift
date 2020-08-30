@@ -15,7 +15,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet private weak var imageView: UIImageView! {
         didSet {
             if self.imageView.image != nil {
-                    print("image is not nil")
+                print("image is not nil")
             }
         }
     }
@@ -81,7 +81,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         
         if let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             self.imageView.image = originalImage
-
+            
             self.touchNextButton.isEnabled = self.isValidCheckButton() ? true : false
         }
         self.dismiss(animated: true, completion: nil)
@@ -132,50 +132,65 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @objc func objectsIsNotEmpty_v1(sender: UITextField) {
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
         
-        guard
-            let id = touchIDTextField.text, !id.isEmpty,
-            let password = touchPasswordField.text, !password.isEmpty,
-            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
-            let textfield = touchTextView.text, !textfield.isEmpty
-            // 여기서 이미지 로딩 bool 값을 받아와서 설정해줘야 한다. 근데 bool 값을 가져올 수 있는 함수 또는 프로퍼티가 없다.
-            else
-        {
+        if self.isValidCheckButton() {
+            touchNextButton.isEnabled = true
+        } else {
             self.touchNextButton.isEnabled = false
-            return
         }
-        touchNextButton.isEnabled = true
+        //        guard
+        //            let id = touchIDTextField.text, !id.isEmpty,
+        //            let password = touchPasswordField.text, !password.isEmpty,
+        //            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
+        //            let textfield = touchTextView.text, !textfield.isEmpty
+        //            // 여기서 이미지 로딩 bool 값을 받아와서 설정해줘야 한다. 근데 bool 값을 가져올 수 있는 함수 또는 프로퍼티가 없다.
+        //            else
+        //        {
+        //            self.touchNextButton.isEnabled = false
+        //            return
+        //        }
+        //        touchNextButton.isEnabled = true
     }
     
     @objc func objectsIsNotEmpty_v2(sender: UITextField) {
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
         
-        guard
-            let id = touchIDTextField.text, !id.isEmpty,
-            let password = touchPasswordField.text, !password.isEmpty,
-            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
-            let textfield = touchTextView.text, !textfield.isEmpty
-            else
-        {
+        if self.isValidCheckButton() {
+            touchNextButton.isEnabled = true
+        } else {
             self.touchNextButton.isEnabled = false
-            return
         }
-        touchNextButton.isEnabled = true
+        //        guard
+        //            let id = touchIDTextField.text, !id.isEmpty,
+        //            let password = touchPasswordField.text, !password.isEmpty,
+        //            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
+        //            let textfield = touchTextView.text, !textfield.isEmpty
+        //            else
+        //        {
+        //            self.touchNextButton.isEnabled = false
+        //            return
+        //        }
+        //        touchNextButton.isEnabled = true
     }
     
     @objc func objectsIsNotEmpty_v3(sender: UITextField) {
         sender.text = sender.text?.trimmingCharacters(in: .whitespaces)
         
-        guard
-            let id = touchIDTextField.text, !id.isEmpty,
-            let password = touchPasswordField.text, !password.isEmpty,
-            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
-            let textfield = touchTextView.text, !textfield.isEmpty
-            else
-        {
+        if self.isValidCheckButton() {
+            touchNextButton.isEnabled = true
+        } else {
             self.touchNextButton.isEnabled = false
-            return
         }
-        touchNextButton.isEnabled = true
+        //        guard
+        //            let id = touchIDTextField.text, !id.isEmpty,
+        //            let password = touchPasswordField.text, !password.isEmpty,
+        //            let checkpassword = touchCheckPasswordField.text, password == checkpassword,
+        //            let textfield = touchTextView.text, !textfield.isEmpty
+        //            else
+        //        {
+        //            self.touchNextButton.isEnabled = false
+        //            return
+        //        }
+        //        touchNextButton.isEnabled = true
     }
     
     func textViewDidChange(_ textView: UITextView) {

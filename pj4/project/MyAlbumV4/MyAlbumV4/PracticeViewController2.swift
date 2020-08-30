@@ -9,36 +9,35 @@
 import UIKit
 
 class PracticeViewController2: UIViewController {
-
+    
     var sliderView2 = SliderView2()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.sliderView2.delegate = self
         // Do any additional setup after loading the view.
+        
+        self.sliderView2.delegate = self
     }
 }
 
-extension PracticeViewController2: sliderView2Delegate {
-    func sliderView2(didchangeValue: Int?) {
-        print("슬라이더뷰에서 값이 바뀐상태를 didChangeValue를 통해 받아온다. \(didchangeValue)")
+extension PracticeViewController2: SliderView2Delegate {
+    func slider2(didvaluechange value: Int?) {
+        print("")
     }
 }
 
-protocol sliderView2Delegate: AnyObject {
-    func sliderView2(didchangeValue: Int?)
-    
+protocol SliderView2Delegate: AnyObject {
+    func slider2(didvaluechange value: Int?)
 }
 
+// 클래스를 만들고 그 클래스 안에서 딜리게이트 함수를 만들어준다.
 class SliderView2: UIView {
     
-    weak var delegate: sliderView2Delegate?
+    weak var delegate: SliderView2Delegate?
     
     var value: Int?
     
-    func valueChanged() {
-        //value값이 바뀌어버림.
-        self.delegate?.sliderView2(didchangeValue: self.value)
+    func valueChange() {
+        self.delegate?.slider2(didvaluechange: self.value)
     }
-    
 }

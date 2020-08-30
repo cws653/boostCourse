@@ -14,6 +14,8 @@ class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var customFirstLabel: UILabel!
     @IBOutlet weak var customSecondLabel: UILabel!
     @IBOutlet weak var customThirdLabel: UILabel!
+    @IBOutlet weak var customButton: UIButton!
+    
     
     
     override func awakeFromNib() {
