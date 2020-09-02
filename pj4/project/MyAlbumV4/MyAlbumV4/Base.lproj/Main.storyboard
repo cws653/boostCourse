@@ -81,25 +81,23 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" maximumZoomScale="3" translatesAutoresizingMaskIntoConstraints="NO" id="rJm-er-tef">
                                 <rect key="frame" x="0.0" y="68" width="414" height="794"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wCo-6V-gf3">
-                                        <rect key="frame" x="0.0" y="-20" width="414" height="794"/>
-                                    </imageView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="ZtM-3O-ja7" firstAttribute="bottom" secondItem="wCo-6V-gf3" secondAttribute="bottom" id="EZC-aV-dE3"/>
-                                    <constraint firstItem="wCo-6V-gf3" firstAttribute="leading" secondItem="ZtM-3O-ja7" secondAttribute="leading" id="Pf5-Fz-61p"/>
-                                    <constraint firstItem="wCo-6V-gf3" firstAttribute="top" secondItem="ZtM-3O-ja7" secondAttribute="top" id="YSl-fc-fn4"/>
-                                    <constraint firstItem="ZtM-3O-ja7" firstAttribute="trailing" secondItem="wCo-6V-gf3" secondAttribute="trailing" id="rF4-Ty-ei4"/>
-                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="or9-4C-yt6"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="ZtM-3O-ja7"/>
                                 <connections>
                                     <outlet property="delegate" destination="1qf-zD-Wog" id="maO-Pq-Eku"/>
                                 </connections>
                             </scrollView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wCo-6V-gf3">
+                                <rect key="frame" x="0.0" y="48" width="414" height="794"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="wCo-6V-gf3" firstAttribute="leading" secondItem="ZtM-3O-ja7" secondAttribute="leading" id="A0M-th-nXF"/>
+                            <constraint firstItem="wCo-6V-gf3" firstAttribute="top" secondItem="ZtM-3O-ja7" secondAttribute="top" id="Uwp-4q-r9Y"/>
+                            <constraint firstItem="ZtM-3O-ja7" firstAttribute="trailing" secondItem="wCo-6V-gf3" secondAttribute="trailing" id="hld-q5-SeL"/>
+                            <constraint firstItem="ZtM-3O-ja7" firstAttribute="bottom" secondItem="wCo-6V-gf3" secondAttribute="bottom" id="zGp-2S-ZRZ"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Ro6-iy-wo8"/>
                     </view>
                     <navigationItem key="navigationItem" id="eSe-IM-f5h"/>
