@@ -12,6 +12,7 @@ class SecondTableViewController: UIViewController {
     
     var textToSetTitle: String?
     @IBOutlet weak var uiView1: UIView?
+    @IBOutlet weak var textLabel: UILabel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,10 @@ class SecondTableViewController: UIViewController {
         self.title = textToSetTitle
         self.navigationController?.navigationBar.barTintColor = .systemIndigo
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        // textLabel 설정
+        textLabel?.lineBreakMode = .byWordWrapping
+        textLabel?.numberOfLines = 0
     }
     
 

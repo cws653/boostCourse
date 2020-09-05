@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D05138D24F7DE3000E2ABA0 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D05138C24F7DE3000E2ABA0 /* Model.swift */; };
+		9D07839C2502412000D1AE97 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D07839B2502412000D1AE97 /* Function.swift */; };
 		9D0EF93124FB908B00C285BF /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0EF93024FB908B00C285BF /* CollectionViewController.swift */; };
 		9D10EEA324FBD53C00A51998 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D10EEA224FBD53C00A51998 /* CustomCollectionViewCell.swift */; };
 		9D28488424FE79B50071B5AF /* SecondTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D28488324FE79B50071B5AF /* SecondTableViewController.swift */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		9D05138C24F7DE3000E2ABA0 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		9D07839B2502412000D1AE97 /* Function.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		9D0EF93024FB908B00C285BF /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		9D10EEA224FBD53C00A51998 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		9D28488324FE79B50071B5AF /* SecondTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondTableViewController.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				9D4CAB9524F6749700721134 /* SceneDelegate.swift */,
 				9D4CAB9924F6749700721134 /* Main.storyboard */,
 				9D05138C24F7DE3000E2ABA0 /* Model.swift */,
+				9D07839B2502412000D1AE97 /* Function.swift */,
 				9D4CAB9C24F6749800721134 /* Assets.xcassets */,
 				9D4CAB9E24F6749800721134 /* LaunchScreen.storyboard */,
 				9D4CABA124F6749800721134 /* Info.plist */,
@@ -181,6 +184,7 @@
 				9D4CAB9624F6749700721134 /* SceneDelegate.swift in Sources */,
 				9D28488424FE79B50071B5AF /* SecondTableViewController.swift in Sources */,
 				9D05138D24F7DE3000E2ABA0 /* Model.swift in Sources */,
+				9D07839C2502412000D1AE97 /* Function.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

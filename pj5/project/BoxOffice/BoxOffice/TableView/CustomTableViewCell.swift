@@ -26,5 +26,12 @@ class CustomTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.customImageView1?.image = nil
+        self.customImageView2?.image = nil
+    }
 
 }

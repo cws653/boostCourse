@@ -12,7 +12,11 @@ class CollectionViewController: UIViewController, UICollectionViewDelegate, UICo
     
     @IBOutlet weak var collectionView: UICollectionView?
     let cellIdentifier = "collectionViewCell"
-    var arryMovies: [Movies] = []
+    var arryMovies: [Movies] = [] {
+        didSet {
+            print("내꺼 업데이트 됨 \(self.arryMovies)")
+        }
+    }
     var targetSizeX: CGFloat!
     
     
