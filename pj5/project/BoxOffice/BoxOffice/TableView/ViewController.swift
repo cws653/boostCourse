@@ -8,6 +8,23 @@
 
 import UIKit
 
+enum ServiceType: Int {
+    case reservation = 0
+    case quration = 1
+    case openDay = 2
+    
+    var title: String {
+        switch self {
+        case .reservation:
+            return "예매율"
+        case .quration:
+            return "큐레이션"
+        case .openDay:
+            return "개봉일"
+        }
+    }
+}
+
 class ViewController: UIViewController{
     
     @IBOutlet weak var tableView: UITableView?
@@ -73,9 +90,10 @@ class ViewController: UIViewController{
         let alertController: UIAlertController
         alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
         
+        let reservationServiceType: ServiceType = .reservation
         let reservationRateAction: UIAlertAction
-        reservationRateAction = UIAlertAction(title: "예매율", style: UIAlertAction.Style.default) { _ in
-            self.movieService.requestMovies(urlInt: 0) { movies in
+        reservationRateAction = UIAlertAction(title: reservationServiceType.title, style: UIAlertAction.Style.default) { _ in
+            self.movieService.requestMovies(urlInt: reservationServiceType.rawValue) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = "예매율"
                     self.arryMovies = movies
@@ -88,8 +106,8 @@ class ViewController: UIViewController{
         // 여기서 버튼을 클릭하면 배열이 정렬되도록 만들어주는 클로저함수를 만들어야 한다. 근데 그게 안된다.
         
         let curationAction: UIAlertAction
-        curationAction = UIAlertAction(title: "큐레이션", style: UIAlertAction.Style.default) { _ in
-            self.movieService.requestMovies(urlInt: 1) { movies in
+        curationAction = UIAlertAction(title: ServiceType.quration.title, style: UIAlertAction.Style.default) { _ in
+            self.movieService.requestMovies(urlInt: ServiceType.quration.rawValue) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = "큐레이션"
                     self.arryMovies = movies
@@ -99,8 +117,8 @@ class ViewController: UIViewController{
         }
         
         let openDayAction: UIAlertAction
-        openDayAction = UIAlertAction(title: "개봉일", style: UIAlertAction.Style.default) { _ in
-            self.movieService.requestMovies(urlInt: 2) { movies in
+        openDayAction = UIAlertAction(title: ServiceType.openDay.title, style: UIAlertAction.Style.default) { _ in
+            self.movieService.requestMovies(urlInt: ServiceType.openDay.rawValue) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = "개봉일"
                     self.arryMovies = movies
@@ -219,4 +237,5 @@ extension ViewController: UITabBarControllerDelegate {
         }
     }
 }
+
 
