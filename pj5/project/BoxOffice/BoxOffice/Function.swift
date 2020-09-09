@@ -17,10 +17,14 @@ import Foundation
  fileprivate - 현재파일에서만 접근
  */
 
+//protocol SendDataDeleagate {
+//    func sendData(data: [Movies])
+//}
+
 
 class MovieService {
     
-    let DidReceiveMoviesNotification: Notification.Name = Notification.Name("DidReceiveMovies")
+//    let DidReceiveMoviesNotification: Notification.Name = Notification.Name("DidReceiveMovies")
     
     private var datTask: URLSessionDataTask?
 

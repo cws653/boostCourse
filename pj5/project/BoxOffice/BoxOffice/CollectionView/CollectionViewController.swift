@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class CollectionViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView?
     let cellIdentifier = "collectionViewCell"
@@ -19,6 +19,7 @@ class CollectionViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     var targetSizeX: CGFloat!
     
+    let movieService = MovieService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,36 +40,14 @@ class CollectionViewController: UIViewController, UICollectionViewDelegate, UICo
         self.collectionView?.collectionViewLayout = layout
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.collectionView?.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        guard let url: URL = URL(string:
-            "https://connect-boxoffice.run.goorm.io/movies?order_type=1") else { return }
-        
-        let session: URLSession = URLSession(configuration: .default)
-        let dataTask: URLSessionDataTask = session.dataTask(with: url) { (data: Data?, response: URLResponse?, error: Error?) in
-            
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            
-            guard let data = data else { return }
-            
-            do {
-                let apiResponse: APIResponse = try JSONDecoder().decode(APIResponse.self, from: data)
-                self.arryMovies = apiResponse.movies
-                
-                DispatchQueue.main.async {
-                    self.collectionView?.reloadData()
-                }
-                
-            } catch(let err) {
-                print(err.localizedDescription)
-            }
-        }
-        
-        dataTask.resume()
     }
     
     // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
@@ -82,13 +61,35 @@ class CollectionViewController: UIViewController, UICollectionViewDelegate, UICo
         alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
         
         let reservationRateAction: UIAlertAction
-        reservationRateAction = UIAlertAction(title: "예매율", style: UIAlertAction.Style.default, handler: { (action: UIAlertAction) in print("예매율 선택") })
+        reservationRateAction = UIAlertAction(title: ServiceType.reservation.title, style: UIAlertAction.Style.default) { _ in self.movieService.requestMovies(urlInt: ServiceType.reservation.rawValue) { movies in
+            DispatchQueue.main.async {
+                self.navigationItem.title = "예매율"
+                self.arryMovies = movies
+                self.collectionView?.reloadData()
+            }
+            }
+        }
         
         let curationAction: UIAlertAction
-        curationAction = UIAlertAction(title: "큐레이션" , style: UIAlertAction.Style.default, handler: {(action: UIAlertAction) in print("큐레이션 선택")})
+        curationAction = UIAlertAction(title: ServiceType.quration.title , style: UIAlertAction.Style.default) { _ in
+            self.movieService.requestMovies(urlInt: ServiceType.quration.rawValue) { movies in
+                DispatchQueue.main.async {
+                    self.navigationItem.title = "큐레이션"
+                    self.arryMovies = movies
+                    self.collectionView?.reloadData()
+                }
+            }
+        }
         
         let openDayAction: UIAlertAction
-        openDayAction = UIAlertAction(title: "개봉일", style: UIAlertAction.Style.default, handler: {(action:UIAlertAction) in print("개봉일 선택")})
+        openDayAction = UIAlertAction(title: ServiceType.openDay.title, style: UIAlertAction.Style.default) { _ in self.movieService.requestMovies(urlInt: ServiceType.openDay.rawValue) { movies in
+                DispatchQueue.main.async {
+                    self.navigationItem.title = "개봉일"
+                    self.arryMovies = movies
+                    self.collectionView?.reloadData()
+                }
+            }
+        }
         
         let cancelAction: UIAlertAction
         cancelAction = UIAlertAction(title: "취소", style: UIAlertAction.Style.default, handler: {(action: UIAlertAction) in print("취소버튼 선택")})
@@ -101,7 +102,33 @@ class CollectionViewController: UIViewController, UICollectionViewDelegate, UICo
         self.present(alertController, animated: true, completion: { print("Alert controller shown")})
     }
     
-    // 데이터소스 내용
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
+}
+
+//extension CollectionViewController: SendDataDeleagate {
+//    func sendData(data: [Movies]) {
+//        self.arrayMovies2 = data
+//    }
+//}
+
+// MARK: - UICollectionViewDelegate
+extension CollectionViewController: UICollectionViewDelegate {
+    
+}
+
+
+ // MARK: - UICollectionViewDataSource
+extension CollectionViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -154,34 +181,38 @@ class CollectionViewController: UIViewController, UICollectionViewDelegate, UICo
         
         return cell
     }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     
-    // 셀의 크기를 delegateFlowLayout 으로 만들어준다.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         targetSizeX = collectionView.frame.width / 2 - 1
         
         return CGSize(width: targetSizeX, height: 2 * targetSizeX)
     }
     
-    // 4. cell 내부 아이템의 최소 스페이싱을 설정한다. 셀간의 가로 간격이라고 생각하면 된다.
-    // 자세한 내용은 애플문서나 부스트코스를 보자.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
     
-    // 5. cell 간 라인 스페이싱을 설정한다. 셀간의 세로 간격이라고 생각하면 된다.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
+
+// MARK: - UITabBarControllerDelegat
+extension CollectionViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        print("탭바가 클릭되었습니다.")
+        
+        if let navigationController = viewController as? UINavigationController {
+            if let tableViewController = navigationController.viewControllers.first as? ViewController {
+                tableViewController.arryMovies = self.arryMovies
+            }
+        }
+    }
+}
+
+

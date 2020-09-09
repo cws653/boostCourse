@@ -27,13 +27,16 @@ enum ServiceType: Int {
 
 class ViewController: UIViewController{
     
+//    var delegate: SendDataDeleagate?
+    
     @IBOutlet weak var tableView: UITableView?
     let cellIdentifier: String = "tableViewCell"
     var arryMovies: [Movies] = []
     
+    // movie 내용을 보여주는데 필요한 기능을 별도의 클래스로 묶었다.
     let movieService = MovieService()
     
-    // MARK: -viewDidLoad
+    // MARK: - 뷰 상태변화
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -50,27 +53,16 @@ class ViewController: UIViewController{
                 self.tableView?.reloadData()
             }
         }
-        
-        //NotificationCenter.default.addObserver(self, selector: #selector(self.didReceieveMoviesNotification(_:)), name: DidReceiveMoviesNotification, object: nil)
     }
     
-//    @objc func didReceieveMoviesNotification(_ noti: Notification) {
-//
-//        guard let movies: [Movies] = noti.userInfo?["movies"] as? [Movies] else { return }
-//
-//        self.arryMovies = movies
-//
-//        DispatchQueue.main.async {
-//            self.tableView?.reloadData()
-//        }
-//
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView?.reloadData()
+    }
     
-    // MARK: -viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        //requestMovies(urlInt: nil)
     }
     
     // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
@@ -78,15 +70,8 @@ class ViewController: UIViewController{
         self.showAlertController(style: UIAlertController.Style.actionSheet)
     }
     
-    //    func funcOfSortData() {
-    //        self.arryMovies = self.arryMovies.sorted(by: { $0.reservationGrade < $1.reservationGrade })
-    //    }
-    
-    //    self.sortArrayMovies = self.arryMovies.sorted(by: {$0.reservationGrade < $1.reservationGrade})}
-    
     func showAlertController (style: UIAlertController.Style) {
         
-    
         let alertController: UIAlertController
         alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
         
@@ -228,8 +213,12 @@ extension ViewController: UITableViewDataSource {
 }
 
 extension ViewController: UITabBarControllerDelegate {
+    
+    
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
+        print("탭바가 클릭되었습니다.")
+//        delegate?.sendData(data: self.arryMovies)
+
         if let navigationController = viewController as? UINavigationController {
             if let collectionViewController = navigationController.viewControllers.first as? CollectionViewController {
                 collectionViewController.arryMovies = self.arryMovies
@@ -237,5 +226,7 @@ extension ViewController: UITabBarControllerDelegate {
         }
     }
 }
+
+
 
 
