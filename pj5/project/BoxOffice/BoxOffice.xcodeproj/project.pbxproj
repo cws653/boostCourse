@@ -91,14 +91,14 @@
 		9D4CAB9224F6749700721134 /* BoxOffice */ = {
 			isa = PBXGroup;
 			children = (
+				9D7F6720250C903D00D542F9 /* Models */,
+				9D7F671D250C8A8C00D542F9 /* API */,
 				9DFDC003250A575800D80BF6 /* DetailContents */,
 				9D10EEA124FBD46400A51998 /* TableView */,
 				9D10EEA024FBD42600A51998 /* CollectionView */,
 				9D4CAB9324F6749700721134 /* AppDelegate.swift */,
 				9D4CAB9524F6749700721134 /* SceneDelegate.swift */,
 				9D4CAB9924F6749700721134 /* Main.storyboard */,
-				9D05138C24F7DE3000E2ABA0 /* Model.swift */,
-				9D07839B2502412000D1AE97 /* Function.swift */,
 				9D4CAB9C24F6749800721134 /* Assets.xcassets */,
 				9D4CAB9E24F6749800721134 /* LaunchScreen.storyboard */,
 				9D4CABA124F6749800721134 /* Info.plist */,
@@ -106,11 +106,27 @@
 			path = BoxOffice;
 			sourceTree = "<group>";
 		};
+		9D7F671D250C8A8C00D542F9 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				9D07839B2502412000D1AE97 /* Function.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		9D7F6720250C903D00D542F9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9D05138C24F7DE3000E2ABA0 /* Model.swift */,
+				9DFDC004250A57A700D80BF6 /* DetailContentsDataStruct.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		9DFDC003250A575800D80BF6 /* DetailContents */ = {
 			isa = PBXGroup;
 			children = (
 				9D28488324FE79B50071B5AF /* SecondTableViewController.swift */,
-				9DFDC004250A57A700D80BF6 /* DetailContentsDataStruct.swift */,
 			);
 			path = DetailContents;
 			sourceTree = "<group>";

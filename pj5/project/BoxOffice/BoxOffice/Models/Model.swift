@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct APIResponse: Codable {
+struct MovieList: Codable {
     let movies: [Movies]
+    let order_type: Int
 }
 
 struct Movies: Codable {
     
-
     let grade: Int
     let thumb:String
     let reservationGrade: Int
@@ -51,10 +51,6 @@ struct Movies: Codable {
     var collectionDate: String {
         return self.date
     }
-    
-    
-    
-    
     
     enum CodingKeys: String, CodingKey {
         case grade, thumb, date, id, title

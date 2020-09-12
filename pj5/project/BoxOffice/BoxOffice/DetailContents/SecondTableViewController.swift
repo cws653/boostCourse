@@ -32,7 +32,7 @@ class SecondTableViewController: UIViewController {
         textLabel?.numberOfLines = 0
         
         // 뷰컨트롤러에 상세내용 올리기
-        self.movieService.requestDetailContents(urlId: self.urlId) { movies in DispatchQueue.main.async {
+        self.movieService.requestDetailContents(urlId: self.urlId) { movies2 in DispatchQueue.main.async {
             self.arryDetailMovies = movies2
             
             }

@@ -8,26 +8,17 @@
 
 import UIKit
 
-enum ServiceType: Int {
-    case reservation = 0
+enum filteringMethod:Int {
+    case reservation_rate = 0
     case quration = 1
-    case openDay = 2
+    case open = 2
     
-    var title: String {
-        switch self {
-        case .reservation:
-            return "예매율"
-        case .quration:
-            return "큐레이션"
-        case .openDay:
-            return "개봉일"
-        }
-    }
+    let
 }
 
 class ViewController: UIViewController{
     
-//    var delegate: SendDataDeleagate?
+    //    var delegate: SendDataDeleagate?
     
     @IBOutlet weak var tableView: UITableView?
     let cellIdentifier: String = "tableViewCell"
@@ -48,12 +39,20 @@ class ViewController: UIViewController{
         
         self.tabBarController?.delegate = self
         
-        self.movieService.requestMovies(urlInt: nil) { movies in
-            DispatchQueue.main.async {
-                self.arryMovies = movies
-                self.tableView?.reloadData()
+        self.movieService.getJsonFromUrlWithFilter(filterType: .reservation_rate) { movies in DispatchQueue.main.async {
+            self.arryMovies = movies
+            self.tableView?.reloadData()
             }
         }
+        
+        
+        
+//        self.movieService.requestMovies(urlInt: nil) { movies in
+//            DispatchQueue.main.async {
+//                self.arryMovies = movies
+//                self.tableView?.reloadData()
+//            }
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -184,9 +183,9 @@ extension ViewController: UITableViewDataSource {
             }
             
             DispatchQueue.main.async {
-//                if let index: IndexPath = tableView.indexPath(for: cell) {
-//                    if index.row == indexPath.row {
-                        
+                //                if let index: IndexPath = tableView.indexPath(for: cell) {
+                //                    if index.row == indexPath.row {
+                
                 cell.customImageView1?.image = UIImage(data: data)
                 
                 let valueOfGrade: Int = movie.grade
@@ -203,15 +202,15 @@ extension ViewController: UITableViewDataSource {
                 default:
                     cell.customImageView2?.image = nil
                 }
-//                    }
-//                }
+                //                    }
+                //                }
                 
                 cell.customLabel1?.text = movie.title
                 cell.customLabel2?.text = movie.tableUserRating + " " + movie.tableReservationGrade + " " + movie.tableReservationRate
                 cell.customLabel3?.text = movie.tableDate
             }
         }.resume()
-                
+        
         return cell
     }
 }
@@ -221,8 +220,8 @@ extension ViewController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         print("탭바가 클릭되었습니다.")
-//        delegate?.sendData(data: self.arryMovies)
-
+        //        delegate?.sendData(data: self.arryMovies)
+        
         if let navigationController = viewController as? UINavigationController {
             if let collectionViewController = navigationController.viewControllers.first as? CollectionViewController {
                 collectionViewController.arryMovies = self.arryMovies
