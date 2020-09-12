@@ -79,6 +79,58 @@ class MovieService {
 
         }
     }
+    
+    private func sendRequestDetail(_ url: URL, completion: @escaping ([DetailContents]) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        let session: URLSession = URLSession(configuration: .default)
+        
+        let dataTask: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            
+            guard let data = data else { return }
+            
+            do {
+                let apiResponse: SecondAPIResponse = try JSONDecoder().decode(SecondAPIResponse.self, from: data)
+                completion(apiResponse.movies2)
+                
+                //NotificationCenter.default.post(name: DidReceiveMoviesNotification, object: nil, userInfo: ["movies": apiResponse.movies] )
+            } catch(let err) {
+                print(err.localizedDescription)
+            }
+        }
+        dataTask.resume()
+    }
+    
+    internal func requestDetailContents(urlId: String?, completion: @escaping ([DetailContents]) -> Void) {
+        
+        var components = URLComponents(string: "https://connect-boxoffice.run.goorm.io/movies")
+        
+        guard let urlId = urlId else {
+            if let url: URL = components?.url {
+                self.sendRequestDetail(url) { movies2 in
+                    completion(movies2)
+                }
+            }
+            return
+        }
+        
+        let orderType = URLQueryItem(name: "id", value: "\(urlId)")
+        components?.queryItems = [orderType]
+        
+        guard let url: URL = components?.url else {
+            return
+        }
+        self.sendRequestDetail(url) { movies2 in
+            completion(movies2)
+
+        }
+    }
 
 }
 

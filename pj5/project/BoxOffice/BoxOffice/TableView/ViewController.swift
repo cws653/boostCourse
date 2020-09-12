@@ -32,6 +32,7 @@ class ViewController: UIViewController{
     @IBOutlet weak var tableView: UITableView?
     let cellIdentifier: String = "tableViewCell"
     var arryMovies: [Movies] = []
+    var sendUrl: String?
     
     // movie 내용을 보여주는데 필요한 기능을 별도의 클래스로 묶었다.
     let movieService = MovieService()
@@ -140,6 +141,7 @@ class ViewController: UIViewController{
         }
         
         nextViewController.textToSetTitle = cell.customLabel1?.text
+        nextViewController.urlId = self.sendUrl
     }
 }
 
@@ -164,7 +166,9 @@ extension ViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
+        
         let movie: Movies = self.arryMovies[indexPath.row]
+        self.sendUrl = movie.id
         cell.customImageView1?.image = nil
         
         // 등급을 나타내는 이미지를 넣어줘야한다. 해당 이미지를 넣기 위해서는 조건문을 사용해야한다. 데이터는 인트값으로 넘어오므로 해당 인트일 경우 이미지 무엇을 사용하겠다는 식으로 소스를 짜야한다.

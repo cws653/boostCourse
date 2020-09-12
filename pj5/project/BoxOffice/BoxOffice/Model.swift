@@ -14,15 +14,7 @@ struct APIResponse: Codable {
 
 struct Movies: Codable {
     
-//    let grade: Int
-//    let thumb:String
-//    let reservation_grade: Int
-//    let title: String
-//    let reservation_rate: Double
-//    let user_rating: Double
-//    let date: String
-//    let id: String
-    
+
     let grade: Int
     let thumb:String
     let reservationGrade: Int
@@ -74,16 +66,3 @@ struct Movies: Codable {
 
 
 
-
-
-//
-//struct Movies: Codable {
-//    let grade: Int
-//    let thumb:String
-//    let reservation_grade: Int
-//    let title: String
-//    let reservation_rate: Double
-//    let user_rating: Double
-//    let date: String
-//    let id: String
-//}
