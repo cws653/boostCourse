@@ -69,9 +69,31 @@ class MovieService {
         }
         dataTask.resume()
     }
+    
+    
+    func getJsonFromUrlWithMoiveId(movieId: String, completion:@escaping (CommentList?) -> Void) {
+        let baseWithFilterTypeURL = baseURL+"comments?movie_id="+"\(movieId)"
+        
+        guard let url = URL(string: baseWithFilterTypeURL) else {return}
+        let session: URLSession = URLSession(configuration: .default)
+        let dataTask: URLSessionDataTask = session.dataTask(with: url) {(datas, response, error) in
+            if error != nil {
+                print("Network Error")
+            }
+            guard let data = datas else {return}
+            do {
+                let order = try JSONDecoder().decode(CommentList.self, from: data)
+                
+                completion(order)
+            }catch{
+                print("JSON Parising Error")
+            }
+        }
+        dataTask.resume()
+    }
 }
 
-    
+
 
 //    private func sendRequest(_ url: URL, completion: @escaping ([Movies]) -> Void) {
 //        var request = URLRequest(url: url)

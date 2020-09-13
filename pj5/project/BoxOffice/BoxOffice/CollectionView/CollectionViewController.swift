@@ -60,31 +60,34 @@ class CollectionViewController: UIViewController {
         let alertController: UIAlertController
         alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
         
+        let reservationServiceType: filteringMethod = .reservation_rate
         let reservationRateAction: UIAlertAction
-        reservationRateAction = UIAlertAction(title: ServiceType.reservation.title, style: UIAlertAction.Style.default) { _ in self.movieService.requestMovies(urlInt: ServiceType.reservation.rawValue) { movies in
+        reservationRateAction = UIAlertAction(title: reservationServiceType.title, style: UIAlertAction.Style.default) { _ in self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
             DispatchQueue.main.async {
-                self.navigationItem.title = "예매율"
+                self.navigationItem.title = reservationServiceType.title
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
             }
         }
         
-        let curationAction: UIAlertAction
-        curationAction = UIAlertAction(title: ServiceType.quration.title , style: UIAlertAction.Style.default) { _ in
-            self.movieService.requestMovies(urlInt: ServiceType.quration.rawValue) { movies in
+        let qurationServiceType: filteringMethod = .quration
+        let qurationAction: UIAlertAction
+        qurationAction = UIAlertAction(title: qurationServiceType.title , style: UIAlertAction.Style.default) { _ in
+            self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
                 DispatchQueue.main.async {
-                    self.navigationItem.title = "큐레이션"
+                    self.navigationItem.title = reservationServiceType.title
                     self.arryMovies = movies
                     self.collectionView?.reloadData()
                 }
             }
         }
         
+        let openDayServiceType: filteringMethod = .open
         let openDayAction: UIAlertAction
-        openDayAction = UIAlertAction(title: ServiceType.openDay.title, style: UIAlertAction.Style.default) { _ in self.movieService.requestMovies(urlInt: ServiceType.openDay.rawValue) { movies in
+        openDayAction = UIAlertAction(title: openDayServiceType.title, style: UIAlertAction.Style.default) { _ in self.movieService.getJsonFromUrlWithFilter(filterType: openDayServiceType) { movies in
                 DispatchQueue.main.async {
-                    self.navigationItem.title = "개봉일"
+                    self.navigationItem.title = openDayServiceType.title
                     self.arryMovies = movies
                     self.collectionView?.reloadData()
                 }
@@ -95,7 +98,7 @@ class CollectionViewController: UIViewController {
         cancelAction = UIAlertAction(title: "취소", style: UIAlertAction.Style.default, handler: {(action: UIAlertAction) in print("취소버튼 선택")})
         
         alertController.addAction(reservationRateAction)
-        alertController.addAction(curationAction)
+        alertController.addAction(qurationAction)
         alertController.addAction(openDayAction)
         alertController.addAction(cancelAction)
         
@@ -127,7 +130,7 @@ extension CollectionViewController: UICollectionViewDelegate {
 }
 
 
- // MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource
 extension CollectionViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
