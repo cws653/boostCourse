@@ -63,7 +63,7 @@ class MovieService {
             do {
                 let order = try JSONDecoder().decode(DetailContents.self, from: data)
                 completion([order])
-            }catch{
+            } catch{
                 print("JSON Parising Error")
             }
         }

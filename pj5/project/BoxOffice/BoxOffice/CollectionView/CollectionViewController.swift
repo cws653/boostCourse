@@ -33,6 +33,7 @@ class CollectionViewController: UIViewController {
         // 네비게이션바 옵션 설정
         self.navigationController?.navigationBar.barTintColor = .systemIndigo
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.tintColor = .white
         
         // 컬렉션뷰셀 레이아웃 초기설정
         let layout = UICollectionViewFlowLayout()
@@ -162,20 +163,18 @@ extension CollectionViewController: UICollectionViewDataSource {
                         let valueOfGrade: Int = movie.grade
                         
                         switch valueOfGrade {
-                        case 0:
-                            cell.gradeImageView?.image = UIImage(named: "ic_allages")
-                        case 12:
-                            cell.gradeImageView?.image = UIImage(named: "ic_12")
-                        case 15:
-                            cell.gradeImageView?.image = UIImage(named: "ic_15")
-                        case 19:
-                            cell.gradeImageView?.image = UIImage(named: "ic_19")
-                        default:
-                            cell.gradeImageView?.image = nil
+                        case 0: cell.gradeImageView?.image = UIImage(named: "ic_allages")
+                        case 12: cell.gradeImageView?.image = UIImage(named: "ic_12")
+                        case 15: cell.gradeImageView?.image = UIImage(named: "ic_15")
+                        case 19: cell.gradeImageView?.image = UIImage(named: "ic_19")
+                        default: cell.gradeImageView?.image = nil
                         }
                     }
                 }
             }
+        }
+        if cell.firstLabel?.adjustsFontSizeToFitWidth == false {
+            cell.firstLabel?.adjustsFontSizeToFitWidth = true
         }
         
         cell.firstLabel?.text = movie.title
@@ -204,7 +203,7 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UITabBarControllerDelegat
+// MARK: - UITabBarControllerDelegate
 extension CollectionViewController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {

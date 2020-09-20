@@ -44,6 +44,7 @@ class ViewController: UIViewController{
         // 네비게이션바 옵션 설정
         self.navigationController?.navigationBar.barTintColor = .systemIndigo
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.tintColor = .white
         
         self.tabBarController?.delegate = self
         
@@ -52,13 +53,6 @@ class ViewController: UIViewController{
             self.tableView?.reloadData()
             }
         }
-        
-//        self.movieService.requestMovies(urlInt: nil) { movies in
-//            DispatchQueue.main.async {
-//                self.arryMovies = movies
-//                self.tableView?.reloadData()
-//            }
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,6 +151,7 @@ extension ViewController: UITableViewDelegate {
         if let secondTableViewController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? SecondTableViewController {
             secondTableViewController.textToSetTitle = self.arryMovies[indexPath.row].title
             secondTableViewController.urlId = self.arryMovies[indexPath.row].id
+            secondTableViewController.gradeOfMovie = self.arryMovies[indexPath.row].grade
             
             //self.present(secondTableViewController, animated: true, completion: nil)
             self.navigationController?.pushViewController(secondTableViewController, animated: true)
@@ -217,16 +212,11 @@ extension ViewController: UITableViewDataSource {
                 let valueOfGrade: Int = movie.grade
                 
                 switch valueOfGrade {
-                case 0:
-                    cell.customImageView2?.image = UIImage(named: "ic_allages")
-                case 12:
-                    cell.customImageView2?.image = UIImage(named: "ic_12")
-                case 15:
-                    cell.customImageView2?.image = UIImage(named: "ic_15")
-                case 19:
-                    cell.customImageView2?.image = UIImage(named: "ic_19")
-                default:
-                    cell.customImageView2?.image = nil
+                case 0: cell.customImageView2?.image = UIImage(named: "ic_allages")
+                case 12: cell.customImageView2?.image = UIImage(named: "ic_12")
+                case 15: cell.customImageView2?.image = UIImage(named: "ic_15")
+                case 19: cell.customImageView2?.image = UIImage(named: "ic_19")
+                default: cell.customImageView2?.image = nil
                 }
                 //                    }
                 //                }
