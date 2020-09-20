@@ -29,9 +29,6 @@ class MakeCommentsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        self.sliderOfGrade?.isHidden = true
-//        self.sliderOfGrade.
-        
         self.contentsTextView.layer.borderWidth = 2.0
         self.contentsTextView.layer.borderColor = UIColor.systemOrange.cgColor
         
@@ -64,21 +61,7 @@ class MakeCommentsVC: UIViewController {
         print("버튼 액션 실행된다.")
         post()
     }
-    
-//    private func isValidCheckButton() -> Bool {
-//           guard
-//               let id = touchIDTextField.text, !id.isEmpty,
-//               let password = touchPasswordField.text, !password.isEmpty,
-//               let checkpassword = touchCheckPasswordField.text, password == checkpassword,
-//               let textfield = touchTextView.text, !textfield.isEmpty,
-//               self.imageView.image != nil
-//               else {
-//                   return false
-//           }
-//
-//           return true
-//       }
-    
+
     struct EndocdePOST: Codable {
         var rating: Int
         var writer: String
@@ -99,7 +82,6 @@ class MakeCommentsVC: UIViewController {
         let writer = self.userIdTextField?.text ?? ""
         let movie_id = self.urlId ?? ""
         let contents = self.contentsTextView.text ?? ""
-//        let param = "rating=\(rating)&writer=\(writer)&movie_id=\(movie_id)&contents=\(contents)"
         
         let newPOST = EndocdePOST(rating: rating, writer: writer, movie_id: movie_id, contents: contents)
         do {
@@ -112,13 +94,6 @@ class MakeCommentsVC: UIViewController {
             var request = URLRequest(url: url!)
             request.httpMethod = "POST"
             request.httpBody = newPostData
-            
-            //request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            //        request.setValue(String(paramData!.count), forHTTPHeaderField: "Content-Length")
-            
-            //1.
-            
-            //
             
             let dataTask: URLSessionTask = URLSession.shared.dataTask(with: request) {(datas, response, error) in
                 if error != nil {
@@ -257,12 +232,12 @@ extension MakeCommentsVC: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if contentsTextView.text.isEmpty {
             contentsTextView.text = "제가 바로 PlaceHolder입니다."
-            contentsTextView.textColor = UIColor.systemGray4
+            contentsTextView.textColor = UIColor.systemGray5
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        if contentsTextView.textColor == UIColor.lightGray {
+        if contentsTextView.textColor == UIColor.systemGray5 {
             contentsTextView.text = nil
             contentsTextView.textColor = UIColor.black
         }

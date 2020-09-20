@@ -21,6 +21,14 @@ class DetailViewPosterCell: UITableViewCell {
     @IBOutlet weak var reservation_rate: UILabel!
     @IBOutlet weak var user_rating: UILabel!
     @IBOutlet weak var audience: UILabel!
+    @IBOutlet weak var firstStar: UIImageView!
+    @IBOutlet weak var secondStar: UIImageView!
+    @IBOutlet weak var thirdStar: UIImageView!
+    @IBOutlet weak var fourthStar: UIImageView!
+    @IBOutlet weak var fifthStar: UIImageView!
+    @IBOutlet weak var imageOfGrade: UIImageView!
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,6 +51,85 @@ class DetailViewPosterCell: UITableViewCell {
         self.reservation_rate.text = "\(movie.reservationRate)"
         self.user_rating.text = "\(movie.userRating)"
         self.audience.text = "\(movie.audience)"
+        
+        switch movie.grade {
+        case 0: imageOfGrade.image = UIImage(named: "ic_allages")
+        case 12: imageOfGrade.image = UIImage(named: "ic_12")
+        case 15: imageOfGrade.image = UIImage(named: "ic_15")
+        case 19: imageOfGrade.image = UIImage(named: "ic_19")
+        default: break
+        }
+        
+        switch round(movie.userRating) {
+        case 0:
+            firstStar?.image = UIImage(named: "ic_star_large")
+            secondStar?.image = UIImage(named: "ic_star_large")
+            thirdStar?.image = UIImage(named: "ic_star_large")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 1.0:
+            firstStar?.image = UIImage(named: "ic_star_large_half")
+            secondStar?.image = UIImage(named: "ic_star_large")
+            thirdStar?.image = UIImage(named: "ic_star_large")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 2.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large")
+            thirdStar?.image = UIImage(named: "ic_star_large")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 3.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_half")
+            thirdStar?.image = UIImage(named: "ic_star_large")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 4.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 5.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large_half")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 6.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large_full")
+            fourthStar?.image = UIImage(named: "ic_star_large")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 7.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large_full")
+            fourthStar?.image = UIImage(named: "ic_star_large_half")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 8.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large_full")
+            fourthStar?.image = UIImage(named: "ic_star_large_full")
+            fifthStar?.image = UIImage(named: "ic_star_large")
+        case 9.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large_full")
+            fourthStar?.image = UIImage(named: "ic_star_large_full")
+            fifthStar?.image = UIImage(named: "ic_star_large_half")
+        case 10.0:
+            firstStar?.image = UIImage(named: "ic_star_large_full")
+            secondStar?.image = UIImage(named: "ic_star_large_full")
+            thirdStar?.image = UIImage(named: "ic_star_large_full")
+            fourthStar?.image = UIImage(named: "ic_star_large_full")
+            fifthStar?.image = UIImage(named: "ic_star_large_full")
+        default:
+            break
+        }
     }
     
 }

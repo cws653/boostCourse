@@ -14,9 +14,57 @@
             filePath = "BoxOffice/MakeComments/MakeCommentsVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "post()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9B5FEEA5-B9F9-4FCE-84A5-787BEE07068C - d18dca21a1c49738"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "BoxOffice.MakeCommentsVC.post() -&gt; ()"
+                  moduleName = "BoxOffice"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/choiwonseok/Desktop/%E1%84%87%E1%85%AE%E1%84%89%E1%85%B3%E1%84%90%E1%85%B3%E1%84%8F%E1%85%A9%E1%84%89%E1%85%B3/pj5/project/BoxOffice/BoxOffice/MakeComments/MakeCommentsVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "3354">
+               </Location>
+               <Location
+                  uuid = "9B5FEEA5-B9F9-4FCE-84A5-787BEE07068C - 831462810675badc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in BoxOffice.MakeCommentsVC.post() -&gt; ()"
+                  moduleName = "BoxOffice"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/choiwonseok/Desktop/%E1%84%87%E1%85%AE%E1%84%89%E1%85%B3%E1%84%90%E1%85%B3%E1%84%8F%E1%85%A9%E1%84%89%E1%85%B3/pj5/project/BoxOffice/BoxOffice/MakeComments/MakeCommentsVC.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "297">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "08B58334-1F39-4774-90C2-6A096792E520"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BoxOffice/DetailContents/SecondTableViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "tableView(_:viewForHeaderInSection:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

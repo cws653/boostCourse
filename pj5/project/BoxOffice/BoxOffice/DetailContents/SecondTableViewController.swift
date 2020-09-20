@@ -40,7 +40,8 @@ class SecondTableViewController: UIViewController {
         self.tableView?.delegate = self
         self.tableView?.dataSource = self
         
-       
+      
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,7 +75,7 @@ class SecondTableViewController: UIViewController {
         }
     }
     
-    @IBAction func makeCommentsButton(_ sender: UIButton) {
+    @objc func touchUpCommentsBtn(sender: UIButton) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
         if let makeCommentsVC = storyBoard.instantiateViewController(withIdentifier: "MakeCommentsVC" ) as? MakeCommentsVC {
             makeCommentsVC.titleOfMovie = self.textToSetTitle
@@ -83,37 +84,83 @@ class SecondTableViewController: UIViewController {
             
             self.navigationController?.pushViewController(makeCommentsVC, animated: true)
         }
-        
     }
     
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
+    
+//    @IBAction func makeCommentsButton(_ sender: UIButton) {
+//        let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+//        if let makeCommentsVC = storyBoard.instantiateViewController(withIdentifier: "MakeCommentsVC" ) as? MakeCommentsVC {
+//            makeCommentsVC.titleOfMovie = self.textToSetTitle
+//            makeCommentsVC.gradeOfMovie = self.gradeOfMovie
+//            makeCommentsVC.urlId = self.urlId
+//
+//            self.navigationController?.pushViewController(makeCommentsVC, animated: true)
+//        }
+//    }
+//
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
         
-     }
+    }
 }
+
+
 
 // MARK: - UITableViewDelegate
 extension SecondTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 240.0
-//        } else if indexPath.section == 1 {
-//            return UITableView.automaticDimension
         } else {
             return UITableView.automaticDimension
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
-        guard section == 4 else { return 0 }
-
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        
+        guard section == 0 || section == 1 || section == 2 else { return 0 }
         return 5
-
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 3 {
+            return 50
+        } else {
+            return 0
+        }
+    }
+    
+    //    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    //        if section == 3 {
+    //            return "this is header title"
+    //        } else {
+    //            return nil
+    //        }
+    //    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == 3 else { return nil }
+        
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
+        
+        let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.frame.size.width, height: 50))
+        label.backgroundColor = .white
+        label.textColor = .black
+        label.textAlignment = .left
+        label.text = "한줄평"
+        view.addSubview(label)
+        
+        let button = UIButton(frame: CGRect(x: tableView.frame.size.width - 30, y: 0, width: 30, height: 30))
+        button.backgroundColor = .white
+        button.setImage(UIImage(named: "btn_compose"), for: .normal)
+        button.addTarget(self, action: #selector(touchUpCommentsBtn(sender:)), for: .touchUpInside)
+        view.addSubview(button)
+        
+        return view
     }
 }
 
