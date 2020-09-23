@@ -21,11 +21,11 @@ class SecondTableViewController: UIViewController {
     
     private let movieService = MovieService()
     var urlId: String?
-    var parsed: MakeCommentsVC.DecodPost? {
-        didSet {
-            print("set \(self.parsed)")
-        }
-    }
+//    var parsed: MakeCommentsVC.DecodPost? {
+//        didSet {
+//            print("set \(self.parsed)")
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

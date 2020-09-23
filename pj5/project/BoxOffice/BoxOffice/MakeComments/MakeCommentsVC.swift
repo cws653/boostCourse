@@ -25,6 +25,13 @@ class MakeCommentsVC: UIViewController {
     var gradeOfMovie: Int?
     var titleOfMovie: String?
     var urlId: String?
+    let userInfo = UserDefaults.standard
+        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        var userId = userInfo.string(forKey: "userId")
+        self.userIdTextField?.text = userId
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,12 +46,12 @@ class MakeCommentsVC: UIViewController {
         
         let finishButton = UIBarButtonItem.init(title: "완료", style: UIBarButtonItem.Style.plain, target: self, action: #selector(testSource(sender:)))
         self.navigationItem.rightBarButtonItem = finishButton
-
+        
         let backButton = UIBarButtonItem.init(title: "취소", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
         navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-
-        self.contentsTextView?.text = "제가 바로 PlaceHolder입니다."
-        self.contentsTextView?.textColor = UIColor.lightGray
+        
+        self.contentsTextView?.text = "내용을 입력해주세요."
+        self.contentsTextView?.textColor = UIColor.systemGray4
         
         self.labelOfTitle?.text = titleOfMovie
         
@@ -57,11 +64,28 @@ class MakeCommentsVC: UIViewController {
         }
     }
     
-    @objc func testSource(sender: UIBarButtonItem) {
-        print("버튼 액션 실행된다.")
-        post()
+    private func isValidCheckButton() -> Bool {
+        guard
+            let userRate = gradeOfLabel?.text, !userRate.isEmpty,
+            let userId = userIdTextField?.text, !userId.isEmpty,
+            let contents = contentsTextView.text, !contents.isEmpty
+            else {
+                return false
+        }
+        return true
     }
-
+    
+    @objc func testSource(sender: UIBarButtonItem) {
+        if self.isValidCheckButton() {
+            self.userInfo.set(userIdTextField?.text, forKey: "userId")
+            post()
+        } else {
+            let alertController = UIAlertController(title: "경고", message: "내용을 입력해주세요.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
     struct EndocdePOST: Codable {
         var rating: Int
         var writer: String
@@ -88,7 +112,7 @@ class MakeCommentsVC: UIViewController {
             let newPostData = try JSONEncoder().encode(newPOST)
             
             //let paramData = param.data(using: .utf8)
-                    
+            
             let url = URL(string: "http://connect-boxoffice.run.goorm.io/comment")
             
             var request = URLRequest(url: url!)
@@ -109,7 +133,7 @@ class MakeCommentsVC: UIViewController {
                             let secondVC = self.navigationController?.viewControllers.filter { $0 is SecondTableViewController }
                             
                             if let realSecondVC = secondVC?.first as? SecondTableViewController {
-                                realSecondVC.parsed = parsed
+//                                realSecondVC.parsed = parsed
                                 self.navigationController?.popViewController(animated: true)
                             }
                         }
@@ -228,18 +252,28 @@ extension MakeCommentsVC: UITableViewDelegate {
 }
 
 
+
+
 extension MakeCommentsVC: UITextViewDelegate {
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        if contentsTextView.textColor == UIColor.systemGray4 {
+            let startPosition = contentsTextView.beginningOfDocument
+            contentsTextView.selectedTextRange = contentsTextView.textRange(from: startPosition, to: startPosition)
+        }
+    }
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if contentsTextView.text.isEmpty {
-            contentsTextView.text = "제가 바로 PlaceHolder입니다."
-            contentsTextView.textColor = UIColor.systemGray5
+            contentsTextView.text = "내용 입력하세요."
+            contentsTextView.textColor = UIColor.systemGray4
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        if contentsTextView.textColor == UIColor.systemGray5 {
+        if contentsTextView.textColor == UIColor.systemGray4 {
             contentsTextView.text = nil
             contentsTextView.textColor = UIColor.black
         }
     }
 }
+

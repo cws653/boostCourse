@@ -127,7 +127,16 @@ class CollectionViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate
 extension CollectionViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let secondTableController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? SecondTableViewController {
+            secondTableController.textToSetTitle = self.arryMovies[indexPath.row].title
+            secondTableController.urlId = self.arryMovies[indexPath.row].id
+            secondTableController.gradeOfMovie = self.arryMovies[indexPath.row].grade
+            
+            self.navigationController?.pushViewController(secondTableController, animated: true)
+        }
+    }
 }
 
 
