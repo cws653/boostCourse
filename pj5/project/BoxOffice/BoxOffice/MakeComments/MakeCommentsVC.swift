@@ -130,9 +130,9 @@ class MakeCommentsVC: UIViewController {
                         print("parsed \(parsed)")
                         
                         DispatchQueue.main.async {
-                            let secondVC = self.navigationController?.viewControllers.filter { $0 is SecondTableViewController }
+                            let secondVC = self.navigationController?.viewControllers.filter { $0 is MovieDetailsVC }
                             
-                            if let realSecondVC = secondVC?.first as? SecondTableViewController {
+                            if let realSecondVC = secondVC?.first as? MovieDetailsVC {
 //                                realSecondVC.parsed = parsed
                                 self.navigationController?.popViewController(animated: true)
                             }

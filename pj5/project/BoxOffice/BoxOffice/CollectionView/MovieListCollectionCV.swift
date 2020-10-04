@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollectionViewController: UIViewController {
+class MovieListCollectionCV: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView?
     let cellIdentifier = "collectionViewCell"
@@ -61,7 +61,7 @@ class CollectionViewController: UIViewController {
         let alertController: UIAlertController
         alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
         
-        let reservationServiceType: filteringMethod = .reservation_rate
+        let reservationServiceType: filteringMethod = .reservationRate
         let reservationRateAction: UIAlertAction
         reservationRateAction = UIAlertAction(title: reservationServiceType.title, style: UIAlertAction.Style.default) { _ in self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
             DispatchQueue.main.async {
@@ -75,9 +75,9 @@ class CollectionViewController: UIViewController {
         let qurationServiceType: filteringMethod = .quration
         let qurationAction: UIAlertAction
         qurationAction = UIAlertAction(title: qurationServiceType.title , style: UIAlertAction.Style.default) { _ in
-            self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
+            self.movieService.getJsonFromUrlWithFilter(filterType: qurationServiceType) { movies in
                 DispatchQueue.main.async {
-                    self.navigationItem.title = reservationServiceType.title
+                    self.navigationItem.title = qurationServiceType.title
                     self.arryMovies = movies
                     self.collectionView?.reloadData()
                 }
@@ -87,11 +87,11 @@ class CollectionViewController: UIViewController {
         let openDayServiceType: filteringMethod = .open
         let openDayAction: UIAlertAction
         openDayAction = UIAlertAction(title: openDayServiceType.title, style: UIAlertAction.Style.default) { _ in self.movieService.getJsonFromUrlWithFilter(filterType: openDayServiceType) { movies in
-                DispatchQueue.main.async {
-                    self.navigationItem.title = openDayServiceType.title
-                    self.arryMovies = movies
-                    self.collectionView?.reloadData()
-                }
+            DispatchQueue.main.async {
+                self.navigationItem.title = openDayServiceType.title
+                self.arryMovies = movies
+                self.collectionView?.reloadData()
+            }
             }
         }
         
@@ -126,10 +126,10 @@ class CollectionViewController: UIViewController {
 //}
 
 // MARK: - UICollectionViewDelegate
-extension CollectionViewController: UICollectionViewDelegate {
+extension MovieListCollectionCV: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let secondTableController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? SecondTableViewController {
+        if let secondTableController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? MovieDetailsVC {
             secondTableController.textToSetTitle = self.arryMovies[indexPath.row].title
             secondTableController.urlId = self.arryMovies[indexPath.row].id
             secondTableController.gradeOfMovie = self.arryMovies[indexPath.row].grade
@@ -141,7 +141,7 @@ extension CollectionViewController: UICollectionViewDelegate {
 
 
 // MARK: - UICollectionViewDataSource
-extension CollectionViewController: UICollectionViewDataSource {
+extension MovieListCollectionCV: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -151,7 +151,7 @@ extension CollectionViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell:CustomCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? CustomCollectionViewCell else {
+        guard let cell:MovieListCollectionCVC = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? MovieListCollectionCVC else {
             return UICollectionViewCell()
         }
         
@@ -195,7 +195,7 @@ extension CollectionViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+extension MovieListCollectionCV: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         targetSizeX = collectionView.frame.width / 2 - 1
@@ -212,18 +212,19 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UITabBarControllerDelegate
-extension CollectionViewController: UITabBarControllerDelegate {
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        print("탭바가 클릭되었습니다.")
-        
-        if let navigationController = viewController as? UINavigationController {
-            if let tableViewController = navigationController.viewControllers.first as? ViewController {
-                tableViewController.arryMovies = self.arryMovies
-            }
-        }
-    }
-}
+//// MARK: - UITabBarControllerDelegate
+//extension MovieListCollectionCV: UITabBarControllerDelegate {
+//
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        print("탭바가 클릭되었습니다.")
+//
+//        if let navigationController = viewController as? UINavigationController {
+//            if let tableViewController = navigationController.viewControllers.first as? MovieListTableVC {
+//                tableViewController.arryMovies = self.arryMovies
+//                tableViewController.navigationItem.title = self.navigationItem.title
+//            }
+//        }
+//    }
+//}
 
 

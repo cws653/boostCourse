@@ -8,10 +8,9 @@
 
 import UIKit
 
-class SecondTableViewController: UIViewController {
+class MovieDetailsVC: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView?
-    
     
     private var arryDetailMovies:[DetailContents] = []
     var comments: [Comment] = []
@@ -111,7 +110,7 @@ class SecondTableViewController: UIViewController {
 
 
 // MARK: - UITableViewDelegate
-extension SecondTableViewController: UITableViewDelegate {
+extension MovieDetailsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 240.0
@@ -166,7 +165,7 @@ extension SecondTableViewController: UITableViewDelegate {
 
 
 // MARK: - UITableViewDataSource
-extension SecondTableViewController: UITableViewDataSource {
+extension MovieDetailsVC: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4

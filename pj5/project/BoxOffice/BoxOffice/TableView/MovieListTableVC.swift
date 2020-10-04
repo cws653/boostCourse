@@ -9,25 +9,20 @@
 import UIKit
 
 enum filteringMethod:Int {
-    case reservation_rate = 0
+    case reservationRate = 0
     case quration = 1
     case open = 2
     
     var title: String {
         switch self {
-        case .reservation_rate:
-            return "예매율"
-        case .quration:
-            return "큐레이션"
-        case .open:
-            return "개봉일"
+        case .reservationRate: return "예매율"
+        case .quration: return "큐레이션"
+        case .open: return "개봉일"
         }
     }
 }
 
-class ViewController: UIViewController{
-    
-    //    var delegate: SendDataDeleagate?
+class MovieListTableVC: UIViewController{
     
     @IBOutlet weak var tableView: UITableView?
     let cellIdentifier: String = "tableViewCell"
@@ -46,9 +41,11 @@ class ViewController: UIViewController{
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationController?.navigationBar.tintColor = .white
         
-        self.tabBarController?.delegate = self
         
-        self.movieService.getJsonFromUrlWithFilter(filterType: .reservation_rate) { movies in DispatchQueue.main.async {
+        //                collectionViewController.arryMovies = self.arryMovies
+        //                collectionViewController.navigationItem.title = self.navigationItem.title
+        
+        self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
             self.arryMovies = movies
             self.tableView?.reloadData()
             }
@@ -62,7 +59,6 @@ class ViewController: UIViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
@@ -75,7 +71,7 @@ class ViewController: UIViewController{
         let alertController: UIAlertController
         alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
         
-        let reservationServiceType: filteringMethod = .reservation_rate
+        let reservationServiceType: filteringMethod = .reservationRate
         let reservationRateAction: UIAlertAction
         reservationRateAction = UIAlertAction(title: reservationServiceType.title, style: UIAlertAction.Style.default) { _ in
             self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
@@ -85,8 +81,10 @@ class ViewController: UIViewController{
                     self.tableView?.reloadData()
                 }
             }
+            let dictat = ["filterType": reservationServiceType]
+            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
         }
-  
+        
         let qurationServiceType: filteringMethod = .quration
         let qurationAction: UIAlertAction
         qurationAction = UIAlertAction(title: qurationServiceType.title, style: UIAlertAction.Style.default) { _ in
@@ -97,6 +95,8 @@ class ViewController: UIViewController{
                     self.tableView?.reloadData()
                 }
             }
+            let dictat = ["filterType": qurationServiceType]
+            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
         }
         
         let openDayServiceType: filteringMethod = .open
@@ -109,6 +109,8 @@ class ViewController: UIViewController{
                     self.tableView?.reloadData()
                 }
             }
+            let dictat = ["filterType": openDayServiceType]
+            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
         }
         
         let cancelAction: UIAlertAction
@@ -121,34 +123,14 @@ class ViewController: UIViewController{
         
         self.present(alertController, animated: true, completion: { print("Alert controller shown")})
     }
-    
-    
-//    // MARK: - Navigation
-//
-//    // In a storyboard-based application, you will often want to do a little preparation before navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        // Get the new view controller using segue.destination.
-//        // Pass the selected object to the new view controller.
-//
-//        guard let nextViewController: SecondTableViewController = segue.destination as? SecondTableViewController else {
-//            return
-//        }
-//
-//        guard let cell: CustomTableViewCell = sender as? CustomTableViewCell else {
-//            return
-//        }
-//
-//        nextViewController.textToSetTitle = cell.customLabel1?.text
-//        nextViewController.urlId = self.sendUrl
-//    }
 }
 
 // MARK: - UITableViewDelegeate
-extension ViewController: UITableViewDelegate {
+extension MovieListTableVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let secondTableViewController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? SecondTableViewController {
+        if let secondTableViewController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? MovieDetailsVC {
             secondTableViewController.textToSetTitle = self.arryMovies[indexPath.row].title
             secondTableViewController.urlId = self.arryMovies[indexPath.row].id
             secondTableViewController.gradeOfMovie = self.arryMovies[indexPath.row].grade
@@ -156,23 +138,11 @@ extension ViewController: UITableViewDelegate {
             //self.present(secondTableViewController, animated: true, completion: nil)
             self.navigationController?.pushViewController(secondTableViewController, animated: true)
         }
-        
-        
-//        guard let nextViewController: SecondTableViewController = segue.destination as? SecondTableViewController else {
-//            return
-//        }
-//
-//        guard let cell: CustomTableViewCell = sender as? CustomTableViewCell else {
-//            return
-//        }
-//
-//        nextViewController.textToSetTitle = cell.customLabel1?.text
-//        nextViewController.urlId = self.sendUrl
     }
 }
 
 // MARK: - UITableViewDataSource
-extension ViewController: UITableViewDataSource {
+extension MovieListTableVC: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -183,20 +153,16 @@ extension ViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell: CustomTableViewCell = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier, for: indexPath) as? CustomTableViewCell else {
+        guard let cell: MovieListTableCVC = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier, for: indexPath) as? MovieListTableCVC else {
             return UITableViewCell()
         }
         
-        
         let movie: Movies = self.arryMovies[indexPath.row]
-        cell.customImageView1?.image = nil
-        
-        // 등급을 나타내는 이미지를 넣어줘야한다. 해당 이미지를 넣기 위해서는 조건문을 사용해야한다. 데이터는 인트값으로 넘어오므로 해당 인트일 경우 이미지 무엇을 사용하겠다는 식으로 소스를 짜야한다.
+        cell.thumbImageView?.image = nil
         
         guard let imageURL: URL = URL(string: movie.thumb) else {
             return UITableViewCell()
         }
-        
         
         URLSession.shared.dataTask(with: imageURL) { data, response, error in
             guard let data = data else {
@@ -204,26 +170,21 @@ extension ViewController: UITableViewDataSource {
             }
             
             DispatchQueue.main.async {
-                //                if let index: IndexPath = tableView.indexPath(for: cell) {
-                //                    if index.row == indexPath.row {
-                
-                cell.customImageView1?.image = UIImage(data: data)
+                cell.thumbImageView?.image = UIImage(data: data)
                 
                 let valueOfGrade: Int = movie.grade
                 
                 switch valueOfGrade {
-                case 0: cell.customImageView2?.image = UIImage(named: "ic_allages")
-                case 12: cell.customImageView2?.image = UIImage(named: "ic_12")
-                case 15: cell.customImageView2?.image = UIImage(named: "ic_15")
-                case 19: cell.customImageView2?.image = UIImage(named: "ic_19")
-                default: cell.customImageView2?.image = nil
+                case 0: cell.gradeImageView?.image = UIImage(named: "ic_allages")
+                case 12: cell.gradeImageView?.image = UIImage(named: "ic_12")
+                case 15: cell.gradeImageView?.image = UIImage(named: "ic_15")
+                case 19: cell.gradeImageView?.image = UIImage(named: "ic_19")
+                default: cell.gradeImageView?.image = nil
                 }
-                //                    }
-                //                }
                 
-                cell.customLabel1?.text = movie.title
-                cell.customLabel2?.text = movie.tableUserRating + " " + movie.tableReservationGrade + " " + movie.tableReservationRate
-                cell.customLabel3?.text = movie.tableDate
+                cell.titleLabel?.text = movie.title
+                cell.rateLabel?.text = movie.tableUserRating + " " + movie.tableReservationGrade + " " + movie.tableReservationRate
+                cell.openDateLabel?.text = movie.tableDate
             }
         }.resume()
         
@@ -231,20 +192,32 @@ extension ViewController: UITableViewDataSource {
     }
 }
 
-extension ViewController: UITabBarControllerDelegate {
-    
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        print("탭바가 클릭되었습니다.")
-        //        delegate?.sendData(data: self.arryMovies)
-        
-        if let navigationController = viewController as? UINavigationController {
-            if let collectionViewController = navigationController.viewControllers.first as? CollectionViewController {
-                collectionViewController.arryMovies = self.arryMovies
-            }
-        }
-    }
-}
+//extension MovieListTableVC: UITabBarControllerDelegate {
+//
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        print("탭바가 클릭되었습니다.")
+//
+////        if tabBarController.selectedIndex == 0 {
+////            if let collectionViewController = viewController as? MovieListCollectionCV {
+////                self.arryMovies = collectionViewController.arryMovies
+////                self.navigationItem.title = collectionViewController.navigationItem.title
+////            }
+////        } else if tabBarController.selectedIndex == 1 {
+////            if let collectionViewController = viewController as? MovieListCollectionCV {
+////                collectionViewController.arryMovies = self.arryMovies
+////                collectionViewController.navigationController?.title = self.navigationItem.title
+////            }
+////        }
+//
+//        if let navigationController = viewController as? UINavigationController {
+//            if let collectionViewController = navigationController.viewControllers.first as? MovieListCollectionCV {
+//                collectionViewController.arryMovies = self.arryMovies
+//                collectionViewController.navigationItem.title = self.navigationItem.title
+//            }
+//        }
+//    }
+//}
+
 
 
 

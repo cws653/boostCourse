@@ -8,13 +8,13 @@
 
 import UIKit
 
-class CustomTableViewCell: UITableViewCell {
+class MovieListTableCVC: UITableViewCell {
     
-    @IBOutlet weak var customImageView1: UIImageView?
-    @IBOutlet weak var customImageView2: UIImageView?
-    @IBOutlet weak var customLabel1: UILabel?
-    @IBOutlet weak var customLabel2: UILabel?
-    @IBOutlet weak var customLabel3: UILabel?
+    @IBOutlet weak var thumbImageView: UIImageView?
+    @IBOutlet weak var gradeImageView: UIImageView?
+    @IBOutlet weak var titleLabel: UILabel?
+    @IBOutlet weak var rateLabel: UILabel?
+    @IBOutlet weak var openDateLabel: UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,8 +30,8 @@ class CustomTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.customImageView1?.image = nil
-        self.customImageView2?.image = nil
+        self.thumbImageView?.image = nil
+        self.gradeImageView?.image = nil
     }
 
 }
