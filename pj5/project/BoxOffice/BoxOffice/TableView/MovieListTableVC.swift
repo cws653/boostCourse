@@ -44,9 +44,7 @@ class MovieListTableVC: UIViewController{
         
         //                collectionViewController.arryMovies = self.arryMovies
         //                collectionViewController.navigationItem.title = self.navigationItem.title
-        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering"), object: nil)
-        self.tabBarController?.viewControllers
-        
+//        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering"), object: nil)
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
             self.arryMovies = movies
             self.tableView?.reloadData()
@@ -54,14 +52,14 @@ class MovieListTableVC: UIViewController{
         }
     }
     
-    @objc func changeFilter(_ notification: Notification) {
-        if let dict = notification.userInfo as NSDictionary? {
-            if let movies = dict["movies"] as? [Movies] {
-                self.arryMovies = movies
-            }
-        }
-    }
-    
+//    @objc func changeFilter(_ notification: Notification) {
+//        if let dict = notification.userInfo as NSDictionary? {
+//            if let movies = dict["movies"] as? [Movies] {
+//                self.arryMovies = movies
+//            }
+//        }
+//    }
+//
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView?.reloadData()
@@ -69,6 +67,17 @@ class MovieListTableVC: UIViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.tableView?.reloadData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let navigationController = self.tabBarController?.viewControllers?[1] as? UINavigationController {
+            if let movieListCollectionCV = navigationController.viewControllers.first as? MovieListCollectionCV {
+                movieListCollectionCV.arryMovies = self.arryMovies
+                movieListCollectionCV.navigationItem.title = self.navigationItem.title
+            }
+        }
     }
     
     // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
@@ -90,8 +99,8 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
-                let dictat = ["movies": movies]
-                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
+//                let dictat = ["movies": movies]
+//                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -104,8 +113,8 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
-                let dictat = ["movies": movies]
-                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
+//                let dictat = ["movies": movies]
+//                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -118,8 +127,8 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
-                let dictat = ["movies": movies]
-                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
+//                let dictat = ["movies": movies]
+//                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         

@@ -39,8 +39,8 @@ class MovieListCollectionCV: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
         self.collectionView?.collectionViewLayout = layout
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering2"), object: nil)
+        //
+        //        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering2"), object: nil)
         
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
             self.arryMovies = movies
@@ -49,13 +49,13 @@ class MovieListCollectionCV: UIViewController {
         }
     }
     
-    @objc func changeFilter(_ notification: Notification) {
-        if let dict = notification.userInfo as NSDictionary? {
-            if let movies = dict["movies"] as? [Movies] {
-                self.arryMovies = movies
-            }
-        }
-    }
+    //    @objc func changeFilter(_ notification: Notification) {
+    //        if let dict = notification.userInfo as NSDictionary? {
+    //            if let movies = dict["movies"] as? [Movies] {
+    //                self.arryMovies = movies
+    //            }
+    //        }
+    //    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -64,6 +64,17 @@ class MovieListCollectionCV: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.collectionView?.reloadData()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if let navigationController = self.tabBarController?.viewControllers?[0] as? UINavigationController {
+            if let movieListTableCV = navigationController.viewControllers.first as? MovieListTableVC {
+                movieListTableCV.arryMovies = self.arryMovies
+                movieListTableCV.navigationItem.title = self.navigationItem.title
+            }
+        }
     }
     
     // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
@@ -84,10 +95,9 @@ class MovieListCollectionCV: UIViewController {
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
-            let dictat = ["movies": movies]
-            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
+            //            let dictat = ["movies": movies]
+            //            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
-            
         }
         
         let qurationServiceType: filteringMethod = .quration
@@ -99,10 +109,9 @@ class MovieListCollectionCV: UIViewController {
                     self.arryMovies = movies
                     self.collectionView?.reloadData()
                 }
-                let dictat = ["movies": movies]
-                NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
+                //                let dictat = ["movies": movies]
+                //                NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
-            
         }
         
         let openDayServiceType: filteringMethod = .open
@@ -113,8 +122,9 @@ class MovieListCollectionCV: UIViewController {
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
-            let dictat = ["movies": movies]
-            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
+            //            let dictat = ["movies": movies]
+            //            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
+            //            }
             }
         }
         
