@@ -44,10 +44,20 @@ class MovieListTableVC: UIViewController{
         
         //                collectionViewController.arryMovies = self.arryMovies
         //                collectionViewController.navigationItem.title = self.navigationItem.title
+        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering"), object: nil)
+        self.tabBarController?.viewControllers
         
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
             self.arryMovies = movies
             self.tableView?.reloadData()
+            }
+        }
+    }
+    
+    @objc func changeFilter(_ notification: Notification) {
+        if let dict = notification.userInfo as NSDictionary? {
+            if let movies = dict["movies"] as? [Movies] {
+                self.arryMovies = movies
             }
         }
     }
@@ -80,9 +90,9 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
+                let dictat = ["movies": movies]
+                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
-            let dictat = ["filterType": reservationServiceType]
-            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
         }
         
         let qurationServiceType: filteringMethod = .quration
@@ -94,9 +104,9 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
+                let dictat = ["movies": movies]
+                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
-            let dictat = ["filterType": qurationServiceType]
-            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
         }
         
         let openDayServiceType: filteringMethod = .open
@@ -108,9 +118,9 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
+                let dictat = ["movies": movies]
+                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
-            let dictat = ["filterType": openDayServiceType]
-            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
         }
         
         let cancelAction: UIAlertAction

@@ -39,6 +39,22 @@ class MovieListCollectionCV: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
         self.collectionView?.collectionViewLayout = layout
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering2"), object: nil)
+        
+        self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
+            self.arryMovies = movies
+            self.collectionView?.reloadData()
+            }
+        }
+    }
+    
+    @objc func changeFilter(_ notification: Notification) {
+        if let dict = notification.userInfo as NSDictionary? {
+            if let movies = dict["movies"] as? [Movies] {
+                self.arryMovies = movies
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +64,6 @@ class MovieListCollectionCV: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
     }
     
     // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
@@ -69,7 +84,10 @@ class MovieListCollectionCV: UIViewController {
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
+            let dictat = ["movies": movies]
+            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
+            
         }
         
         let qurationServiceType: filteringMethod = .quration
@@ -81,7 +99,10 @@ class MovieListCollectionCV: UIViewController {
                     self.arryMovies = movies
                     self.collectionView?.reloadData()
                 }
+                let dictat = ["movies": movies]
+                NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
+            
         }
         
         let openDayServiceType: filteringMethod = .open
@@ -92,6 +113,8 @@ class MovieListCollectionCV: UIViewController {
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
+            let dictat = ["movies": movies]
+            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         

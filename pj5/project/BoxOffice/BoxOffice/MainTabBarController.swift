@@ -9,7 +9,7 @@
 import UIKit
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,9 +19,27 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
         guard let viewController = self.viewControllers?[self.selectedIndex] as? UINavigationController else {
             return
         }
         viewController.popToRootViewController(animated: false)
     }
+//
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//
+//        guard let tableViewController = tabBarController.viewControllers?[0] as? MovieListTableVC else { return }
+//
+//        guard let collectionViewController = tabBarController.viewControllers?[1] as? MovieListCollectionCV else { return }
+//
+//        if let navigationController = viewController as? UINavigationController {
+//            if tableViewController == navigationController.viewControllers.first {
+//                tableViewController.arryMovies = collectionViewController.arryMovies
+//            } else if collectionViewController == navigationController.viewControllers.first {
+//                collectionViewController.arryMovies = tableViewController.arryMovies
+//            }
+//        }
+//    }
+    
+    
 }
