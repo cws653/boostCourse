@@ -53,6 +53,9 @@ class MakeCommentsVC: UIViewController {
         self.contentsTextView?.text = "내용을 입력해주세요."
         self.contentsTextView?.textColor = UIColor.systemGray4
         
+        let startPosition = contentsTextView.beginningOfDocument
+        contentsTextView.selectedTextRange = contentsTextView.textRange(from: startPosition, to: startPosition)
+        
         self.labelOfTitle?.text = titleOfMovie
         
         switch gradeOfMovie  {
@@ -225,17 +228,6 @@ class MakeCommentsVC: UIViewController {
         self.gradeOfLabel?.text = String(Int(round(sender.value)))
         if sender.isTracking { return }
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
 

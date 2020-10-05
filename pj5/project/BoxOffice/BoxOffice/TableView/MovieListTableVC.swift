@@ -42,24 +42,12 @@ class MovieListTableVC: UIViewController{
         self.navigationController?.navigationBar.tintColor = .white
         
         
-        //                collectionViewController.arryMovies = self.arryMovies
-        //                collectionViewController.navigationItem.title = self.navigationItem.title
-//        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering"), object: nil)
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
             self.arryMovies = movies
             self.tableView?.reloadData()
             }
         }
     }
-    
-//    @objc func changeFilter(_ notification: Notification) {
-//        if let dict = notification.userInfo as NSDictionary? {
-//            if let movies = dict["movies"] as? [Movies] {
-//                self.arryMovies = movies
-//            }
-//        }
-//    }
-//
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView?.reloadData()
@@ -99,8 +87,6 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
-//                let dictat = ["movies": movies]
-//                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -113,8 +99,6 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
-//                let dictat = ["movies": movies]
-//                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -127,8 +111,6 @@ class MovieListTableVC: UIViewController{
                     self.arryMovies = movies
                     self.tableView?.reloadData()
                 }
-//                let dictat = ["movies": movies]
-//                NotificationCenter.default.post(name: Notification.Name("filtering2"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -210,32 +192,6 @@ extension MovieListTableVC: UITableViewDataSource {
         return cell
     }
 }
-
-//extension MovieListTableVC: UITabBarControllerDelegate {
-//
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        print("탭바가 클릭되었습니다.")
-//
-////        if tabBarController.selectedIndex == 0 {
-////            if let collectionViewController = viewController as? MovieListCollectionCV {
-////                self.arryMovies = collectionViewController.arryMovies
-////                self.navigationItem.title = collectionViewController.navigationItem.title
-////            }
-////        } else if tabBarController.selectedIndex == 1 {
-////            if let collectionViewController = viewController as? MovieListCollectionCV {
-////                collectionViewController.arryMovies = self.arryMovies
-////                collectionViewController.navigationController?.title = self.navigationItem.title
-////            }
-////        }
-//
-//        if let navigationController = viewController as? UINavigationController {
-//            if let collectionViewController = navigationController.viewControllers.first as? MovieListCollectionCV {
-//                collectionViewController.arryMovies = self.arryMovies
-//                collectionViewController.navigationItem.title = self.navigationItem.title
-//            }
-//        }
-//    }
-//}
 
 
 

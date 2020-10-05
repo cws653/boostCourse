@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--예매율순-->
+        <!--예매율-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MovieListTableVC" customModule="BoxOffice" customModuleProvider="target" sceneMemberID="viewController">
@@ -102,7 +102,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="예매율순" id="YPp-FL-ThR">
+                    <navigationItem key="navigationItem" title="예매율" id="YPp-FL-ThR">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="ic_settings" id="b08-dd-L5b">
                             <connections>
                                 <action selector="navigationItemAction:" destination="BYZ-38-t0r" id="O1p-br-142"/>
@@ -685,7 +685,7 @@
             </objects>
             <point key="canvasLocation" x="6171" y="790"/>
         </scene>
-        <!--예매율순-->
+        <!--예매율-->
         <scene sceneID="XkJ-xZ-fpa">
             <objects>
                 <viewController id="lE1-N5-emj" customClass="MovieListCollectionCV" customModule="BoxOffice" customModuleProvider="target" sceneMemberID="viewController">
@@ -778,7 +778,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bjO-Tl-MIX"/>
                     </view>
-                    <navigationItem key="navigationItem" title="예매율순" id="fIs-tT-Oeq">
+                    <navigationItem key="navigationItem" title="예매율" id="fIs-tT-Oeq">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="ic_settings" id="OjU-qW-tCQ">
                             <connections>
                                 <action selector="navigationItemAction:" destination="lE1-N5-emj" id="yJN-hk-QFY"/>

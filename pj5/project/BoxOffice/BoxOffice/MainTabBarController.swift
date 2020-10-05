@@ -18,26 +18,9 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         // Do any additional setup after loading the view.
     }
     
-//    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-//
-//        guard let viewController = self.viewControllers?[self.selectedIndex] as? UINavigationController else { return }
-//        viewController.popToRootViewController(animated: false)
-//    }
-//
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//
-//        guard let tableViewController = tabBarController.viewControllers?[0] as? MovieListTableVC else { return }
-//
-//        guard let collectionViewController = tabBarController.viewControllers?[1] as? MovieListCollectionCV else { return }
-//
-//        if let navigationController = viewController as? UINavigationController {
-//            if tableViewController == navigationController.viewControllers.first {
-//                tableViewController.arryMovies = collectionViewController.arryMovies
-//            } else if collectionViewController == navigationController.viewControllers.first {
-//                collectionViewController.arryMovies = tableViewController.arryMovies
-//            }
-//        }
-//    }
-    
-    
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        guard let navigationController = self.viewControllers?[self.selectedIndex] as? UINavigationController else { return }
+        navigationController.popToRootViewController(animated: false)
+    }
 }

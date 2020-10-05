@@ -39,8 +39,6 @@ class MovieListCollectionCV: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
         self.collectionView?.collectionViewLayout = layout
-        //
-        //        NotificationCenter.default.addObserver(self, selector: #selector(changeFilter(_:)), name: Notification.Name(rawValue: "filtering2"), object: nil)
         
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
             self.arryMovies = movies
@@ -48,14 +46,6 @@ class MovieListCollectionCV: UIViewController {
             }
         }
     }
-    
-    //    @objc func changeFilter(_ notification: Notification) {
-    //        if let dict = notification.userInfo as NSDictionary? {
-    //            if let movies = dict["movies"] as? [Movies] {
-    //                self.arryMovies = movies
-    //            }
-    //        }
-    //    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -95,8 +85,6 @@ class MovieListCollectionCV: UIViewController {
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
-            //            let dictat = ["movies": movies]
-            //            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -122,9 +110,6 @@ class MovieListCollectionCV: UIViewController {
                 self.arryMovies = movies
                 self.collectionView?.reloadData()
             }
-            //            let dictat = ["movies": movies]
-            //            NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
-            //            }
             }
         }
         
@@ -138,25 +123,7 @@ class MovieListCollectionCV: UIViewController {
         
         self.present(alertController, animated: true, completion: { print("Alert controller shown")})
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
-
-//extension CollectionViewController: SendDataDeleagate {
-//    func sendData(data: [Movies]) {
-//        self.arrayMovies2 = data
-//    }
-//}
 
 // MARK: - UICollectionViewDelegate
 extension MovieListCollectionCV: UICollectionViewDelegate {
@@ -244,20 +211,5 @@ extension MovieListCollectionCV: UICollectionViewDelegateFlowLayout {
         return 1
     }
 }
-
-//// MARK: - UITabBarControllerDelegate
-//extension MovieListCollectionCV: UITabBarControllerDelegate {
-//
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        print("탭바가 클릭되었습니다.")
-//
-//        if let navigationController = viewController as? UINavigationController {
-//            if let tableViewController = navigationController.viewControllers.first as? MovieListTableVC {
-//                tableViewController.arryMovies = self.arryMovies
-//                tableViewController.navigationItem.title = self.navigationItem.title
-//            }
-//        }
-//    }
-//}
 
 
