@@ -12,19 +12,12 @@ class MovieListCollectionCV: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView?
     let cellIdentifier = "collectionViewCell"
-    var arryMovies: [Movies] = [] {
-        didSet {
-            print("내꺼 업데이트 됨 \(self.arryMovies)")
-        }
-    }
-    var targetSizeX: CGFloat!
+    var arrayMovies: [Movies] = []
     
     let movieService = MovieService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
         
         // 데이타소스, 딜리게이트 선언
         self.collectionView?.delegate = self
@@ -41,12 +34,14 @@ class MovieListCollectionCV: UIViewController {
         self.collectionView?.collectionViewLayout = layout
         
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
-            self.arryMovies = movies
+            self.arrayMovies = movies
             self.collectionView?.reloadData()
             }
         }
     }
     
+    
+    // MARK: - view life cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
@@ -61,7 +56,7 @@ class MovieListCollectionCV: UIViewController {
         super.viewDidDisappear(animated)
         if let navigationController = self.tabBarController?.viewControllers?[0] as? UINavigationController {
             if let movieListTableCV = navigationController.viewControllers.first as? MovieListTableVC {
-                movieListTableCV.arryMovies = self.arryMovies
+                movieListTableCV.arrayMovies = self.arrayMovies
                 movieListTableCV.navigationItem.title = self.navigationItem.title
             }
         }
@@ -82,7 +77,7 @@ class MovieListCollectionCV: UIViewController {
         reservationRateAction = UIAlertAction(title: reservationServiceType.title, style: UIAlertAction.Style.default) { _ in self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
             DispatchQueue.main.async {
                 self.navigationItem.title = reservationServiceType.title
-                self.arryMovies = movies
+                self.arrayMovies = movies
                 self.collectionView?.reloadData()
             }
             }
@@ -94,11 +89,9 @@ class MovieListCollectionCV: UIViewController {
             self.movieService.getJsonFromUrlWithFilter(filterType: qurationServiceType) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = qurationServiceType.title
-                    self.arryMovies = movies
+                    self.arrayMovies = movies
                     self.collectionView?.reloadData()
                 }
-                //                let dictat = ["movies": movies]
-                //                NotificationCenter.default.post(name: Notification.Name("filtering"), object: nil, userInfo: dictat as [AnyHashable : Any])
             }
         }
         
@@ -107,7 +100,7 @@ class MovieListCollectionCV: UIViewController {
         openDayAction = UIAlertAction(title: openDayServiceType.title, style: UIAlertAction.Style.default) { _ in self.movieService.getJsonFromUrlWithFilter(filterType: openDayServiceType) { movies in
             DispatchQueue.main.async {
                 self.navigationItem.title = openDayServiceType.title
-                self.arryMovies = movies
+                self.arrayMovies = movies
                 self.collectionView?.reloadData()
             }
             }
@@ -129,12 +122,12 @@ class MovieListCollectionCV: UIViewController {
 extension MovieListCollectionCV: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let secondTableController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? MovieDetailsVC {
-            secondTableController.textToSetTitle = self.arryMovies[indexPath.row].title
-            secondTableController.urlId = self.arryMovies[indexPath.row].id
-            secondTableController.gradeOfMovie = self.arryMovies[indexPath.row].grade
+        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsVC {
+            movieDetailsVC.viewControllerTitle = self.arrayMovies[indexPath.row].title
+            movieDetailsVC.movieId = self.arrayMovies[indexPath.row].id
+            movieDetailsVC.gradeOfMovie = self.arrayMovies[indexPath.row].grade
             
-            self.navigationController?.pushViewController(secondTableController, animated: true)
+            self.navigationController?.pushViewController(movieDetailsVC, animated: true)
         }
     }
 }
@@ -147,7 +140,7 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.arryMovies.count
+        return self.arrayMovies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -155,7 +148,7 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        let movie: Movies = self.arryMovies[indexPath.row]
+        let movie: Movies = self.arrayMovies[indexPath.row]
         cell.movieImageView?.image = nil
         
         DispatchQueue.global().async {
@@ -198,7 +191,7 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
 extension MovieListCollectionCV: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        targetSizeX = collectionView.frame.width / 2 - 1
+        let targetSizeX: CGFloat = collectionView.frame.width / 2 - 1
         
         return CGSize(width: targetSizeX, height: 2 * targetSizeX)
     }

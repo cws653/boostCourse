@@ -23,8 +23,8 @@ class MakeCommentsVC: UIViewController {
     @IBOutlet weak var fifthStar: UIImageView?
     
     var gradeOfMovie: Int?
-    var titleOfMovie: String?
-    var urlId: String?
+    var viewControllerTitle: String?
+    var movieId: String?
     let userInfo = UserDefaults.standard
         
     override func viewWillAppear(_ animated: Bool) {
@@ -56,7 +56,7 @@ class MakeCommentsVC: UIViewController {
         let startPosition = contentsTextView.beginningOfDocument
         contentsTextView.selectedTextRange = contentsTextView.textRange(from: startPosition, to: startPosition)
         
-        self.labelOfTitle?.text = titleOfMovie
+        self.labelOfTitle?.text = viewControllerTitle
         
         switch gradeOfMovie  {
         case 0: imageOfGrade?.image = UIImage(named: "ic_allages")
@@ -107,7 +107,7 @@ class MakeCommentsVC: UIViewController {
     func post() {
         let rating: Int = Int(self.gradeOfLabel?.text ?? "0") ?? 0
         let writer = self.userIdTextField?.text ?? ""
-        let movie_id = self.urlId ?? ""
+        let movie_id = self.movieId ?? ""
         let contents = self.contentsTextView.text ?? ""
         
         let newPOST = EndocdePOST(rating: rating, writer: writer, movie_id: movie_id, contents: contents)

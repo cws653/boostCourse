@@ -26,9 +26,8 @@ class MovieListTableVC: UIViewController{
     
     @IBOutlet weak var tableView: UITableView?
     let cellIdentifier: String = "tableViewCell"
-    var arryMovies: [Movies] = []
+    var arrayMovies: [Movies] = []
     
-    // movie 내용을 보여주는데 필요한 기능을 별도의 클래스로 묶었다.
     let movieService = MovieService()
     
     // MARK: - 뷰 상태변화
@@ -43,11 +42,13 @@ class MovieListTableVC: UIViewController{
         
         
         self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
-            self.arryMovies = movies
+            self.arrayMovies = movies
             self.tableView?.reloadData()
             }
         }
     }
+    
+    // MARK: - view life cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView?.reloadData()
@@ -62,7 +63,7 @@ class MovieListTableVC: UIViewController{
         super.viewDidDisappear(animated)
         if let navigationController = self.tabBarController?.viewControllers?[1] as? UINavigationController {
             if let movieListCollectionCV = navigationController.viewControllers.first as? MovieListCollectionCV {
-                movieListCollectionCV.arryMovies = self.arryMovies
+                movieListCollectionCV.arrayMovies = self.arrayMovies
                 movieListCollectionCV.navigationItem.title = self.navigationItem.title
             }
         }
@@ -84,7 +85,7 @@ class MovieListTableVC: UIViewController{
             self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = reservationServiceType.title
-                    self.arryMovies = movies
+                    self.arrayMovies = movies
                     self.tableView?.reloadData()
                 }
             }
@@ -96,7 +97,7 @@ class MovieListTableVC: UIViewController{
             self.movieService.getJsonFromUrlWithFilter(filterType: qurationServiceType) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = qurationServiceType.title
-                    self.arryMovies = movies
+                    self.arrayMovies = movies
                     self.tableView?.reloadData()
                 }
             }
@@ -108,7 +109,7 @@ class MovieListTableVC: UIViewController{
             self.movieService.getJsonFromUrlWithFilter(filterType: openDayServiceType) { movies in
                 DispatchQueue.main.async {
                     self.navigationItem.title = openDayServiceType.title
-                    self.arryMovies = movies
+                    self.arrayMovies = movies
                     self.tableView?.reloadData()
                 }
             }
@@ -131,13 +132,13 @@ extension MovieListTableVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let secondTableViewController = storyboard.instantiateViewController(withIdentifier: "SecondTableViewController") as? MovieDetailsVC {
-            secondTableViewController.textToSetTitle = self.arryMovies[indexPath.row].title
-            secondTableViewController.urlId = self.arryMovies[indexPath.row].id
-            secondTableViewController.gradeOfMovie = self.arryMovies[indexPath.row].grade
+        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsVC {
+            movieDetailsVC.viewControllerTitle = self.arrayMovies[indexPath.row].title
+            movieDetailsVC.movieId = self.arrayMovies[indexPath.row].id
+            movieDetailsVC.gradeOfMovie = self.arrayMovies[indexPath.row].grade
             
             //self.present(secondTableViewController, animated: true, completion: nil)
-            self.navigationController?.pushViewController(secondTableViewController, animated: true)
+            self.navigationController?.pushViewController(movieDetailsVC, animated: true)
         }
     }
 }
@@ -149,7 +150,7 @@ extension MovieListTableVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arryMovies.count
+        return self.arrayMovies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -158,7 +159,7 @@ extension MovieListTableVC: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let movie: Movies = self.arryMovies[indexPath.row]
+        let movie: Movies = self.arrayMovies[indexPath.row]
         cell.thumbImageView?.image = nil
         
         guard let imageURL: URL = URL(string: movie.thumb) else {
@@ -173,9 +174,7 @@ extension MovieListTableVC: UITableViewDataSource {
             DispatchQueue.main.async {
                 cell.thumbImageView?.image = UIImage(data: data)
                 
-                let valueOfGrade: Int = movie.grade
-                
-                switch valueOfGrade {
+                switch movie.grade {
                 case 0: cell.gradeImageView?.image = UIImage(named: "ic_allages")
                 case 12: cell.gradeImageView?.image = UIImage(named: "ic_12")
                 case 15: cell.gradeImageView?.image = UIImage(named: "ic_15")
