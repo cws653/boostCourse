@@ -28,6 +28,5 @@ class DetailViewContentsCell: UITableViewCell {
         self.content.text = movie.synopsis
         self.content.isScrollEnabled = false
         self.content.isEditable = false
-        
     }
 }

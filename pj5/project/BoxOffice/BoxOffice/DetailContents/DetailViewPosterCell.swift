@@ -29,7 +29,6 @@ class DetailViewPosterCell: UITableViewCell {
     @IBOutlet weak var imageOfGrade: UIImageView!
     
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -42,7 +41,9 @@ class DetailViewPosterCell: UITableViewCell {
     }
 
     internal func setUI(with movie: DetailContents) {
-        let url = URL(string: movie.image)!
+        guard let url = URL(string: movie.image) else {
+            return
+        }
         self.imageOfMovie.image = UIImage(named: "cinema")
         self.imageOfMovie.load(url: url)
         self.titleOfMovie.text = movie.title

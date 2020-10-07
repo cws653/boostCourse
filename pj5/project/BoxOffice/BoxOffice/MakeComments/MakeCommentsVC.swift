@@ -16,6 +16,7 @@ class MakeCommentsVC: UIViewController {
     @IBOutlet weak var gradeOfLabel: UILabel?
     @IBOutlet weak var sliderOfGrade: UISlider?
     @IBOutlet weak var userIdTextField: UITextField?
+    
     @IBOutlet weak var firstStar: UIImageView?
     @IBOutlet weak var secondStar: UIImageView?
     @IBOutlet weak var thirdStar: UIImageView?
@@ -27,31 +28,34 @@ class MakeCommentsVC: UIViewController {
     var movieId: String?
     let userInfo = UserDefaults.standard
         
+    
+    // MARK: - view life cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        var userId = userInfo.string(forKey: "userId")
+        let userId = userInfo.string(forKey: "userId")
         self.userIdTextField?.text = userId
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.contentsTextView.layer.borderWidth = 2.0
-        self.contentsTextView.layer.borderColor = UIColor.systemOrange.cgColor
-        
+        // 네비게이션바 기본설정
         self.title = "한줄평 작성"
         self.navigationController?.navigationBar.barTintColor = .systemIndigo
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
-        
-        let finishButton = UIBarButtonItem.init(title: "완료", style: UIBarButtonItem.Style.plain, target: self, action: #selector(testSource(sender:)))
+        let finishButton = UIBarButtonItem.init(title: "완료", style: UIBarButtonItem.Style.plain, target: self, action: #selector(loadingComments(sender:)))
         self.navigationItem.rightBarButtonItem = finishButton
         
         let backButton = UIBarButtonItem.init(title: "취소", style: UIBarButtonItem.Style.plain, target: nil, action: nil)
         navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
         
-        self.contentsTextView?.text = "내용을 입력해주세요."
-        self.contentsTextView?.textColor = UIColor.systemGray4
+        
+        // Item 기본값 설정
+        self.contentsTextView.layer.borderWidth = 2.0
+        self.contentsTextView.layer.borderColor = UIColor.systemOrange.cgColor
+        self.contentsTextView.text = "내용을 입력해주세요."
+        self.contentsTextView.textColor = UIColor.systemGray4
         
         let startPosition = contentsTextView.beginningOfDocument
         contentsTextView.selectedTextRange = contentsTextView.textRange(from: startPosition, to: startPosition)
@@ -67,6 +71,17 @@ class MakeCommentsVC: UIViewController {
         }
     }
     
+    @objc func loadingComments(sender: UIBarButtonItem) {
+        if self.isValidCheckButton() {
+            self.userInfo.set(userIdTextField?.text, forKey: "userId")
+            post()
+        } else {
+            let alertController = UIAlertController(title: "경고", message: "내용을 입력해주세요.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
     private func isValidCheckButton() -> Bool {
         guard
             let userRate = gradeOfLabel?.text, !userRate.isEmpty,
@@ -78,43 +93,15 @@ class MakeCommentsVC: UIViewController {
         return true
     }
     
-    @objc func testSource(sender: UIBarButtonItem) {
-        if self.isValidCheckButton() {
-            self.userInfo.set(userIdTextField?.text, forKey: "userId")
-            post()
-        } else {
-            let alertController = UIAlertController(title: "경고", message: "내용을 입력해주세요.", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    struct EndocdePOST: Codable {
-        var rating: Int
-        var writer: String
-        var movie_id: String
-        var contents: String
-    }
-    
-    struct DecodPost: Decodable {
-        var rating: Double
-        var timestamp: Double
-        var writer: String
-        var movie_id: String
-        var contents: String
-    }
-    
     func post() {
-        let rating: Int = Int(self.gradeOfLabel?.text ?? "0") ?? 0
+        let rating = Int(self.gradeOfLabel?.text ?? "0") ?? 0
         let writer = self.userIdTextField?.text ?? ""
         let movie_id = self.movieId ?? ""
         let contents = self.contentsTextView.text ?? ""
         
-        let newPOST = EndocdePOST(rating: rating, writer: writer, movie_id: movie_id, contents: contents)
+        let newPOST = EncodePOST(rating: rating, writer: writer, movie_id: movie_id, contents: contents)
         do {
             let newPostData = try JSONEncoder().encode(newPOST)
-            
-            //let paramData = param.data(using: .utf8)
             
             let url = URL(string: "http://connect-boxoffice.run.goorm.io/comment")
             
@@ -129,15 +116,12 @@ class MakeCommentsVC: UIViewController {
                 
                 do {
                     if let data = datas {
-                        let parsed = try JSONDecoder().decode(DecodPost.self, from: data)
+                        let parsed = try JSONDecoder().decode(DecodePost.self, from: data)
                         print("parsed \(parsed)")
                         
                         DispatchQueue.main.async {
-                            let secondVC = self.navigationController?.viewControllers.filter { $0 is MovieDetailsVC }
-                            
-                            if let realSecondVC = secondVC?.first as? MovieDetailsVC {
-//                                realSecondVC.parsed = parsed
-                                self.navigationController?.popViewController(animated: true)
+                            if let secondVC = self.navigationController?.viewControllers.filter { $0 is MovieDetailsVC } {
+                                 self.navigationController?.popViewController(animated: true)
                             }
                         }
                     }
@@ -146,9 +130,8 @@ class MakeCommentsVC: UIViewController {
                 }
             }
             dataTask.resume()
-            
         } catch {
-            
+            print("Encode data nil")
         }
     }
     
@@ -225,6 +208,7 @@ class MakeCommentsVC: UIViewController {
         default:
             break
         }
+        
         self.gradeOfLabel?.text = String(Int(round(sender.value)))
         if sender.isTracking { return }
     }
@@ -243,9 +227,7 @@ extension MakeCommentsVC: UITableViewDelegate {
     }
 }
 
-
-
-
+// MARK: - UITextViewDelegate
 extension MakeCommentsVC: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         if contentsTextView.textColor == UIColor.systemGray4 {

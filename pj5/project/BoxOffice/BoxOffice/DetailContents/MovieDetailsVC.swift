@@ -171,7 +171,9 @@ extension MovieDetailsVC: UITableViewDataSource {
             return cell
             
         } else if indexPath.section == 1 {
-            let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId1") as! DetailViewContentsCell
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId1") as? DetailViewContentsCell  else {
+                return UITableViewCell()
+            }
             
             var movie: DetailContents
             if self.arrayDetailMovies.isEmpty {
@@ -187,7 +189,9 @@ extension MovieDetailsVC: UITableViewDataSource {
             return cell
             
         } else if indexPath.section == 2 {
-            let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId2") as! DetailViewCastCell
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId2") as? DetailViewCastCell  else {
+                return UITableViewCell()
+            }
             
             var movie: DetailContents
             if self.arrayDetailMovies.isEmpty {
@@ -204,7 +208,10 @@ extension MovieDetailsVC: UITableViewDataSource {
             
         }
         else {
-            let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId3") as! DetailViewCommentCell
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId3") as? DetailViewCommentCell else {
+                return UITableViewCell()
+            }
+            
             let comment: Comment = self.comments[indexPath.row]
             cell.setUI(with: comment)
             return cell

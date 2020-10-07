@@ -8,20 +8,6 @@
 
 import Foundation
 
-/*
- open - 전부허용
- public - 상속 X
- ------ 프레임워크
- internal - 다른프레임워크 접근불가, 현재 프레임워크에선 전부 접근가능
- private -
- fileprivate - 현재파일에서만 접근
- */
-
-//protocol SendDataDeleagate {
-//    func sendData(data: [Movies])
-//}
-
-
 class MovieService {
     
     var baseURL: String {
