@@ -100,7 +100,6 @@
 		9D4CAB8724F6749700721134 = {
 			isa = PBXGroup;
 			children = (
-				9D4CAB9924F6749700721134 /* Main.storyboard */,
 				9D4CAB9224F6749700721134 /* BoxOffice */,
 				9D4CAB9124F6749700721134 /* Products */,
 			);
@@ -117,6 +116,7 @@
 		9D4CAB9224F6749700721134 /* BoxOffice */ = {
 			isa = PBXGroup;
 			children = (
+				9D4CAB9924F6749700721134 /* Main.storyboard */,
 				9D4CAB9324F6749700721134 /* AppDelegate.swift */,
 				9D4CAB9524F6749700721134 /* SceneDelegate.swift */,
 				9D4CAB9C24F6749800721134 /* Assets.xcassets */,
