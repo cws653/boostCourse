@@ -24,7 +24,6 @@
 		9D4CAB9B24F6749700721134 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D4CAB9924F6749700721134 /* Main.storyboard */; };
 		9D4CAB9D24F6749800721134 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D4CAB9C24F6749800721134 /* Assets.xcassets */; };
 		9D4CABA024F6749800721134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D4CAB9E24F6749800721134 /* LaunchScreen.storyboard */; };
-		9D5B65DC252DE08F005836DF /* GlobalFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B65DB252DE08F005836DF /* GlobalFunction.swift */; };
 		9D5B65DE252DE9F6005836DF /* MakeCommentsStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5B65DD252DE9F6005836DF /* MakeCommentsStruct.swift */; };
 		9D642DC625299D09007E7028 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D642DC525299D09007E7028 /* MainTabBarController.swift */; };
 		9DB6887F24FA00C100B8EA2B /* MovieListTableCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6887E24FA00C100B8EA2B /* MovieListTableCVC.swift */; };
@@ -52,7 +51,6 @@
 		9D4CAB9C24F6749800721134 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D4CAB9F24F6749800721134 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D4CABA124F6749800721134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9D5B65DB252DE08F005836DF /* GlobalFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalFunction.swift; sourceTree = "<group>"; };
 		9D5B65DD252DE9F6005836DF /* MakeCommentsStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakeCommentsStruct.swift; sourceTree = "<group>"; };
 		9D642DC525299D09007E7028 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		9DB6887E24FA00C100B8EA2B /* MovieListTableCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableCVC.swift; sourceTree = "<group>"; };
@@ -122,7 +120,6 @@
 				9D4CAB9C24F6749800721134 /* Assets.xcassets */,
 				9D4CAB9E24F6749800721134 /* LaunchScreen.storyboard */,
 				9D4CABA124F6749800721134 /* Info.plist */,
-				9D5B65D9252DDFE2005836DF /*  GlobalFunction */,
 				9D5B65D8252DDFBA005836DF /* TabBarController */,
 				9DC9A2BC250E0643007DFDB0 /* MakeComments */,
 				9D0E2574250DF4FE003C31D2 /* MovieFullImageView */,
@@ -141,14 +138,6 @@
 				9D642DC525299D09007E7028 /* MainTabBarController.swift */,
 			);
 			path = TabBarController;
-			sourceTree = "<group>";
-		};
-		9D5B65D9252DDFE2005836DF /*  GlobalFunction */ = {
-			isa = PBXGroup;
-			children = (
-				9D5B65DB252DE08F005836DF /* GlobalFunction.swift */,
-			);
-			path = " GlobalFunction";
 			sourceTree = "<group>";
 		};
 		9D7F671D250C8A8C00D542F9 /* API */ = {
@@ -262,7 +251,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D0E2576250DF592003C31D2 /* MovieFullImageVC.swift in Sources */,
-				9D5B65DC252DE08F005836DF /* GlobalFunction.swift in Sources */,
 				9DC9A2BE250E0675007DFDB0 /* MakeCommentsVC.swift in Sources */,
 				9D642DC625299D09007E7028 /* MainTabBarController.swift in Sources */,
 				9D03043D250CB5680095E4F2 /* DetailViewPosterCell.swift in Sources */,

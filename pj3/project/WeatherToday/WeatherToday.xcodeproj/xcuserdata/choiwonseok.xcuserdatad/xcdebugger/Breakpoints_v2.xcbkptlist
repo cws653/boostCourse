@@ -20,7 +20,7 @@
             landmarkType = "0">
             <Locations>
                <Location
-                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 1fd4a0751ea689ee"
+                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 89793cd2dc6668ae"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -35,7 +35,7 @@
                   offsetFromSymbolStart = "16">
                </Location>
                <Location
-                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - bb8defda7a2f2132"
+                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 2d20737db8efc072"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -50,7 +50,7 @@
                   offsetFromSymbolStart = "12">
                </Location>
                <Location
-                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 7af54795a41ea362"
+                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - ec58db3266de4055"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -65,7 +65,7 @@
                   offsetFromSymbolStart = "221">
                </Location>
                <Location
-                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 93e412ce8b6ebbb0"
+                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 5498e6949ae5af0"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -80,7 +80,7 @@
                   offsetFromSymbolStart = "12">
                </Location>
                <Location
-                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 1ff588857809f5cc"
+                  uuid = "F306B91F-C608-4DEC-ADE7-5B3760FD9096 - 89581422bac916fb"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
