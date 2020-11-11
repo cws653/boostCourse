@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9D91863624C2CEF80095C5F7 /* pj1_v3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pj1_v3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D91863624C2CEF80095C5F7 /* MusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D91863924C2CEF80095C5F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D91863B24C2CEF80095C5F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9D91863D24C2CEF80095C5F7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -40,7 +40,7 @@
 		9D91862D24C2CEF80095C5F7 = {
 			isa = PBXGroup;
 			children = (
-				9D91863824C2CEF80095C5F7 /* pj1_v3 */,
+				9D91863824C2CEF80095C5F7 /* MusicPlayer */,
 				9D91863724C2CEF80095C5F7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,12 +48,12 @@
 		9D91863724C2CEF80095C5F7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D91863624C2CEF80095C5F7 /* pj1_v3.app */,
+				9D91863624C2CEF80095C5F7 /* MusicPlayer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9D91863824C2CEF80095C5F7 /* pj1_v3 */ = {
+		9D91863824C2CEF80095C5F7 /* MusicPlayer */ = {
 			isa = PBXGroup;
 			children = (
 				9D91863924C2CEF80095C5F7 /* AppDelegate.swift */,
@@ -64,15 +64,15 @@
 				9D91864424C2CEF90095C5F7 /* LaunchScreen.storyboard */,
 				9D91864724C2CEF90095C5F7 /* Info.plist */,
 			);
-			path = pj1_v3;
+			path = MusicPlayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9D91863524C2CEF80095C5F7 /* pj1_v3 */ = {
+		9D91863524C2CEF80095C5F7 /* MusicPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9D91864A24C2CEF90095C5F7 /* Build configuration list for PBXNativeTarget "pj1_v3" */;
+			buildConfigurationList = 9D91864A24C2CEF90095C5F7 /* Build configuration list for PBXNativeTarget "MusicPlayer" */;
 			buildPhases = (
 				9D91863224C2CEF80095C5F7 /* Sources */,
 				9D91863324C2CEF80095C5F7 /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = pj1_v3;
+			name = MusicPlayer;
 			productName = pj1_v3;
-			productReference = 9D91863624C2CEF80095C5F7 /* pj1_v3.app */;
+			productReference = 9D91863624C2CEF80095C5F7 /* MusicPlayer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +102,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9D91863124C2CEF80095C5F7 /* Build configuration list for PBXProject "pj1_v3" */;
+			buildConfigurationList = 9D91863124C2CEF80095C5F7 /* Build configuration list for PBXProject "MusicPlayer" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -115,7 +115,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9D91863524C2CEF80095C5F7 /* pj1_v3 */,
+				9D91863524C2CEF80095C5F7 /* MusicPlayer */,
 			);
 		};
 /* End PBXProject section */
@@ -285,12 +285,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = pj1_v3/Info.plist;
+				INFOPLIST_FILE = MusicPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wonseok.pj1-v3";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wonseok.MusicPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -302,12 +302,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = pj1_v3/Info.plist;
+				INFOPLIST_FILE = MusicPlayer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wonseok.pj1-v3";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wonseok.MusicPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -317,7 +317,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9D91863124C2CEF80095C5F7 /* Build configuration list for PBXProject "pj1_v3" */ = {
+		9D91863124C2CEF80095C5F7 /* Build configuration list for PBXProject "MusicPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9D91864824C2CEF90095C5F7 /* Debug */,
@@ -326,7 +326,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9D91864A24C2CEF90095C5F7 /* Build configuration list for PBXNativeTarget "pj1_v3" */ = {
+		9D91864A24C2CEF90095C5F7 /* Build configuration list for PBXNativeTarget "MusicPlayer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9D91864B24C2CEF90095C5F7 /* Debug */,

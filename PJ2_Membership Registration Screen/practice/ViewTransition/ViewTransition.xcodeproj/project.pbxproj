@@ -19,7 +19,7 @@
 
 /* Begin PBXFileReference section */
 		9D9A081924C3339300429AFE /* Userinformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Userinformation.swift; sourceTree = "<group>"; };
-		9DFA815A24C2FDD8003E2397 /* pj2_v1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pj2_v1.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DFA815A24C2FDD8003E2397 /* ViewTransition.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ViewTransition.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DFA815D24C2FDD8003E2397 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9DFA815F24C2FDD8003E2397 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9DFA816124C2FDD8003E2397 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 		9DFA815124C2FDD8003E2397 = {
 			isa = PBXGroup;
 			children = (
-				9DFA815C24C2FDD8003E2397 /* pj2_v1 */,
+				9DFA815C24C2FDD8003E2397 /* ViewTrasition */,
 				9DFA815B24C2FDD8003E2397 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,12 +52,12 @@
 		9DFA815B24C2FDD8003E2397 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9DFA815A24C2FDD8003E2397 /* pj2_v1.app */,
+				9DFA815A24C2FDD8003E2397 /* ViewTransition.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9DFA815C24C2FDD8003E2397 /* pj2_v1 */ = {
+		9DFA815C24C2FDD8003E2397 /* ViewTrasition */ = {
 			isa = PBXGroup;
 			children = (
 				9DFA815D24C2FDD8003E2397 /* AppDelegate.swift */,
@@ -70,15 +70,16 @@
 				9DFA816824C2FDD9003E2397 /* LaunchScreen.storyboard */,
 				9DFA816B24C2FDD9003E2397 /* Info.plist */,
 			);
-			path = pj2_v1;
+			name = ViewTrasition;
+			path = ViewTransition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9DFA815924C2FDD8003E2397 /* pj2_v1 */ = {
+		9DFA815924C2FDD8003E2397 /* ViewTransition */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9DFA816E24C2FDD9003E2397 /* Build configuration list for PBXNativeTarget "pj2_v1" */;
+			buildConfigurationList = 9DFA816E24C2FDD9003E2397 /* Build configuration list for PBXNativeTarget "ViewTransition" */;
 			buildPhases = (
 				9DFA815624C2FDD8003E2397 /* Sources */,
 				9DFA815724C2FDD8003E2397 /* Frameworks */,
@@ -88,9 +89,9 @@
 			);
 			dependencies = (
 			);
-			name = pj2_v1;
+			name = ViewTransition;
 			productName = pj2_v1;
-			productReference = 9DFA815A24C2FDD8003E2397 /* pj2_v1.app */;
+			productReference = 9DFA815A24C2FDD8003E2397 /* ViewTransition.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -108,7 +109,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 9DFA815524C2FDD8003E2397 /* Build configuration list for PBXProject "pj2_v1" */;
+			buildConfigurationList = 9DFA815524C2FDD8003E2397 /* Build configuration list for PBXProject "ViewTransition" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -121,7 +122,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9DFA815924C2FDD8003E2397 /* pj2_v1 */,
+				9DFA815924C2FDD8003E2397 /* ViewTransition */,
 			);
 		};
 /* End PBXProject section */
@@ -293,12 +294,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = pj2_v1/Info.plist;
+				INFOPLIST_FILE = ViewTransition/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wonseok.pj2-v1";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wonseok.ViewTransition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -310,12 +311,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = pj2_v1/Info.plist;
+				INFOPLIST_FILE = ViewTransition/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.wonseok.pj2-v1";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wonseok.ViewTransition;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -325,7 +326,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9DFA815524C2FDD8003E2397 /* Build configuration list for PBXProject "pj2_v1" */ = {
+		9DFA815524C2FDD8003E2397 /* Build configuration list for PBXProject "ViewTransition" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9DFA816C24C2FDD9003E2397 /* Debug */,
@@ -334,7 +335,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9DFA816E24C2FDD9003E2397 /* Build configuration list for PBXNativeTarget "pj2_v1" */ = {
+		9DFA816E24C2FDD9003E2397 /* Build configuration list for PBXNativeTarget "ViewTransition" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				9DFA816F24C2FDD9003E2397 /* Debug */,

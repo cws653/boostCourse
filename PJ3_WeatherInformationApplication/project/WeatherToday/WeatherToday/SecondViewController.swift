@@ -17,9 +17,6 @@ class SecondViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let cellIdentifier: String = "secondCell"
     var textToSetTitle: String?
     var stateOfWeather: Int?
-//    var celsiusString: String?
-//    var rainfallProbabilityString: String?
-
     
     var weathers: [Weather] = []
     let weatherimages = ["cloudy", "sunny","rainy","snowy"]

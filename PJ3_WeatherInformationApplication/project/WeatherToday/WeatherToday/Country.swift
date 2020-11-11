@@ -49,14 +49,5 @@ struct Weather: Decodable {
     var rainfallProbabilityString: String {
         return "강수확률 " + "\(self.rainfall_probability)" + "%"
     }
-    
-    //        cell.secondLabel.text = "섭씨 " + "\(weather.celsius)" + "도 / " + "화씨 " + "\(weather.celsius + 32)" + "도"
-    //        cell.thirdLabel.text = "강수확률 " + "\(weather.rainfall_probability)" + "%"
-    
-//    enum SecondCodingKeys: String, CodingKey {
-//        case cityName = "city_name"
-//        case state, celsius
-//        case rainfallProbability = "rainfall_probability"
-//    }
 }
 
