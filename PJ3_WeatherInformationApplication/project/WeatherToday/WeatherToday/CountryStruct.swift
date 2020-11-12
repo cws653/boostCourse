@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct DataStruct: Decodable {
+struct CountryStruct: Decodable {
     
     let koreanName: String
     let assetName: String
@@ -19,19 +19,26 @@ struct DataStruct: Decodable {
     }
 }
 
+
 struct Weather: Decodable {
     
-    let city_name: String
+    let cityName: String
     let state: Int
     let celsius: Double
-    let rainfall_probability: Int
+    let rainfallProbability: Int
     
+    enum CodingKeys: String, CodingKey {
+        case cityName = "city_name"
+        case state, celsius
+        case rainfallProbability = "rainfall_probability"
+    }
+
     var celsiusString: String {
         return "섭씨 " + "\(self.celsius)" + "도 / " + "화씨 " + "\(self.celsius + 32)" + "도"
     }
     
     var rainfallProbabilityString: String {
-        return "강수확률 " + "\(self.rainfall_probability)" + "%"
+        return "강수확률 " + "\(self.rainfallProbability)" + "%"
     }
 }
 
