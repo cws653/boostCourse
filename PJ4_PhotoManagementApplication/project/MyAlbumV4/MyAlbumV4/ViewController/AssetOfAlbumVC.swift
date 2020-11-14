@@ -12,7 +12,7 @@ import Photos
 class AssetOfAlbumVC: UIViewController {
     
     let reuseIdentifier = "cell"
-    @IBOutlet weak var firstCollectionView: UICollectionView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var fetchResult: PHFetchResult<PHAsset>!
     let imageManager: PHCachingImageManager = PHCachingImageManager()
@@ -20,11 +20,27 @@ class AssetOfAlbumVC: UIViewController {
     var scale: CGFloat!
     var targetSizeX: CGFloat!
     
-    func requestCollection(){
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        // collectionview 설정
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
         
-        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 100, height: 100)
+        self.collectionView.collectionViewLayout = layout
+        // collectionview UX 설정
+        collectionView.backgroundColor = UIColor.white
         
-        guard  let cameraRollCollection = cameraRoll.firstObject else {
+        // 접근허가
+        self.photoAuthorizationStatus()
+    }
+    
+    func requestCollection() {
+        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil)
+
+        guard let cameraRollCollection = cameraRoll.firstObject else {
             return
         }
         
@@ -32,33 +48,16 @@ class AssetOfAlbumVC: UIViewController {
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         self.fetchResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
         
-        //        let collection = burstAlbum.firstObject as! PHAssetCollection
-        //               burstImages = PHAsset.fetchAssets(in: collection, options: options)
-        
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        // collectionview 설정
-        self.firstCollectionView.delegate = self
-        self.firstCollectionView.dataSource = self
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 100, height: 100)
-        self.firstCollectionView.collectionViewLayout = layout
-        // collectionview UX 설정
-        firstCollectionView.backgroundColor = UIColor.white
-        
-        // 접근허가
+    func photoAuthorizationStatus() {
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
         
         switch photoAuthorizationStatus {
         case .authorized:
             print("접근허가")
             self.requestCollection()
-            self.firstCollectionView.reloadData()
+            self.collectionView.reloadData()
         case .denied:
             print("접근 불허")
         case .notDetermined:
@@ -69,7 +68,7 @@ class AssetOfAlbumVC: UIViewController {
                     print("사용자가 허용함")
                     self.requestCollection()
                     OperationQueue.main.addOperation {
-                        self.firstCollectionView.reloadData()
+                        self.collectionView.reloadData()
                     }
                 case .denied:
                     print("사용자가 불허함")
@@ -84,7 +83,7 @@ class AssetOfAlbumVC: UIViewController {
             print("")
         }
         
-        self.firstCollectionView.backgroundColor = .red
+        self.collectionView.backgroundColor = .red
         
 //        PHPhotoLibrary.shared().register(self)
     }
@@ -96,7 +95,7 @@ class AssetOfAlbumVC: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let nextViewController: ImageZoomViewController = segue.destination as? ImageZoomViewController else {
+        guard let nextViewController: ImageZoomVC = segue.destination as? ImageZoomVC else {
             return
         }
         
@@ -104,7 +103,7 @@ class AssetOfAlbumVC: UIViewController {
             return
         }
         
-        guard let index: IndexPath = self.firstCollectionView.indexPath(for: cell) else {
+        guard let index: IndexPath = self.collectionView.indexPath(for: cell) else {
             return
         }
         
@@ -134,7 +133,7 @@ extension AssetOfAlbumVC: UICollectionViewDataSource {
     // 6. 셀의 내용을 설정하는 메소드
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? FirstCollectionViewCell {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AssetOfAlbumCVC {
 
             cell.imageManager = imageManager
             //cell.targetSizeX = targetSizeX
@@ -148,12 +147,12 @@ extension AssetOfAlbumVC: UICollectionViewDataSource {
     }
 }
 
-// MARK: -
+// MARK: - UICollectionViewDelegateFlowLayout
 extension AssetOfAlbumVC: UICollectionViewDelegateFlowLayout {
     
     // 3. 셀의 크기 설정이 이루어진다.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        targetSizeX = firstCollectionView.frame.width / 3 - 1
+        targetSizeX = collectionView.frame.width / 3 - 1
         
         return CGSize(width: targetSizeX, height: targetSizeX)
     }

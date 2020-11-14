@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class FirstCollectionViewCell: UICollectionViewCell {
+class AssetOfAlbumCVC: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
     
