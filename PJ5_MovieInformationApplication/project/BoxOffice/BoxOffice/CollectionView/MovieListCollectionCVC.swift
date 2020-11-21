@@ -11,8 +11,7 @@ import UIKit
 class MovieListCollectionCVC: UICollectionViewCell {
     @IBOutlet weak var movieImageView: UIImageView?
     @IBOutlet weak var gradeImageView: UIImageView?
-    @IBOutlet weak var firstLabel: UILabel?
-    @IBOutlet weak var secondLabel: UILabel?
-    @IBOutlet weak var thirdLabel: UILabel?
-    
+    @IBOutlet weak var movieTitleLabel: UILabel?
+    @IBOutlet weak var gradeAndRateLabel: UILabel?
+    @IBOutlet weak var openDateLabel: UILabel?
 }

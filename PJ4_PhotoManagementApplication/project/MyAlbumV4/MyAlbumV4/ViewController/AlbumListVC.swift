@@ -11,7 +11,7 @@ import Photos
 
 class AlbumListVC: UIViewController {
     
-    let cellIdentifier = "cell"
+    let cellIdentifier = "cell2"
     @IBOutlet weak var collectionView: UICollectionView!
     
     var fetchCollectionResult: PHFetchResult<PHAssetCollection>!
@@ -27,6 +27,7 @@ class AlbumListVC: UIViewController {
         
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
+        self.collectionView.register(AlbumListCVC.self, forCellWithReuseIdentifier: "cell2")
         
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 100, height: 100)
@@ -40,7 +41,7 @@ class AlbumListVC: UIViewController {
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         
-        let cameraRoll = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil)
+        let cameraRoll = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
         self.fetchCollectionResult = cameraRoll
         
         for i in 0 ..< cameraRoll.count {
@@ -111,35 +112,39 @@ extension AlbumListVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        //        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AlbumListCVC
+        //        else {
+        //            return UICollectionViewCell()
+        //        }
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! AlbumListCVC
         
-        
-        guard let asset = fetchAssetResult[indexPath.row].firstObject  else {
-            return cell
+        guard let asset = fetchAssetResult[indexPath.row].firstObject else {
+            return UICollectionViewCell()
         }
         
         imageManager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: nil) { (image, _) in
             cell.imageView.image = image
         }
-
+        
         return cell
         
-//        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AlbumListCVC {
-//
-//
-//            guard let asset = fetchAssetResult[indexPath.row].firstObject else {
-//                return UICollectionViewCell()
-//            }
-//
-//            imageManager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: nil) { (image, _) in
-//                cell.imageView.image = image
-//            }
-//
-//            return cell
-//        }
-//        else {
-//            return UICollectionViewCell()
-//        }
+        //        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AlbumListCVC {
+        //
+        //
+        //            guard let asset = fetchAssetResult[indexPath.row].firstObject else {
+        //                return UICollectionViewCell()
+        //            }
+        //
+        //            imageManager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: nil) { (image, _) in
+        //                cell.imageView.image = image
+        //            }
+        //
+        //            return cell
+        //        }
+        //        else {
+        //            return UICollectionViewCell()
+        //        }
     }
 }
 

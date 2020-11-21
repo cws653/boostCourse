@@ -94,6 +94,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             })
         case .restricted:
             print("접근 제한")
+        case .limited:
+            print("이상함")
+        @unknown default:
+            print("이상함")
         }
         
         PHPhotoLibrary.shared().register(self)

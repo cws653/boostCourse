@@ -175,13 +175,13 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
                 }
             }
         }
-        if cell.firstLabel?.adjustsFontSizeToFitWidth == false {
-            cell.firstLabel?.adjustsFontSizeToFitWidth = true
+        if cell.movieTitleLabel?.adjustsFontSizeToFitWidth == false {
+            cell.movieTitleLabel?.adjustsFontSizeToFitWidth = true
         }
         
-        cell.firstLabel?.text = movie.title
-        cell.secondLabel?.text = movie.collectionReservationGrade + movie.collectionUserRating + " / " + movie.collectionReservationRate
-        cell.thirdLabel?.text = movie.collectionDate
+        cell.movieTitleLabel?.text = movie.title
+        cell.gradeAndRateLabel?.text = movie.collectionReservationGrade + movie.collectionUserRating + " / " + movie.collectionReservationRate
+        cell.openDateLabel?.text = movie.collectionOpenDate
         
         return cell
     }

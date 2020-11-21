@@ -184,7 +184,7 @@ extension MovieListTableVC: UITableViewDataSource {
                 
                 cell.titleLabel?.text = movie.title
                 cell.rateLabel?.text = movie.tableUserRating + " " + movie.tableReservationGrade + " " + movie.tableReservationRate
-                cell.openDateLabel?.text = movie.tableDate
+                cell.openDateLabel?.text = movie.tableOpenDate
             }
         }.resume()
         

@@ -61,78 +61,27 @@ class DetailViewPosterCell: UITableViewCell {
         default: break
         }
         
-        switch round(movie.userRating) {
-        case 0:
-            firstStar?.image = UIImage(named: "ic_star_large")
-            secondStar?.image = UIImage(named: "ic_star_large")
-            thirdStar?.image = UIImage(named: "ic_star_large")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 1.0:
-            firstStar?.image = UIImage(named: "ic_star_large_half")
-            secondStar?.image = UIImage(named: "ic_star_large")
-            thirdStar?.image = UIImage(named: "ic_star_large")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 2.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large")
-            thirdStar?.image = UIImage(named: "ic_star_large")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 3.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_half")
-            thirdStar?.image = UIImage(named: "ic_star_large")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 4.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 5.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large_half")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 6.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large_full")
-            fourthStar?.image = UIImage(named: "ic_star_large")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 7.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large_full")
-            fourthStar?.image = UIImage(named: "ic_star_large_half")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 8.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large_full")
-            fourthStar?.image = UIImage(named: "ic_star_large_full")
-            fifthStar?.image = UIImage(named: "ic_star_large")
-        case 9.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large_full")
-            fourthStar?.image = UIImage(named: "ic_star_large_full")
-            fifthStar?.image = UIImage(named: "ic_star_large_half")
-        case 10.0:
-            firstStar?.image = UIImage(named: "ic_star_large_full")
-            secondStar?.image = UIImage(named: "ic_star_large_full")
-            thirdStar?.image = UIImage(named: "ic_star_large_full")
-            fourthStar?.image = UIImage(named: "ic_star_large_full")
-            fifthStar?.image = UIImage(named: "ic_star_large_full")
-        default:
-            break
-        }
+        self.setImages(with: movie.userRating)
+        
     }
     
+    private func setImages(with rating: Double) {
+        let defaultStarImage = UIImage(named: "ic_star_large")
+        
+        self.firstStar.image = nil
+        self.secondStar.image = nil
+        self.thirdStar.image = nil
+        self.fourthStar.image = nil
+        self.fifthStar.image = nil
+        
+        if let images = StarImageMaker.setStartImages(with: rating) {
+            self.firstStar.image = images[safe: 0] ?? defaultStarImage
+            self.secondStar.image = images[safe: 1] ?? defaultStarImage
+            self.thirdStar.image = images[safe: 2] ?? defaultStarImage
+            self.fourthStar.image = images[safe: 3] ?? defaultStarImage
+            self.fifthStar.image = images[safe: 4] ?? defaultStarImage
+        }
+    }
 }
 
 

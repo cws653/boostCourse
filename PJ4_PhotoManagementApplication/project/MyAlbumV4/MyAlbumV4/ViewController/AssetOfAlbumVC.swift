@@ -38,7 +38,7 @@ class AssetOfAlbumVC: UIViewController {
     }
     
     func requestCollection() {
-        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil)
+        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
 
         guard let cameraRollCollection = cameraRoll.firstObject else {
             return

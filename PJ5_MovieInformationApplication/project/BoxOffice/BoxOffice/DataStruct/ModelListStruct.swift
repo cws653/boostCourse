@@ -34,7 +34,7 @@ struct Movies: Codable {
     var tableUserRating: String {
         return "평점: " + String(self.userRating)
     }
-    var tableDate: String {
+    var tableOpenDate: String {
         return "개봉일: " + self.date
     }
     
@@ -48,7 +48,7 @@ struct Movies: Codable {
     var collectionUserRating: String {
         return "(" + String(userRating) + ")"
     }
-    var collectionDate: String {
+    var collectionOpenDate: String {
         return self.date
     }
     
