@@ -90,8 +90,8 @@ class SignUpViewController: UIViewController {
             let id = idTextField.text, !id.isEmpty,
             let password = passwordTextField.text, !password.isEmpty,
             let checkpassword = checkPasswordTextField.text, password == checkpassword,
-            let textViewContents = contentsTextView.text, !textViewContents.isEmpty,
-            self.imageView.image != nil
+            let textViewContents = contentsTextView.text, !textViewContents.isEmpty
+//            self.imageView.image != nil
             else {
                 return false
         }

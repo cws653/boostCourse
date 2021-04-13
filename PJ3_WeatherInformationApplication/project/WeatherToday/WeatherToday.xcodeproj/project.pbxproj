@@ -64,27 +64,19 @@
 		9D8824C724D05FA300FEB153 /* WeatherToday */ = {
 			isa = PBXGroup;
 			children = (
-				9DFEF51D255D491D003BD236 /* ViewController */,
+				9D8824CE24D05FA300FEB153 /* Main.storyboard */,
+				9D8824CC24D05FA300FEB153 /* WorldCountryListVC.swift */,
+				9D07B6AF24D515FE0050BF66 /* CityListVC.swift */,
+				9DE1BB6224D82F87000A2B58 /* CityListCVC.swift */,
+				9D2F7B2D24D6E5E90071E5F8 /* WeatherDetailsVC.swift */,
 				9D8824C824D05FA300FEB153 /* AppDelegate.swift */,
 				9D07B6B124D51E6C0050BF66 /* CountryStruct.swift */,
 				9D8824CA24D05FA300FEB153 /* SceneDelegate.swift */,
-				9D8824CE24D05FA300FEB153 /* Main.storyboard */,
 				9D8824D124D05FA400FEB153 /* Assets.xcassets */,
 				9D8824D324D05FA400FEB153 /* LaunchScreen.storyboard */,
 				9D8824D624D05FA400FEB153 /* Info.plist */,
 			);
 			path = WeatherToday;
-			sourceTree = "<group>";
-		};
-		9DFEF51D255D491D003BD236 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				9D8824CC24D05FA300FEB153 /* WorldCountryListVC.swift */,
-				9D07B6AF24D515FE0050BF66 /* CityListVC.swift */,
-				9DE1BB6224D82F87000A2B58 /* CityListCVC.swift */,
-				9D2F7B2D24D6E5E90071E5F8 /* WeatherDetailsVC.swift */,
-			);
-			path = ViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

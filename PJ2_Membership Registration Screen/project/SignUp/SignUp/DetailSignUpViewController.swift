@@ -31,8 +31,7 @@ class DetailSignUpViewController: UIViewController {
     @IBAction func clickSignUpButton(_ sender: UIButton) {
         UserInformation.shared.phoneNumber = phoneNumberTextField.text
         UserInformation.shared.dateOfBirth = dateOfBirthLabel.text
-//        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
-        self.dismiss(animated: true, completion: nil)
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func previousButtonAction(_ sender: UIButton) {
@@ -47,7 +46,7 @@ class DetailSignUpViewController: UIViewController {
         UserInformation.shared.phoneNumber = nil
         UserInformation.shared.dateOfBirth = nil
 
-        self.dismiss(animated: true, completion: nil)
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 
     override func viewDidLoad() {

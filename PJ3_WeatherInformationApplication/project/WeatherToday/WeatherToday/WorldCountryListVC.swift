@@ -15,8 +15,7 @@ class WorldCountryListVC: UIViewController, UITableViewDelegate, UITableViewData
     
     var countries: [CountryStruct] = []
     let flagimages = ["flag_kr","flag_de","flag_it","flag_us","flag_fr","flag_jp"]
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
