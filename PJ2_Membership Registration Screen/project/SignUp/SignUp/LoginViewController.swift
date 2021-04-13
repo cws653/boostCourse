@@ -8,12 +8,11 @@
 
 import UIKit
 
-class LoginScreenVC: UIViewController {
+class LoginViewController: UIViewController {
     
     @IBOutlet weak var idTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    
-    // 화면 터치시 키보드 내려가게 하는 소스
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.idTextField.resignFirstResponder()
         self.passwordTextField.resignFirstResponder()
@@ -21,7 +20,6 @@ class LoginScreenVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
