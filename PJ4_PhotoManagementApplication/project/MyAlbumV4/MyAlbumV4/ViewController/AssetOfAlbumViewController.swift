@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class AssetOfAlbumVC: UIViewController {
+class AssetOfAlbumViewController: UIViewController {
     
     let reuseIdentifier = "cell"
     @IBOutlet weak var collectionView: UICollectionView!
@@ -95,7 +95,7 @@ class AssetOfAlbumVC: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        guard let nextViewController: ImageZoomVC = segue.destination as? ImageZoomVC else {
+        guard let nextViewController: ImageZoomViewController = segue.destination as? ImageZoomViewController else {
             return
         }
         
@@ -113,12 +113,12 @@ class AssetOfAlbumVC: UIViewController {
 }
 
 // MARK: - UICollectionViewDelegate
-extension AssetOfAlbumVC: UICollectionViewDelegate {
+extension AssetOfAlbumViewController: UICollectionViewDelegate {
 
 }
 
 // MARK: - UICollectionViewDataSource
-extension AssetOfAlbumVC: UICollectionViewDataSource {
+extension AssetOfAlbumViewController: UICollectionViewDataSource {
     // collection view가 처리되는 과정은 아래 메소드의 순서대로이다.
     // 1. numberOfSectionsCollectionView 가 가장 먼저 실행되어 section의 개수를 파악한다.
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -133,7 +133,7 @@ extension AssetOfAlbumVC: UICollectionViewDataSource {
     // 6. 셀의 내용을 설정하는 메소드
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AssetOfAlbumCVC {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell {
 
             cell.imageManager = imageManager
             //cell.targetSizeX = targetSizeX
@@ -148,7 +148,7 @@ extension AssetOfAlbumVC: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension AssetOfAlbumVC: UICollectionViewDelegateFlowLayout {
+extension AssetOfAlbumViewController: UICollectionViewDelegateFlowLayout {
     
     // 3. 셀의 크기 설정이 이루어진다.
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

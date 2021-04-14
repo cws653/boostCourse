@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-class ImageZoomVC: UIViewController, UIScrollViewDelegate {
+class ImageZoomViewController: UIViewController, UIScrollViewDelegate {
 
     var asset: PHAsset!
     let imageManager: PHCachingImageManager = PHCachingImageManager()
