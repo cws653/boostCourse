@@ -11,7 +11,8 @@ import Photos
 
 class AlbumListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
-    
+    @IBOutlet weak var titleLabel: UILabel!
+
 //    var imageManager: PHImageManager?
 //    var targetSizeX: CGFloat?
 //
@@ -20,7 +21,7 @@ class AlbumListCollectionViewCell: UICollectionViewCell {
 //            
 //            self.imageManager?.requestImage(for: imageAsset!, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFit, options: nil, resultHandler: { image, _ in self.imageView.image = image})
 //        }
-//    }
+//    
     private func setUI() {
 //        imageView.
     }

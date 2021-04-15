@@ -10,17 +10,24 @@ import UIKit
 import Photos
 
 class AlbumListViewController: UIViewController {
-    
 
     @IBOutlet weak var albumListCollectionView: UICollectionView!
     let cellIdentifier = "albumListCollectionViewCell"
-    var fetchCollectionResult: PHFetchResult<PHAssetCollection>!
-    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
+    //    var fetchCollectionResult: PHFetchResult<PHAssetCollection>!
+//    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
+    var fetchAssetResult: PHFetchResult<PHAsset>!
     let imageManager: PHCachingImageManager = PHCachingImageManager()
+//    var fetchOptions: PHFetchOptions {
+//        let fetchOptions = PHFetchOptions()
+//        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+//        return fetchOptions
+//    }
     
     var scale: CGFloat!
-    var targetSizeX: CGFloat!
-    
+    var itemWidth: CGFloat {
+        return UIScreen.main.bounds.width / 2
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -28,12 +35,9 @@ class AlbumListViewController: UIViewController {
         self.albumListCollectionView.dataSource = self
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumInteritemSpacing = 10
+        flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 10
-
-        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
-        let itemWidth = (UIScreen.main.bounds.width / 2) - 15
-
+        let itemWidth = (UIScreen.main.bounds.width / 2)
         flowLayout.itemSize = CGSize(width: itemWidth, height: 1.5 * itemWidth)
         self.albumListCollectionView.collectionViewLayout = flowLayout
 
@@ -75,17 +79,24 @@ class AlbumListViewController: UIViewController {
     }
 
     func requestImageCollection() {
+        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+
+        guard let cameraRollCollection = cameraRoll.firstObject else { return }
+
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
-        let cameraRoll = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
-        self.fetchCollectionResult = cameraRoll
-
-        for i in 0 ..< cameraRoll.count {
-            let cameraRollCollection = cameraRoll.object(at: i)
-            self.fetchAssetResult.append(PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions))
-        }
+        self.fetchAssetResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
+//        let favoriteList = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+//        addAlbums(collection: favoriteList)
     }
+
+//    func addAlbums(collection: PHFetchResult<PHAssetCollection>) {
+//        for i in 0 ..< collection.count {
+//            let collection = collection.object(at: i)
+//            self.fetchAssetResult.append(PHAsset.fetchAssets(in: collection, options: fetchOptions))
+//        }
+//    }
 }
 
 extension AlbumListViewController: UICollectionViewDelegate {
@@ -96,42 +107,30 @@ extension AlbumListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchAssetResult.count
+        //        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        //        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AlbumListCVC
-        //        else {
-        //            return UICollectionViewCell()
-        //        }
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! AlbumListCollectionViewCell
-        
-//        guard let asset = fetchAssetResult[indexPath.row].firstObject else {
+
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AlbumListCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
+        let asset: PHAsset = fetchAssetResult.object(at: indexPath.row)
+//
+//        guard let asset = fetchAssetResult[indexPath.row].firstObject as? PHAsset else {
 //            return UICollectionViewCell()
 //        }
-//
-//        imageManager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: nil) { (image, _) in
-//            cell.imageView.image = image
-//        }
-        
+
+        imageManager.requestImage(for: asset, targetSize: CGSize(width: cell.imageView.frame.width, height: 100), contentMode: .default, options: nil) { (image, _) in
+            cell.imageView.image = image
+        }
+        cell.titleLabel.text = "안녕하세요"
+
         return cell
-        
-        //        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AlbumListCVC {
-        //
-        //
-        //            guard let asset = fetchAssetResult[indexPath.row].firstObject else {
-        //                return UICollectionViewCell()
-        //            }
-        //
-        //            imageManager.requestImage(for: asset, targetSize: CGSize(width: 100, height: 100), contentMode: .aspectFill, options: nil) { (image, _) in
-        //                cell.imageView.image = image
-        //            }
-        //
-        //            return cell
-        //        }
-        //        else {
-        //            return UICollectionViewCell()
-        //        }
     }
+}
+
+extension AlbumListViewController: UICollectionViewDelegateFlowLayout {
+
 }

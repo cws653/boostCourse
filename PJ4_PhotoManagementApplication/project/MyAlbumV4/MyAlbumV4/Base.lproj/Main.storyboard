@@ -22,33 +22,45 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CgS-SF-bcu">
-                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="itemSize" width="333" height="474"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="albumListCollectionViewCell" id="Zj5-lk-qW9" customClass="AlbumListCollectionViewCell" customModule="MyAlbumV4" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <rect key="frame" x="40.5" y="0.0" width="333" height="474"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="q9m-qX-i9G">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="333" height="474"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BfB-Xx-6AL">
-                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BfB-Xx-6AL">
+                                                    <rect key="frame" x="10" y="10" width="313" height="424"/>
                                                     <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                                    <color key="tintColor" systemColor="systemGreenColor"/>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="안녕하세요" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OEg-j0-3B6">
+                                                    <rect key="frame" x="0.0" y="444" width="333" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="BfB-Xx-6AL" secondAttribute="trailing" id="Tbg-TO-aAv"/>
-                                                <constraint firstAttribute="bottom" secondItem="BfB-Xx-6AL" secondAttribute="bottom" id="U0Y-Cx-tGr"/>
-                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="top" secondItem="q9m-qX-i9G" secondAttribute="top" id="ZX4-z0-2Yo"/>
-                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" id="eGE-2u-yDc"/>
+                                                <constraint firstAttribute="trailing" secondItem="OEg-j0-3B6" secondAttribute="trailing" id="2LG-5N-hIg"/>
+                                                <constraint firstAttribute="bottom" secondItem="OEg-j0-3B6" secondAttribute="bottom" id="6zb-CH-Zlk"/>
+                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" constant="10" id="T45-qH-og7"/>
+                                                <constraint firstAttribute="trailing" secondItem="BfB-Xx-6AL" secondAttribute="trailing" constant="10" id="ZHS-7n-akJ"/>
+                                                <constraint firstItem="OEg-j0-3B6" firstAttribute="top" secondItem="BfB-Xx-6AL" secondAttribute="bottom" constant="10" id="b13-pA-dzi"/>
+                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="top" secondItem="q9m-qX-i9G" secondAttribute="top" constant="10" id="e0H-uX-wQJ"/>
+                                                <constraint firstItem="OEg-j0-3B6" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" id="jqC-93-nsR"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <size key="customSize" width="333" height="474"/>
                                         <connections>
                                             <outlet property="imageView" destination="BfB-Xx-6AL" id="LDX-QU-2gs"/>
+                                            <outlet property="titleLabel" destination="OEg-j0-3B6" id="Jwt-em-LS6"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -69,7 +81,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AqO-4z-tyN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="170" y="138"/>
+            <point key="canvasLocation" x="169.56521739130437" y="137.94642857142856"/>
         </scene>
     </scenes>
     <resources>
