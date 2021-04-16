@@ -13,20 +13,20 @@ class AlbumListViewController: UIViewController {
 
     @IBOutlet weak var albumListCollectionView: UICollectionView!
     let cellIdentifier = "albumListCollectionViewCell"
-    //    var fetchCollectionResult: PHFetchResult<PHAssetCollection>!
-//    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
-    var fetchAssetResult: PHFetchResult<PHAsset>!
+    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
+    var collectionTitle: [String] = []
+//    var fetchAssetResult: PHFetchResult<PHAsset>!
     let imageManager: PHCachingImageManager = PHCachingImageManager()
-//    var fetchOptions: PHFetchOptions {
-//        let fetchOptions = PHFetchOptions()
-//        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-//        return fetchOptions
-//    }
-    
-    var scale: CGFloat!
-    var itemWidth: CGFloat {
-        return UIScreen.main.bounds.width / 2
+    var fetchOptions: PHFetchOptions {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        return fetchOptions
     }
+    
+//    var scale: CGFloat!
+//    var itemWidth: CGFloat {
+//        return UIScreen.main.bounds.width / 2
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,9 +35,10 @@ class AlbumListViewController: UIViewController {
         self.albumListCollectionView.dataSource = self
         
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumInteritemSpacing = 10
         flowLayout.minimumLineSpacing = 10
-        let itemWidth = (UIScreen.main.bounds.width / 2)
+//        flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let itemWidth = (UIScreen.main.bounds.width / 2 - 15)
         flowLayout.itemSize = CGSize(width: itemWidth, height: 1.5 * itemWidth)
         self.albumListCollectionView.collectionViewLayout = flowLayout
 
@@ -79,16 +80,29 @@ class AlbumListViewController: UIViewController {
     }
 
     func requestImageCollection() {
-        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+//        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+//
+//        guard let cameraRollCollection = cameraRoll.firstObject else { return }
+//
+//        let fetchOptions = PHFetchOptions()
+//        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
-        guard let cameraRollCollection = cameraRoll.firstObject else { return }
+//        self.fetchAssetResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
+        let cameraRollList = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+        let favoriteList = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumFavorites, options: nil)
+        let albumList = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil)
 
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        addAlbums(collections: cameraRollList)
+        addAlbums(collections: favoriteList)
+        addAlbums(collections: albumList)
+    }
 
-        self.fetchAssetResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
-//        let favoriteList = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
-//        addAlbums(collection: favoriteList)
+    func addAlbums(collections: PHFetchResult<PHAssetCollection>) {
+        collections.enumerateObjects { (collection, index, object) in
+            let photoInAlbum = PHAsset.fetchAssets(in: collection, options: nil)
+            self.fetchAssetResult.append(photoInAlbum)
+            self.collectionTitle.append(collection.localizedTitle ?? "nil")
+        }
     }
 
 //    func addAlbums(collection: PHFetchResult<PHAssetCollection>) {
@@ -100,14 +114,19 @@ class AlbumListViewController: UIViewController {
 }
 
 extension AlbumListViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let assetOfAlbumViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AssetOfAlbumViewController") as? AssetOfAlbumViewController else { return }
+
+        guard let collection = fetchAssetResult[indexPath.row] as? PHFetchResult<PHAsset> else { return }
+        assetOfAlbumViewController.fetchResult = collection
+        navigationController?.pushViewController(assetOfAlbumViewController, animated: true)
+    }
 }
 
 extension AlbumListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return fetchAssetResult.count
-        //        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -116,21 +135,35 @@ extension AlbumListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        let asset: PHAsset = fetchAssetResult.object(at: indexPath.row)
+//        let asset: PHAsset = fetchAssetResult.object(at: indexPath.row)
 //
-//        guard let asset = fetchAssetResult[indexPath.row].firstObject as? PHAsset else {
-//            return UICollectionViewCell()
-//        }
+        guard let asset = fetchAssetResult[indexPath.row].firstObject as? PHAsset else {
+            return UICollectionViewCell()
+        }
 
-        imageManager.requestImage(for: asset, targetSize: CGSize(width: cell.imageView.frame.width, height: 100), contentMode: .default, options: nil) { (image, _) in
+        let options = PHImageRequestOptions()
+        options.resizeMode = .fast
+
+        imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
             cell.imageView.image = image
         }
-        cell.titleLabel.text = "안녕하세요"
+        cell.titleLabel.text = collectionTitle[indexPath.row]
 
         return cell
     }
 }
 
 extension AlbumListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let itemWidth = (UIScreen.main.bounds.width / 2 - 15)
+        return CGSize(width: itemWidth, height: 1.5 * itemWidth)
+    }
 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
 }

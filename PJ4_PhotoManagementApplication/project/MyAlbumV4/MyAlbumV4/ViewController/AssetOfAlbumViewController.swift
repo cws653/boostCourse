@@ -10,44 +10,37 @@ import UIKit
 import Photos
 
 class AssetOfAlbumViewController: UIViewController {
-    
-    let reuseIdentifier = "cell"
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    var fetchResult: PHFetchResult<PHAsset>!
+
+    @IBOutlet weak var assetOfAlbumCollectionView: UICollectionView!
+
+    let reuseIdentifier = "AssetOfAlbumCollectionViewCell"
+    var fetchResult: PHFetchResult<PHAsset>?
     let imageManager: PHCachingImageManager = PHCachingImageManager()
-    
     var scale: CGFloat!
-    var targetSizeX: CGFloat!
+    var targetSizeX: CGFloat?
+
+    var rightButton: UIBarButtonItem {
+        let button = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashButtonPressed))
+        button.tag = 1
+        return button
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        // collectionview 설정
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 100, height: 100)
-        self.collectionView.collectionViewLayout = layout
-        // collectionview UX 설정
-        collectionView.backgroundColor = UIColor.white
-        
-        // 접근허가
-        self.photoAuthorizationStatus()
-    }
-    
-    func requestCollection() {
-        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
 
-        guard let cameraRollCollection = cameraRoll.firstObject else {
-            return
-        }
-        
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        self.fetchResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
-        
+        self.navigationController?.navigationItem.rightBarButtonItem = self.rightButton
+
+        assetOfAlbumCollectionView.delegate = self
+        assetOfAlbumCollectionView.dataSource = self
+
+        targetSizeX = assetOfAlbumCollectionView.frame.width / 3 - 5
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 7.5
+        flowLayout.minimumInteritemSpacing = 2.5
+        flowLayout.itemSize = CGSize(width: targetSizeX ?? 0, height: targetSizeX ?? 0)
+        assetOfAlbumCollectionView.collectionViewLayout = flowLayout
+
+        self.photoAuthorizationStatus()
     }
     
     func photoAuthorizationStatus() {
@@ -57,7 +50,9 @@ class AssetOfAlbumViewController: UIViewController {
         case .authorized:
             print("접근허가")
             self.requestCollection()
-            self.collectionView.reloadData()
+            DispatchQueue.main.async {
+                self.assetOfAlbumCollectionView.reloadData()
+            }
         case .denied:
             print("접근 불허")
         case .notDetermined:
@@ -67,8 +62,8 @@ class AssetOfAlbumViewController: UIViewController {
                 case .authorized:
                     print("사용자가 허용함")
                     self.requestCollection()
-                    OperationQueue.main.addOperation {
-                        self.collectionView.reloadData()
+                    DispatchQueue.main.async {
+                        self.assetOfAlbumCollectionView.reloadData()
                     }
                 case .denied:
                     print("사용자가 불허함")
@@ -82,89 +77,102 @@ class AssetOfAlbumViewController: UIViewController {
         @unknown default:
             print("")
         }
-        
-        self.collectionView.backgroundColor = .red
-        
-//        PHPhotoLibrary.shared().register(self)
+
+        PHPhotoLibrary.shared().register(self)
     }
 
-    
-    // 다음 컨트롤뷰 적용
-    // MARK: - Navigation
+    func requestCollection() {
+        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        guard let nextViewController: ImageZoomViewController = segue.destination as? ImageZoomViewController else {
+        guard let cameraRollCollection = cameraRoll.firstObject else {
             return
         }
-        
-        guard let cell: UICollectionViewCell = sender as? UICollectionViewCell else {
-            return
-        }
-        
-        guard let index: IndexPath = self.collectionView.indexPath(for: cell) else {
-            return
-        }
-        
-        nextViewController.asset = self.fetchResult[index.item]
+
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        self.fetchResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
     }
-    
+
+    @objc func trashButtonPressed() {
+        print("버튼이 클릭되었습니다.")
+    }
 }
 
 // MARK: - UICollectionViewDelegate
 extension AssetOfAlbumViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let imageZoomViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "imageZoomViewController") as? ImageZoomViewController else {
+            return
+        }
+
+        guard let asset = fetchResult?[indexPath.row] as? PHAsset else {
+            return
+        }
+
+        imageZoomViewController.asset = asset
+        navigationController?.pushViewController(imageZoomViewController, animated: true)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 
 }
 
 // MARK: - UICollectionViewDataSource
 extension AssetOfAlbumViewController: UICollectionViewDataSource {
-    // collection view가 처리되는 과정은 아래 메소드의 순서대로이다.
-    // 1. numberOfSectionsCollectionView 가 가장 먼저 실행되어 section의 개수를 파악한다.
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-     // 2. numberOfItemsInSection가 실행되어 Section당 Item의 개수를 파악한다.
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResult?.count ?? 0
+        return 5
     }
 
-    // 6. 셀의 내용을 설정하는 메소드
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell {
+        guard let cell = assetOfAlbumCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell else { return UICollectionViewCell() }
 
-            cell.imageManager = imageManager
-            //cell.targetSizeX = targetSizeX
-            cell.imageAsset = fetchResult[indexPath.item]
+        guard let asset = self.fetchResult?[indexPath.row] else { return UICollectionViewCell() }
 
-            return cell
+        let options = PHImageRequestOptions()
+        options.resizeMode = .fast
+
+        imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
+            cell.imageView.image = image
         }
-        else {
-            return UICollectionViewCell()
+        DispatchQueue.main.async {
+            collectionView.reloadData()
         }
+        return cell
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension AssetOfAlbumViewController: UICollectionViewDelegateFlowLayout {
-    
-    // 3. 셀의 크기 설정이 이루어진다.
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        targetSizeX = collectionView.frame.width / 3 - 1
+        targetSizeX = collectionView.frame.width / 3 - 5
         
-        return CGSize(width: targetSizeX, height: targetSizeX)
+        return CGSize(width: targetSizeX ?? 0, height: targetSizeX ?? 0)
     }
-    
-    // 4. cell 내부 아이템의 최소 스페이싱을 설정한다. 셀간의 가로 간격이라고 생각하면 된다.
-    // 자세한 내용은 애플문서나 부스트코스를 보자.
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+        return 2.5
     }
-    
-    // 5. cell 간 라인 스페이싱을 설정한다. 셀간의 세로 간격이라고 생각하면 된다.
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
+        return 7.5
+    }
+}
+
+extension AssetOfAlbumViewController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+
+        guard let collection = self.fetchResult else { return }
+
+        guard let changes = changeInstance.changeDetails(for: collection) else { return }
+
+        self.fetchResult = changes.fetchResultAfterChanges
+
+        DispatchQueue.main.async {
+            self.assetOfAlbumCollectionView.reloadData()
+        }
     }
 }
