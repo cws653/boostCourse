@@ -11,41 +11,116 @@ import Photos
 
 class AssetOfAlbumViewController: UIViewController {
 
-    @IBOutlet weak var assetOfAlbumCollectionView: UICollectionView!
+    enum Mode {
+        case view
+        case select
+    }
 
-    let reuseIdentifier = "AssetOfAlbumCollectionViewCell"
+    @IBOutlet weak var assetOfAlbumCollectionView: UICollectionView!
+    @IBOutlet weak var trashButton: UIBarButtonItem!
+
+    let cellIdentifier = "AssetOfAlbumCollectionViewCell"
+    let viewImageSegueIdentifier = "viewImageSegueIdentifier"
     var fetchResult: PHFetchResult<PHAsset>?
     let imageManager: PHCachingImageManager = PHCachingImageManager()
     var scale: CGFloat!
     var targetSizeX: CGFloat?
 
-    var rightButton: UIBarButtonItem {
-        let button = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(trashButtonPressed))
-        button.tag = 1
-        return button
+    var mMode: Mode = .view {
+        didSet {
+            switch mMode {
+            case .view:
+                selectBarButton.title = "선택"
+                trashButton.isEnabled = false
+                assetOfAlbumCollectionView.allowsSelectionDuringEditing = false
+            case .select:
+                selectBarButton.title = "취소"
+                trashButton.isEnabled = true
+                assetOfAlbumCollectionView.allowsSelectionDuringEditing = true
+            }
+        }
     }
+
+    lazy var selectBarButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "선택", style: .plain, target: self, action: #selector(selectBarButtonClick))
+        return button
+    }()
+
+    lazy var deleteBarButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteBarButtonClick))
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationItem.rightBarButtonItem = self.rightButton
+        setCollectionView()
+        setUpBarButtonItems()
 
+        //        self.photoAuthorizationStatus()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setupCollectionViewItemSize()
+        // setUpCollectionViewItemSize()를 viewWillLayoutSubviews에서 호출한 이유는
+        // collectionview.frame 사이즈를 이 함수에서 호출하기 때문이다.
+        // 호출 후 연산에 사용할 수 있다.
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let item = sender as! PHAsset
+
+        if segue.identifier == viewImageSegueIdentifier {
+            if let viewController = segue.destination as? ImageZoomViewController {
+                viewController.asset = item
+            }
+        }
+    }
+
+    private func setCollectionView() {
         assetOfAlbumCollectionView.delegate = self
         assetOfAlbumCollectionView.dataSource = self
-
-        targetSizeX = assetOfAlbumCollectionView.frame.width / 3 - 5
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 7.5
-        flowLayout.minimumInteritemSpacing = 2.5
-        flowLayout.itemSize = CGSize(width: targetSizeX ?? 0, height: targetSizeX ?? 0)
-        assetOfAlbumCollectionView.collectionViewLayout = flowLayout
-
-        self.photoAuthorizationStatus()
     }
-    
+
+    private func setupCollectionViewItemSize() {
+        let numberOfItemForRow = 3
+        let lineSpacing: CGFloat = 3
+        let interItemSpacing: CGFloat = 5
+        let width = (Int(assetOfAlbumCollectionView.frame.width) - ((numberOfItemForRow - 1) * Int(interItemSpacing))) / numberOfItemForRow
+        let height = width
+
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: width, height: height)
+        flowLayout.sectionInset = UIEdgeInsets.zero
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = lineSpacing
+        flowLayout.minimumInteritemSpacing = interItemSpacing
+
+        assetOfAlbumCollectionView.collectionViewLayout = flowLayout
+    }
+
+    private func setUpBarButtonItems() {
+        self.navigationItem.rightBarButtonItem = selectBarButton
+        self.trashButton.isEnabled = false
+    }
+
+//    override func setEditing(_ editing: Bool, animated: Bool) {
+//        super.setEditing(editing, animated: animated)
+//
+//        if editing {
+//            assetOfAlbumCollectionView.allowsMultipleSelection = true
+//            print("Editing Mode Enabled")
+//        } else {
+//            assetOfAlbumCollectionView.allowsMultipleSelection = false
+//            print("Editing Mode Closed")
+//        }
+//        self.assetOfAlbumCollectionView.reloadData()
+//    }
+
     func photoAuthorizationStatus() {
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-        
+
         switch photoAuthorizationStatus {
         case .authorized:
             print("접근허가")
@@ -93,28 +168,35 @@ class AssetOfAlbumViewController: UIViewController {
         self.fetchResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
     }
 
-    @objc func trashButtonPressed() {
-        print("버튼이 클릭되었습니다.")
+    @objc func selectBarButtonClick() {
+        print("선택버튼이 클릭되었습니다.")
+        mMode = mMode == .view ? .select : .view
+    }
+
+    @objc func deleteBarButtonClick() {
+        print("삭제버튼이 클릭되었습니다.")
     }
 }
 
 // MARK: - UICollectionViewDelegate
 extension AssetOfAlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let imageZoomViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "imageZoomViewController") as? ImageZoomViewController else {
-            return
-        }
+        print("셀이 선택 되었습니다.")
+        //
+        //        let item = fetchResult?[indexPath.item]
+        //        performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
 
-        guard let asset = fetchResult?[indexPath.row] as? PHAsset else {
-            return
+        switch mMode {
+        case .view:
+            let item = fetchResult?[indexPath.row]
+            performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
+        case .select:
+            assetOfAlbumCollectionView.reloadData()
         }
-
-        imageZoomViewController.asset = asset
-        navigationController?.pushViewController(imageZoomViewController, animated: true)
     }
 
-    func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
-        return true
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+
     }
 
 }
@@ -122,43 +204,28 @@ extension AssetOfAlbumViewController: UICollectionViewDelegate {
 // MARK: - UICollectionViewDataSource
 extension AssetOfAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return fetchResult?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        guard let cell = assetOfAlbumCollectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = assetOfAlbumCollectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell else { return UICollectionViewCell() }
 
-        guard let asset = self.fetchResult?[indexPath.row] else { return UICollectionViewCell() }
+//        guard let asset = self.fetchResult?[indexPath.row] else { return UICollectionViewCell() }
+//
+//        let options = PHImageRequestOptions()
+//        options.resizeMode = .fast
+//
+//        imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
+//            cell.imageView?.image = image
+//        }
 
-        let options = PHImageRequestOptions()
-        options.resizeMode = .fast
+        cell.backgroundColor = .orange
 
-        imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
-            cell.imageView.image = image
-        }
         DispatchQueue.main.async {
             collectionView.reloadData()
         }
         return cell
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension AssetOfAlbumViewController: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        targetSizeX = collectionView.frame.width / 3 - 5
-        
-        return CGSize(width: targetSizeX ?? 0, height: targetSizeX ?? 0)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 2.5
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 7.5
     }
 }
 

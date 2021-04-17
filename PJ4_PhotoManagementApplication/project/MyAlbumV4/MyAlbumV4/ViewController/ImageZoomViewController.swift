@@ -16,13 +16,13 @@ class ImageZoomViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet weak var zoomImageView: UIImageView!
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.zoomImageView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil, resultHandler: { image, _ in self.zoomImageView.image = image})
+    }
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.zoomImageView
     }
 }

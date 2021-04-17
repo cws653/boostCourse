@@ -11,6 +11,7 @@
 		9D414D3D255F9E8F00A3C51F /* AlbumListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D414D3C255F9E8F00A3C51F /* AlbumListCollectionViewCell.swift */; };
 		9D65E4ED24F23B0B0093BAF1 /* DelegatePractice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D65E4EC24F23B0B0093BAF1 /* DelegatePractice.swift */; };
 		9D65E4EF24F23EFB0093BAF1 /* PracticeViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D65E4EE24F23EFB0093BAF1 /* PracticeViewController2.swift */; };
+		9DD790A5262AC6C400A93A46 /* AssetOfAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD790A3262AC6C400A93A46 /* AssetOfAlbumCollectionViewCell.swift */; };
 		9DE2415924F0CA61006A2D69 /* ImageZoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DE2415824F0CA61006A2D69 /* ImageZoomViewController.swift */; };
 		9DEB9EE024EEB010001610D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB9EDF24EEB010001610D5 /* AppDelegate.swift */; };
 		9DEB9EE224EEB010001610D5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB9EE124EEB010001610D5 /* SceneDelegate.swift */; };
@@ -18,7 +19,6 @@
 		9DEB9EE724EEB010001610D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DEB9EE524EEB010001610D5 /* Main.storyboard */; };
 		9DEB9EE924EEB011001610D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DEB9EE824EEB011001610D5 /* Assets.xcassets */; };
 		9DEB9EEC24EEB011001610D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DEB9EEA24EEB011001610D5 /* LaunchScreen.storyboard */; };
-		9DEB9EF424EEBDAB001610D5 /* AssetOfAlbumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB9EF324EEBDAB001610D5 /* AssetOfAlbumCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +26,7 @@
 		9D414D3C255F9E8F00A3C51F /* AlbumListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListCollectionViewCell.swift; sourceTree = "<group>"; };
 		9D65E4EC24F23B0B0093BAF1 /* DelegatePractice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatePractice.swift; sourceTree = "<group>"; };
 		9D65E4EE24F23EFB0093BAF1 /* PracticeViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeViewController2.swift; sourceTree = "<group>"; };
+		9DD790A3262AC6C400A93A46 /* AssetOfAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetOfAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 		9DE2415824F0CA61006A2D69 /* ImageZoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomViewController.swift; sourceTree = "<group>"; };
 		9DEB9EDC24EEB010001610D5 /* MyAlbumV4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAlbumV4.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DEB9EDF24EEB010001610D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -35,7 +36,6 @@
 		9DEB9EE824EEB011001610D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DEB9EEB24EEB011001610D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9DEB9EED24EEB011001610D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9DEB9EF324EEBDAB001610D5 /* AssetOfAlbumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetOfAlbumCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				9D414D3C255F9E8F00A3C51F /* AlbumListCollectionViewCell.swift */,
-				9DEB9EF324EEBDAB001610D5 /* AssetOfAlbumCollectionViewCell.swift */,
+				9DD790A3262AC6C400A93A46 /* AssetOfAlbumCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -186,8 +186,8 @@
 				9DEB9EE024EEB010001610D5 /* AppDelegate.swift in Sources */,
 				9DE2415924F0CA61006A2D69 /* ImageZoomViewController.swift in Sources */,
 				9D414D3D255F9E8F00A3C51F /* AlbumListCollectionViewCell.swift in Sources */,
+				9DD790A5262AC6C400A93A46 /* AssetOfAlbumCollectionViewCell.swift in Sources */,
 				9DEB9EE224EEB010001610D5 /* SceneDelegate.swift in Sources */,
-				9DEB9EF424EEBDAB001610D5 /* AssetOfAlbumCollectionViewCell.swift in Sources */,
 				9D65E4ED24F23B0B0093BAF1 /* DelegatePractice.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,7 +264,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -318,7 +318,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -335,7 +335,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8PBQD47VFZ;
 				INFOPLIST_FILE = MyAlbumV4/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -354,7 +354,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8PBQD47VFZ;
 				INFOPLIST_FILE = MyAlbumV4/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
