@@ -9,12 +9,12 @@
 import UIKit
 import Photos
 
-class AssetOfAlbumViewController: UIViewController {
+enum Mode {
+    case view
+    case select
+}
 
-    enum Mode {
-        case view
-        case select
-    }
+class AssetOfAlbumViewController: UIViewController {
 
     @IBOutlet weak var assetOfAlbumCollectionView: UICollectionView!
     @IBOutlet weak var trashButton: UIBarButtonItem!
@@ -25,31 +25,54 @@ class AssetOfAlbumViewController: UIViewController {
     let imageManager: PHCachingImageManager = PHCachingImageManager()
     var scale: CGFloat!
     var targetSizeX: CGFloat?
-
+    var dictionarySelectedIndexPath: [IndexPath: Bool] = [:]
     var mMode: Mode = .view {
         didSet {
             switch mMode {
             case .view:
+                for (key, value) in dictionarySelectedIndexPath {
+                    if value {
+                        assetOfAlbumCollectionView.deselectItem(at: key, animated: true)
+                    }
+                }
+                dictionarySelectedIndexPath.removeAll()
+
                 selectBarButton.title = "선택"
                 trashButton.isEnabled = false
-                assetOfAlbumCollectionView.allowsSelectionDuringEditing = false
+                assetOfAlbumCollectionView.allowsMultipleSelection = false
             case .select:
                 selectBarButton.title = "취소"
                 trashButton.isEnabled = true
-                assetOfAlbumCollectionView.allowsSelectionDuringEditing = true
+                assetOfAlbumCollectionView.allowsMultipleSelection = true
             }
         }
     }
 
     lazy var selectBarButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "선택", style: .plain, target: self, action: #selector(selectBarButtonClick))
+        let button = UIBarButtonItem(title: "선택", style: .plain, target: self, action: #selector(selectBarButtonClick(_:)))
         return button
     }()
 
-    lazy var deleteBarButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteBarButtonClick))
-        return button
-    }()
+    @IBAction func deleteBarButtonClick(_ sender: UIBarButtonItem) {
+        print("삭제버튼이 클릭되었습니다.")
+        var deleteNeededIndexPaths: [IndexPath] = []
+        for (key, value) in dictionarySelectedIndexPath {
+            if value {
+                deleteNeededIndexPaths.append(key)
+            }
+        }
+
+        let assetArray: NSMutableArray = NSMutableArray()
+        for i in deleteNeededIndexPaths.sorted(by: { $0.item > $1.item }) {
+            guard let asset = self.fetchResult?.object(at: i.item) else { return }
+            assetArray.addObjects(from: [asset])
+        }
+
+        PHPhotoLibrary.shared().performChanges({PHAssetChangeRequest.deleteAssets(assetArray)})
+        assetOfAlbumCollectionView.deleteItems(at: deleteNeededIndexPaths)
+        dictionarySelectedIndexPath.removeAll()
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +80,7 @@ class AssetOfAlbumViewController: UIViewController {
         setCollectionView()
         setUpBarButtonItems()
 
-        //        self.photoAuthorizationStatus()
+        PHPhotoLibrary.shared().register(self)
     }
 
     override func viewWillLayoutSubviews() {
@@ -105,76 +128,9 @@ class AssetOfAlbumViewController: UIViewController {
         self.trashButton.isEnabled = false
     }
 
-//    override func setEditing(_ editing: Bool, animated: Bool) {
-//        super.setEditing(editing, animated: animated)
-//
-//        if editing {
-//            assetOfAlbumCollectionView.allowsMultipleSelection = true
-//            print("Editing Mode Enabled")
-//        } else {
-//            assetOfAlbumCollectionView.allowsMultipleSelection = false
-//            print("Editing Mode Closed")
-//        }
-//        self.assetOfAlbumCollectionView.reloadData()
-//    }
-
-    func photoAuthorizationStatus() {
-        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-
-        switch photoAuthorizationStatus {
-        case .authorized:
-            print("접근허가")
-            self.requestCollection()
-            DispatchQueue.main.async {
-                self.assetOfAlbumCollectionView.reloadData()
-            }
-        case .denied:
-            print("접근 불허")
-        case .notDetermined:
-            print("아직 응답하지 않음")
-            PHPhotoLibrary.requestAuthorization({ (status) in
-                switch status {
-                case .authorized:
-                    print("사용자가 허용함")
-                    self.requestCollection()
-                    DispatchQueue.main.async {
-                        self.assetOfAlbumCollectionView.reloadData()
-                    }
-                case .denied:
-                    print("사용자가 불허함")
-                default: break
-                }
-            })
-        case .restricted:
-            print("접근 제한")
-        case .limited:
-            print("")
-        @unknown default:
-            print("")
-        }
-
-        PHPhotoLibrary.shared().register(self)
-    }
-
-    func requestCollection() {
-        let cameraRoll: PHFetchResult<PHAssetCollection> = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .any, options: nil)
-
-        guard let cameraRollCollection = cameraRoll.firstObject else {
-            return
-        }
-
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        self.fetchResult = PHAsset.fetchAssets(in: cameraRollCollection, options: fetchOptions)
-    }
-
-    @objc func selectBarButtonClick() {
-        print("선택버튼이 클릭되었습니다.")
+    @objc func selectBarButtonClick(_ sender: UIBarButtonItem) {
+        print(mMode)
         mMode = mMode == .view ? .select : .view
-    }
-
-    @objc func deleteBarButtonClick() {
-        print("삭제버튼이 클릭되었습니다.")
     }
 }
 
@@ -182,23 +138,22 @@ class AssetOfAlbumViewController: UIViewController {
 extension AssetOfAlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("셀이 선택 되었습니다.")
-        //
-        //        let item = fetchResult?[indexPath.item]
-        //        performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
 
         switch mMode {
         case .view:
-            let item = fetchResult?[indexPath.row]
+            assetOfAlbumCollectionView.deselectItem(at: indexPath, animated: true)
+            let item = fetchResult?[indexPath.item]
             performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
         case .select:
-            assetOfAlbumCollectionView.reloadData()
+            dictionarySelectedIndexPath[indexPath] = true
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-
+        if mMode == .select {
+            dictionarySelectedIndexPath[indexPath] = false
+        }
     }
-
 }
 
 // MARK: - UICollectionViewDataSource
@@ -211,19 +166,15 @@ extension AssetOfAlbumViewController: UICollectionViewDataSource {
 
         guard let cell = assetOfAlbumCollectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell else { return UICollectionViewCell() }
 
-//        guard let asset = self.fetchResult?[indexPath.row] else { return UICollectionViewCell() }
-//
-//        let options = PHImageRequestOptions()
-//        options.resizeMode = .fast
-//
-//        imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
-//            cell.imageView?.image = image
-//        }
+        guard let asset = self.fetchResult?[indexPath.item] else { return UICollectionViewCell() }
 
-        cell.backgroundColor = .orange
+        let options = PHImageRequestOptions()
+        options.resizeMode = .fast
+        options.isSynchronous = true
 
-        DispatchQueue.main.async {
-            collectionView.reloadData()
+        self.imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
+            cell.imageView?.image = image
+            cell.imageView?.contentMode = .scaleAspectFill
         }
         return cell
     }

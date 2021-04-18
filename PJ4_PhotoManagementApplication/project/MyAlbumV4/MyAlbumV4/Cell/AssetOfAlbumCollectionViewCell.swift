@@ -13,15 +13,15 @@ class AssetOfAlbumCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var highlightIndicator: UIView!
 
+    override var isHighlighted: Bool{
+        didSet {
+            highlightIndicator.isHidden = !isHighlighted
+        }
+    }
+
     override var isSelected: Bool {
         didSet {
-            if isSelected {
-                backgroundColor = .blue
-            } else {
-                backgroundColor = .orange
-            }
-
-//            highlightIndicator.isHidden = !isSelected
+            highlightIndicator.isHidden = !isSelected
         }
     }
 }

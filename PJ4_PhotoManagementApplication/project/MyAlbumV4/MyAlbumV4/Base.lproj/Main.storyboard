@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1W6-U3-QLo">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -22,43 +21,51 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="CgS-SF-bcu">
-                                    <size key="itemSize" width="333" height="474"/>
+                                    <size key="itemSize" width="267" height="301"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="albumListCollectionViewCell" id="Zj5-lk-qW9" customClass="AlbumListCollectionViewCell" customModule="MyAlbumV4" customModuleProvider="target">
-                                        <rect key="frame" x="40.5" y="0.0" width="333" height="474"/>
+                                        <rect key="frame" x="73.5" y="0.0" width="267" height="301"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="q9m-qX-i9G">
-                                            <rect key="frame" x="0.0" y="0.0" width="333" height="474"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="267" height="301"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BfB-Xx-6AL">
-                                                    <rect key="frame" x="0.0" y="0.0" width="333" height="434"/>
-                                                    <color key="backgroundColor" systemColor="systemGreenColor"/>
-                                                    <color key="tintColor" systemColor="systemGreenColor"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BfB-Xx-6AL">
+                                                    <rect key="frame" x="10" y="10" width="247" height="187"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="안녕하세요" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OEg-j0-3B6">
-                                                    <rect key="frame" x="0.0" y="444" width="333" height="30"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="앨범이름" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OEg-j0-3B6">
+                                                    <rect key="frame" x="10" y="211" width="86.5" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="사진갯수" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0E-iA-jlK">
+                                                    <rect key="frame" x="10" y="251" width="86.5" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="BfB-Xx-6AL" secondAttribute="trailing" id="1RE-CF-SKy"/>
-                                                <constraint firstItem="OEg-j0-3B6" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" id="5jk-Wc-dR9"/>
-                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="top" secondItem="q9m-qX-i9G" secondAttribute="top" id="D7u-Q5-z7W"/>
-                                                <constraint firstItem="OEg-j0-3B6" firstAttribute="top" secondItem="BfB-Xx-6AL" secondAttribute="bottom" constant="10" id="JT0-Uu-suD"/>
-                                                <constraint firstAttribute="trailing" secondItem="OEg-j0-3B6" secondAttribute="trailing" id="LE0-Gd-bdW"/>
-                                                <constraint firstAttribute="bottom" secondItem="OEg-j0-3B6" secondAttribute="bottom" id="Zyj-WC-jzU"/>
-                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" id="fgC-kc-IK3"/>
+                                                <constraint firstItem="t0E-iA-jlK" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" constant="10" id="1Dm-1g-F2D"/>
+                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" constant="10" id="1zZ-xW-yYs"/>
+                                                <constraint firstItem="BfB-Xx-6AL" firstAttribute="top" secondItem="q9m-qX-i9G" secondAttribute="top" constant="10" id="2ci-mk-9IT"/>
+                                                <constraint firstAttribute="trailing" secondItem="BfB-Xx-6AL" secondAttribute="trailing" constant="10" id="SwB-mb-fEE"/>
+                                                <constraint firstItem="OEg-j0-3B6" firstAttribute="top" secondItem="BfB-Xx-6AL" secondAttribute="bottom" constant="14" id="Tmk-Pw-7pN"/>
+                                                <constraint firstAttribute="bottom" secondItem="t0E-iA-jlK" secondAttribute="bottom" constant="20" id="X7e-ea-QTi"/>
+                                                <constraint firstItem="t0E-iA-jlK" firstAttribute="top" secondItem="OEg-j0-3B6" secondAttribute="bottom" constant="10" id="eKH-kd-qQb"/>
+                                                <constraint firstItem="OEg-j0-3B6" firstAttribute="leading" secondItem="q9m-qX-i9G" secondAttribute="leading" constant="10" id="kc9-cD-ePS"/>
                                             </constraints>
                                         </collectionViewCellContentView>
-                                        <size key="customSize" width="333" height="474"/>
+                                        <size key="customSize" width="267" height="301"/>
                                         <connections>
+                                            <outlet property="countLabel" destination="t0E-iA-jlK" id="96B-xS-M1p"/>
                                             <outlet property="imageView" destination="BfB-Xx-6AL" id="LDX-QU-2gs"/>
                                             <outlet property="titleLabel" destination="OEg-j0-3B6" id="Jwt-em-LS6"/>
                                         </connections>
@@ -114,7 +121,7 @@
                                                 </imageView>
                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tF3-X3-fzG">
                                                     <rect key="frame" x="0.0" y="0.0" width="392" height="329"/>
-                                                    <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                                    <color key="backgroundColor" red="0.50461367072947205" green="0.5023094987170087" blue="0.50691784274193541" alpha="0.63597128378378387" colorSpace="custom" customColorSpace="displayP3"/>
                                                 </view>
                                             </subviews>
                                             <constraints>
@@ -143,7 +150,11 @@
                                 <items>
                                     <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="jMn-mk-I0U" userLabel="공유버튼"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CgG-eM-0GC"/>
-                                    <barButtonItem title="Item" image="trash" catalog="system" id="n15-3a-pOc" userLabel="휴지통버튼"/>
+                                    <barButtonItem title="Item" image="trash" catalog="system" id="n15-3a-pOc" userLabel="휴지통버튼">
+                                        <connections>
+                                            <action selector="deleteBarButtonClick:" destination="IUj-RN-pt0" id="Iut-tJ-GHs"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -246,12 +257,6 @@
         <image name="trash" catalog="system" width="121" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
