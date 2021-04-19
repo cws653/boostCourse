@@ -17,11 +17,36 @@ enum Mode {
 class AssetOfAlbumViewController: UIViewController {
 
     @IBOutlet weak var assetOfAlbumCollectionView: UICollectionView!
-    @IBOutlet weak var trashButton: UIBarButtonItem!
+    @IBOutlet weak var trashBarButton: UIBarButtonItem!
+    @IBOutlet weak var shareBarButton: UIBarButtonItem!
+    @IBOutlet weak var dateSortBarButton: UIBarButtonItem!
 
     let cellIdentifier = "AssetOfAlbumCollectionViewCell"
     let viewImageSegueIdentifier = "viewImageSegueIdentifier"
-    var fetchResult: PHFetchResult<PHAsset>?
+    var fetchResult: PHFetchResult<PHAsset>? {
+        didSet {
+            DispatchQueue.main.async {
+                self.assetOfAlbumCollectionView.reloadData()
+            }
+
+        }
+    }
+    var photosCollection: PHAssetCollection? {
+        didSet {
+            guard let photosCollection = photosCollection else { return }
+            self.fetchResult = PHAsset.fetchAssets(in: photosCollection , options: nil)
+        }
+    }
+    var dateSortBarButtonSelected: Bool = false {
+        didSet {
+            guard let photosCollection = photosCollection else { return }
+            if dateSortBarButtonSelected {
+                self.fetchResult = PHAsset.fetchAssets(in: photosCollection, options: fetchOptions)
+            } else {
+                self.fetchResult = PHAsset.fetchAssets(in: photosCollection, options: fetchOptions)
+            }
+        }
+    }
     let imageManager: PHCachingImageManager = PHCachingImageManager()
     var scale: CGFloat!
     var targetSizeX: CGFloat?
@@ -38,14 +63,28 @@ class AssetOfAlbumViewController: UIViewController {
                 dictionarySelectedIndexPath.removeAll()
 
                 selectBarButton.title = "선택"
-                trashButton.isEnabled = false
+                trashBarButton.isEnabled = false
+                shareBarButton.isEnabled = false
+                dateSortBarButton.isEnabled = true
                 assetOfAlbumCollectionView.allowsMultipleSelection = false
             case .select:
                 selectBarButton.title = "취소"
-                trashButton.isEnabled = true
+                trashBarButton.isEnabled = true
+                shareBarButton.isEnabled = true
+                dateSortBarButton.isEnabled = false
                 assetOfAlbumCollectionView.allowsMultipleSelection = true
             }
         }
+    }
+    var fetchOptions: PHFetchOptions {
+        let fetchOptions = PHFetchOptions()
+        if dateSortBarButtonSelected {
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        } else {
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        }
+
+        return fetchOptions
     }
 
     lazy var selectBarButton: UIBarButtonItem = {
@@ -73,7 +112,28 @@ class AssetOfAlbumViewController: UIViewController {
         dictionarySelectedIndexPath.removeAll()
     }
 
-    
+    @IBAction func shareBarButtonClick(_ sender: UIBarButtonItem) {
+        let shareText: String = "share text test!"
+        var shareObject: [Any] = []
+
+        shareObject.append(shareText)
+
+        let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view
+
+//        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.airDrop]
+
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+
+    @IBAction func dateSortBarButtonClick(_ sender: UIBarButtonItem) {
+        if dateSortBarButtonSelected {
+            dateSortBarButtonSelected = false
+        } else {
+            dateSortBarButtonSelected = true
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -125,7 +185,8 @@ class AssetOfAlbumViewController: UIViewController {
 
     private func setUpBarButtonItems() {
         self.navigationItem.rightBarButtonItem = selectBarButton
-        self.trashButton.isEnabled = false
+        self.trashBarButton.isEnabled = false
+        self.shareBarButton.isEnabled = false
     }
 
     @objc func selectBarButtonClick(_ sender: UIBarButtonItem) {

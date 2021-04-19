@@ -14,7 +14,8 @@ class AlbumListViewController: UIViewController {
     @IBOutlet weak var albumListCollectionView: UICollectionView!
 
     let cellIdentifier = "albumListCollectionViewCell"
-    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
+//    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
+    var fetchAssetResult: [PHAssetCollection] = []
     var collectionTitle: [String] = []
     let imageManager: PHCachingImageManager = PHCachingImageManager()
     var fetchOptions: PHFetchOptions {
@@ -25,7 +26,7 @@ class AlbumListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setCollectionView()
         setupCollectionViewItemSize()
         photoAuthorizationStatus()
@@ -91,8 +92,9 @@ class AlbumListViewController: UIViewController {
 
     private func addAlbums(collections: PHFetchResult<PHAssetCollection>) {
         collections.enumerateObjects { (collection, index, object) in
-            let photoInAlbum = PHAsset.fetchAssets(in: collection, options: nil)
-            self.fetchAssetResult.append(photoInAlbum)
+//            let photoInAlbum = PHAsset.fetchAssets(in: collection, options: nil)
+//            self.fetchAssetResult.append(photoInAlbum)
+            self.fetchAssetResult.append(collection)
             self.collectionTitle.append(collection.localizedTitle ?? "nil")
         }
     }
@@ -102,8 +104,8 @@ extension AlbumListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let assetOfAlbumViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AssetOfAlbumViewController") as? AssetOfAlbumViewController else { return }
 
-        guard let collection = fetchAssetResult[indexPath.row] as? PHFetchResult<PHAsset> else { return }
-        assetOfAlbumViewController.fetchResult = collection
+        let collection = self.fetchAssetResult[indexPath.item]
+        assetOfAlbumViewController.photosCollection = collection
         navigationController?.pushViewController(assetOfAlbumViewController, animated: true)
     }
 }
@@ -120,22 +122,29 @@ extension AlbumListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        guard let asset = fetchAssetResult[indexPath.item].firstObject else {
-            return UICollectionViewCell()
-        }
+//        guard let asset = fetchAssetResult[indexPath.item].firstObject else {
+//            return UICollectionViewCell()
+//        }
+        let assets = PHAsset.fetchAssets(in: fetchAssetResult[indexPath.item] , options: nil)
+
+        let asset = assets.firstObject
 
         let options = PHImageRequestOptions()
         options.resizeMode = .fast
         options.isSynchronous = true
 
         cell.titleLabel.text = self.collectionTitle[indexPath.item]
-        cell.countLabel.text = String(self.fetchAssetResult[indexPath.item].count)
+        cell.countLabel.text = String(assets.count)
 
-        self.imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
-            cell.imageView.image = image
-            cell.imageView.contentMode = .scaleAspectFill
+        if asset == nil {
+            cell.imageView.image = nil
+        } else {
+            self.imageManager.requestImage(for: asset!, targetSize: CGSize(width: asset!.pixelWidth, height: asset!.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
+                cell.imageView.image = image
+                cell.imageView.contentMode = .scaleAspectFill
+            }
+            return cell
         }
-
         return cell
     }
 }

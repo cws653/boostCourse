@@ -148,7 +148,17 @@
                                 <rect key="frame" x="0.0" y="813" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="jMn-mk-I0U" userLabel="공유버튼"/>
+                                    <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="jMn-mk-I0U" userLabel="공유버튼">
+                                        <connections>
+                                            <action selector="shareBarButtonClick:" destination="IUj-RN-pt0" id="QnU-zf-1Ue"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="IeF-gQ-EC6"/>
+                                    <barButtonItem title="최신순" id="5ua-KZ-Sbn">
+                                        <connections>
+                                            <action selector="dateSortBarButtonClick:" destination="IUj-RN-pt0" id="AYU-0r-mHM"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="CgG-eM-0GC"/>
                                     <barButtonItem title="Item" image="trash" catalog="system" id="n15-3a-pOc" userLabel="휴지통버튼">
                                         <connections>
@@ -170,7 +180,9 @@
                     <toolbarItems/>
                     <connections>
                         <outlet property="assetOfAlbumCollectionView" destination="7Tr-NY-lGz" id="2tS-4i-8A7"/>
-                        <outlet property="trashButton" destination="n15-3a-pOc" id="TfQ-cs-p6c"/>
+                        <outlet property="dateSortBarButton" destination="5ua-KZ-Sbn" id="iWH-jO-IFZ"/>
+                        <outlet property="shareBarButton" destination="jMn-mk-I0U" id="mxs-zx-yB5"/>
+                        <outlet property="trashBarButton" destination="n15-3a-pOc" id="TfQ-cs-p6c"/>
                         <segue destination="tmU-U4-PPp" kind="show" identifier="viewImageSegueIdentifier" id="PrY-XA-cTm"/>
                     </connections>
                 </viewController>
@@ -235,8 +247,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1W6-U3-QLo" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ylj-Tf-EqK">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="Ylj-Tf-EqK">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
