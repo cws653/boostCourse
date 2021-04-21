@@ -119,33 +119,24 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gH5-rb-oNF">
                                                     <rect key="frame" x="0.0" y="0.0" width="392" height="329"/>
                                                 </imageView>
-                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tF3-X3-fzG">
-                                                    <rect key="frame" x="0.0" y="0.0" width="392" height="329"/>
-                                                    <color key="backgroundColor" red="0.50461367072947205" green="0.5023094987170087" blue="0.50691784274193541" alpha="0.63597128378378387" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </view>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="gH5-rb-oNF" secondAttribute="trailing" id="Isl-Ub-3IJ"/>
-                                                <constraint firstItem="tF3-X3-fzG" firstAttribute="leading" secondItem="Q6Y-J5-7C4" secondAttribute="leading" id="P2l-pX-9Db"/>
-                                                <constraint firstAttribute="trailing" secondItem="tF3-X3-fzG" secondAttribute="trailing" id="Qg4-wa-E9r"/>
-                                                <constraint firstItem="gH5-rb-oNF" firstAttribute="top" secondItem="Q6Y-J5-7C4" secondAttribute="top" id="VBy-nq-Sge"/>
-                                                <constraint firstAttribute="bottom" secondItem="tF3-X3-fzG" secondAttribute="bottom" id="Vhb-kN-HbD"/>
-                                                <constraint firstItem="gH5-rb-oNF" firstAttribute="leading" secondItem="Q6Y-J5-7C4" secondAttribute="leading" id="Z3M-rg-Mvi"/>
-                                                <constraint firstAttribute="bottom" secondItem="gH5-rb-oNF" secondAttribute="bottom" id="nd4-zg-aXr"/>
-                                                <constraint firstItem="tF3-X3-fzG" firstAttribute="top" secondItem="Q6Y-J5-7C4" secondAttribute="top" id="vHb-IP-AJr"/>
+                                                <constraint firstItem="gH5-rb-oNF" firstAttribute="leading" secondItem="Q6Y-J5-7C4" secondAttribute="leading" id="kSQ-gc-yay"/>
+                                                <constraint firstAttribute="bottom" secondItem="gH5-rb-oNF" secondAttribute="bottom" id="odK-g3-TrW"/>
+                                                <constraint firstAttribute="trailing" secondItem="gH5-rb-oNF" secondAttribute="trailing" id="qIQ-gD-yp4"/>
+                                                <constraint firstItem="gH5-rb-oNF" firstAttribute="top" secondItem="Q6Y-J5-7C4" secondAttribute="top" id="u00-Kj-3X4"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <size key="customSize" width="392" height="329"/>
                                         <connections>
-                                            <outlet property="highlightIndicator" destination="tF3-X3-fzG" id="mx0-CG-BLU"/>
                                             <outlet property="imageView" destination="gH5-rb-oNF" id="cAh-D9-G4v"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FN6-wh-hlO">
-                                <rect key="frame" x="0.0" y="813" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="jMn-mk-I0U" userLabel="공유버튼">
@@ -198,7 +189,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="3" translatesAutoresizingMaskIntoConstraints="NO" id="aSi-Hv-73h">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" maximumZoomScale="3" translatesAutoresizingMaskIntoConstraints="NO" id="aSi-Hv-73h">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vIK-Az-JrO">
@@ -206,16 +197,12 @@
                                     </imageView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="bottom" secondItem="g2e-BZ-ygp" secondAttribute="bottom" id="ENd-M8-chv"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="top" secondItem="aSi-Hv-73h" secondAttribute="top" id="I74-J5-Qij"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="leading" secondItem="aSi-Hv-73h" secondAttribute="leading" id="KPX-Dh-79d"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="height" secondItem="yIm-0s-kxA" secondAttribute="height" id="MZ9-nH-DC8"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="trailing" secondItem="g2e-BZ-ygp" secondAttribute="trailing" id="QmC-fg-buN"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="width" secondItem="yIm-0s-kxA" secondAttribute="width" id="U8z-cY-emh"/>
-                                    <constraint firstAttribute="trailing" secondItem="vIK-Az-JrO" secondAttribute="trailing" id="Wdh-kT-XUk"/>
-                                    <constraint firstAttribute="bottom" secondItem="vIK-Az-JrO" secondAttribute="bottom" id="c0I-yX-7zb"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="leading" secondItem="g2e-BZ-ygp" secondAttribute="leading" id="f4g-sx-lhN"/>
-                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="top" secondItem="g2e-BZ-ygp" secondAttribute="top" id="zwr-IM-u36"/>
+                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="leading" secondItem="g2e-BZ-ygp" secondAttribute="leading" id="7Pc-b1-Ah3"/>
+                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="height" secondItem="yIm-0s-kxA" secondAttribute="height" id="Dvk-4A-rf4"/>
+                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="top" secondItem="g2e-BZ-ygp" secondAttribute="top" id="PYu-3W-KKN"/>
+                                    <constraint firstItem="yIm-0s-kxA" firstAttribute="bottom" secondItem="vIK-Az-JrO" secondAttribute="bottom" id="QAM-q4-uu7"/>
+                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="trailing" secondItem="g2e-BZ-ygp" secondAttribute="trailing" id="UTi-KG-FYx"/>
+                                    <constraint firstItem="vIK-Az-JrO" firstAttribute="width" secondItem="yIm-0s-kxA" secondAttribute="width" id="diN-BC-4TF"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="g2e-BZ-ygp"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="yIm-0s-kxA"/>
@@ -223,6 +210,29 @@
                                     <outlet property="delegate" destination="tmU-U4-PPp" id="hx1-do-i6D"/>
                                 </connections>
                             </scrollView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WD4-xc-xaH">
+                                <rect key="frame" x="0.0" y="818" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Item" image="square.and.arrow.up" catalog="system" id="ksJ-4y-qp0" userLabel="공유버튼">
+                                        <connections>
+                                            <action selector="shareBarButtonClick:" destination="tmU-U4-PPp" id="wfO-8w-QOh"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="Km2-A9-Mml"/>
+                                    <barButtonItem image="heart" catalog="system" id="woj-T4-gWJ" userLabel="좋아요버튼">
+                                        <connections>
+                                            <action selector="favoriteBarButtonClick:" destination="tmU-U4-PPp" id="QAG-Jl-WOg"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="kQ3-5M-gQ6"/>
+                                    <barButtonItem title="Item" image="trash" catalog="system" id="aHZ-aI-aGU" userLabel="휴지통버튼">
+                                        <connections>
+                                            <action selector="deleteBarButtonItem:" destination="tmU-U4-PPp" id="43S-Ej-YdE"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="h0V-Wr-5zE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -235,6 +245,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="sYv-zs-ho0"/>
                     <connections>
+                        <outlet property="favoriteBarButton" destination="woj-T4-gWJ" id="yql-Mi-9Xi"/>
+                        <outlet property="shareBarButton" destination="ksJ-4y-qp0" id="X41-tu-iZo"/>
+                        <outlet property="trashBarButton" destination="aHZ-aI-aGU" id="slY-LK-rg9"/>
                         <outlet property="zoomImageView" destination="vIK-Az-JrO" id="Xbu-v8-0DF"/>
                     </connections>
                 </viewController>
@@ -265,6 +278,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="heart" catalog="system" width="128" height="109"/>
         <image name="square.and.arrow.up" catalog="system" width="115" height="128"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <systemColor name="systemBackgroundColor">

@@ -9,11 +9,6 @@
 import UIKit
 import Photos
 
-enum Mode {
-    case view
-    case select
-}
-
 class AssetOfAlbumViewController: UIViewController {
 
     @IBOutlet weak var assetOfAlbumCollectionView: UICollectionView!
@@ -23,69 +18,16 @@ class AssetOfAlbumViewController: UIViewController {
 
     let cellIdentifier = "AssetOfAlbumCollectionViewCell"
     let viewImageSegueIdentifier = "viewImageSegueIdentifier"
-    var fetchResult: PHFetchResult<PHAsset>? {
-        didSet {
-            DispatchQueue.main.async {
-                self.assetOfAlbumCollectionView.reloadData()
-            }
 
-        }
-    }
-    var photosCollection: PHAssetCollection? {
-        didSet {
-            guard let photosCollection = photosCollection else { return }
-            self.fetchResult = PHAsset.fetchAssets(in: photosCollection , options: nil)
-        }
-    }
-    var dateSortBarButtonSelected: Bool = false {
-        didSet {
-            guard let photosCollection = photosCollection else { return }
-            if dateSortBarButtonSelected {
-                self.fetchResult = PHAsset.fetchAssets(in: photosCollection, options: fetchOptions)
-            } else {
-                self.fetchResult = PHAsset.fetchAssets(in: photosCollection, options: fetchOptions)
-            }
-        }
-    }
+    var fetchAsset: PHFetchResult<PHAsset> = PHFetchResult<PHAsset>()
+    var fetchCollection: PHAssetCollection = PHAssetCollection()
     let imageManager: PHCachingImageManager = PHCachingImageManager()
-    var scale: CGFloat!
-    var targetSizeX: CGFloat?
-    var dictionarySelectedIndexPath: [IndexPath: Bool] = [:]
-    var mMode: Mode = .view {
-        didSet {
-            switch mMode {
-            case .view:
-                for (key, value) in dictionarySelectedIndexPath {
-                    if value {
-                        assetOfAlbumCollectionView.deselectItem(at: key, animated: true)
-                    }
-                }
-                dictionarySelectedIndexPath.removeAll()
 
-                selectBarButton.title = "선택"
-                trashBarButton.isEnabled = false
-                shareBarButton.isEnabled = false
-                dateSortBarButton.isEnabled = true
-                assetOfAlbumCollectionView.allowsMultipleSelection = false
-            case .select:
-                selectBarButton.title = "취소"
-                trashBarButton.isEnabled = true
-                shareBarButton.isEnabled = true
-                dateSortBarButton.isEnabled = false
-                assetOfAlbumCollectionView.allowsMultipleSelection = true
-            }
-        }
-    }
-    var fetchOptions: PHFetchOptions {
-        let fetchOptions = PHFetchOptions()
-        if dateSortBarButtonSelected {
-            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
-        } else {
-            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        }
-
-        return fetchOptions
-    }
+    var selectImage: [Int: PHAsset] = [:]
+    var selectMode: SelectMode = .select
+    var dateSortMode: DateSortMode = .latest
+    let width = UIScreen.main.bounds.width
+    let height = UIScreen.main.bounds.height
 
     lazy var selectBarButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "선택", style: .plain, target: self, action: #selector(selectBarButtonClick(_:)))
@@ -93,44 +35,82 @@ class AssetOfAlbumViewController: UIViewController {
     }()
 
     @IBAction func deleteBarButtonClick(_ sender: UIBarButtonItem) {
-        print("삭제버튼이 클릭되었습니다.")
-        var deleteNeededIndexPaths: [IndexPath] = []
-        for (key, value) in dictionarySelectedIndexPath {
-            if value {
-                deleteNeededIndexPaths.append(key)
+        PHPhotoLibrary.shared().performChanges {
+            let asset = Array(self.selectImage.values)
+            PHAssetChangeRequest.deleteAssets(asset as NSArray)
+        } completionHandler: { (success, error) in
+            if success {
+                DispatchQueue.main.async {
+                    self.navigationItem.title = self.fetchCollection.localizedTitle
+                    self.selectBarButton.title = "선택"
+                    self.dateSortBarButton.isEnabled = true
+                    self.shareBarButton.isEnabled = false
+                    self.trashBarButton.isEnabled = false
+                    self.selectImage.removeAll()
+                    self.selectMode = .select
+                    self.assetOfAlbumCollectionView.reloadData()
+                }
+            } else {
+                print("\(String(describing: error))")
             }
         }
-
-        let assetArray: NSMutableArray = NSMutableArray()
-        for i in deleteNeededIndexPaths.sorted(by: { $0.item > $1.item }) {
-            guard let asset = self.fetchResult?.object(at: i.item) else { return }
-            assetArray.addObjects(from: [asset])
-        }
-
-        PHPhotoLibrary.shared().performChanges({PHAssetChangeRequest.deleteAssets(assetArray)})
-        assetOfAlbumCollectionView.deleteItems(at: deleteNeededIndexPaths)
-        dictionarySelectedIndexPath.removeAll()
     }
 
     @IBAction func shareBarButtonClick(_ sender: UIBarButtonItem) {
-        let shareText: String = "share text test!"
-        var shareObject: [Any] = []
+        DispatchQueue.global().async {
+            let asset: [PHAsset] = Array(self.selectImage.values)
+            var imageShare: [UIImage] = []
+            for i in 0..<asset.count {
+                self.imageManager.requestImage(for: asset[i], targetSize: CGSize(width: self.width, height: self.height), contentMode: .aspectFill, options: nil) { (image, _) in
+                    if let image = image {
+                        DispatchQueue.main.async {
+                            imageShare.append(image)
 
-        shareObject.append(shareText)
-
-        let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view
-
-//        activityViewController.excludedActivityTypes = [UIActivity.ActivityType.airDrop]
-
-        self.present(activityViewController, animated: true, completion: nil)
+                            let activityViewController = UIActivityViewController(activityItems: imageShare, applicationActivities: nil)
+                            self.present(activityViewController, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @IBAction func dateSortBarButtonClick(_ sender: UIBarButtonItem) {
-        if dateSortBarButtonSelected {
-            dateSortBarButtonSelected = false
+        let fetchOptions = PHFetchOptions()
+        switch dateSortMode {
+        case .latest:
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+            self.fetchAsset = PHAsset.fetchAssets(in: fetchCollection, options: fetchOptions)
+            DispatchQueue.main.async {
+                self.assetOfAlbumCollectionView.reloadData()
+            }
+            self.dateSortBarButton.title = "과거순"
+            self.dateSortMode = .past
+        case .past:
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+            self.fetchAsset = PHAsset.fetchAssets(in: fetchCollection, options: fetchOptions)
+            DispatchQueue.main.async {
+                self.assetOfAlbumCollectionView.reloadData()
+            }
+            self.dateSortBarButton.title = "최신순"
+            self.dateSortMode = .latest
+        }
+    }
+
+    @objc func selectBarButtonClick(_ sender: UIBarButtonItem) {
+        if selectMode == .view {
+            selectBarButton.title = "선택"
+            trashBarButton.isEnabled = false
+            shareBarButton.isEnabled = false
+            dateSortBarButton.isEnabled = true
+            selectImage.removeAll()
+            selectMode = .select
         } else {
-            dateSortBarButtonSelected = true
+            selectBarButton.title = "취소"
+            trashBarButton.isEnabled = true
+            shareBarButton.isEnabled = true
+            dateSortBarButton.isEnabled = false
+            selectMode = .view
         }
     }
 
@@ -141,22 +121,21 @@ class AssetOfAlbumViewController: UIViewController {
         setUpBarButtonItems()
 
         PHPhotoLibrary.shared().register(self)
+
+        navigationItem.title = fetchCollection.localizedTitle
     }
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         setupCollectionViewItemSize()
-        // setUpCollectionViewItemSize()를 viewWillLayoutSubviews에서 호출한 이유는
-        // collectionview.frame 사이즈를 이 함수에서 호출하기 때문이다.
-        // 호출 후 연산에 사용할 수 있다.
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let item = sender as! PHAsset
+        let asset = sender as! PHAsset
 
         if segue.identifier == viewImageSegueIdentifier {
             if let viewController = segue.destination as? ImageZoomViewController {
-                viewController.asset = item
+                viewController.asset = asset
             }
         }
     }
@@ -188,31 +167,44 @@ class AssetOfAlbumViewController: UIViewController {
         self.trashBarButton.isEnabled = false
         self.shareBarButton.isEnabled = false
     }
-
-    @objc func selectBarButtonClick(_ sender: UIBarButtonItem) {
-        print(mMode)
-        mMode = mMode == .view ? .select : .view
-    }
 }
 
 // MARK: - UICollectionViewDelegate
 extension AssetOfAlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("셀이 선택 되었습니다.")
 
-        switch mMode {
+        switch selectMode {
         case .view:
-            assetOfAlbumCollectionView.deselectItem(at: indexPath, animated: true)
-            let item = fetchResult?[indexPath.item]
-            performSegue(withIdentifier: viewImageSegueIdentifier, sender: item)
-        case .select:
-            dictionarySelectedIndexPath[indexPath] = true
-        }
-    }
+            guard let cell = assetOfAlbumCollectionView.cellForItem(at: indexPath) as? AssetOfAlbumCollectionViewCell else { return }
+            if cell.imageView.alpha == 0.5 {
+                cell.imageView.alpha = 1
+                cell.imageView.layer.borderWidth = 0
+                cell.imageView.layer.borderColor = UIColor.clear.cgColor
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if mMode == .select {
-            dictionarySelectedIndexPath[indexPath] = false
+                self.selectImage.removeValue(forKey: indexPath.item)
+                self.navigationItem.title = "\(self.selectImage.count)장 선택"
+
+                if self.selectImage.count < 1 {
+                    self.shareBarButton.isEnabled = false
+                    self.trashBarButton.isEnabled = false
+                    self.navigationItem.title = "항목 선택"
+                }
+            } else {
+                cell.imageView.alpha = 0.5
+                cell.imageView.layer.borderWidth = 1
+                cell.imageView.layer.borderColor = UIColor.black.cgColor
+
+                let asset = fetchAsset[indexPath.item]
+                self.selectImage.updateValue(asset, forKey: indexPath.item)
+                self.navigationItem.title = "\(self.selectImage.count)장 선택"
+
+                self.shareBarButton.isEnabled = true
+                self.trashBarButton.isEnabled = true
+            }
+        case .select:
+            assetOfAlbumCollectionView.deselectItem(at: indexPath, animated: true)
+            let asset = fetchAsset[indexPath.item]
+            performSegue(withIdentifier: viewImageSegueIdentifier, sender: asset)
         }
     }
 }
@@ -220,38 +212,47 @@ extension AssetOfAlbumViewController: UICollectionViewDelegate {
 // MARK: - UICollectionViewDataSource
 extension AssetOfAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchResult?.count ?? 0
+        return fetchAsset.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         guard let cell = assetOfAlbumCollectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? AssetOfAlbumCollectionViewCell else { return UICollectionViewCell() }
 
-        guard let asset = self.fetchResult?[indexPath.item] else { return UICollectionViewCell() }
-
-        let options = PHImageRequestOptions()
-        options.resizeMode = .fast
-        options.isSynchronous = true
-
-        self.imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
-            cell.imageView?.image = image
-            cell.imageView?.contentMode = .scaleAspectFill
+        DispatchQueue.global().async {
+            let asset = self.fetchAsset[indexPath.item]
+            self.imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { (image, _) in
+                DispatchQueue.main.async {
+                    cell.imageView?.image = image
+                    cell.imageView.alpha = 1
+                    cell.imageView.layer.borderWidth = 0
+                    cell.imageView.layer.borderColor = UIColor.clear.cgColor
+                }
+            }
         }
+
         return cell
     }
 }
 
 extension AssetOfAlbumViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-
-        guard let collection = self.fetchResult else { return }
-
-        guard let changes = changeInstance.changeDetails(for: collection) else { return }
-
-        self.fetchResult = changes.fetchResultAfterChanges
-
+        guard let changes = changeInstance.changeDetails(for: fetchAsset) else { return }
+        fetchAsset = changes.fetchResultAfterChanges
         DispatchQueue.main.async {
             self.assetOfAlbumCollectionView.reloadData()
         }
+    }
+}
+
+extension AssetOfAlbumViewController {
+    enum SelectMode {
+        case view
+        case select
+    }
+
+    enum DateSortMode {
+        case latest
+        case past
     }
 }

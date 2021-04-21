@@ -11,17 +11,10 @@ import UIKit
 class AssetOfAlbumCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var highlightIndicator: UIView!
 
-    override var isHighlighted: Bool{
-        didSet {
-            highlightIndicator.isHidden = !isHighlighted
-        }
-    }
+    override func awakeFromNib() {
+        super.awakeFromNib()
 
-    override var isSelected: Bool {
-        didSet {
-            highlightIndicator.isHidden = !isSelected
-        }
+        imageView.contentMode = .scaleAspectFill
     }
 }

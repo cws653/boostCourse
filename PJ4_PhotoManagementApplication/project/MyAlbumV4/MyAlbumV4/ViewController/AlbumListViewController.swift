@@ -11,18 +11,13 @@ import Photos
 
 class AlbumListViewController: UIViewController {
 
-    @IBOutlet weak var albumListCollectionView: UICollectionView!
-
     let cellIdentifier = "albumListCollectionViewCell"
-//    var fetchAssetResult: [PHFetchResult<PHAsset>] = []
-    var fetchAssetResult: [PHAssetCollection] = []
-    var collectionTitle: [String] = []
+
+    var fetchAssets: [PHFetchResult<PHAsset>] = []
+    var fetchCollections: [PHAssetCollection] = []
     let imageManager: PHCachingImageManager = PHCachingImageManager()
-    var fetchOptions: PHFetchOptions {
-        let fetchOptions = PHFetchOptions()
-        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        return fetchOptions
-    }
+
+    @IBOutlet weak var albumListCollectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +49,12 @@ class AlbumListViewController: UIViewController {
         switch photoAuthorizationStatus {
         case .authorized:
             print("접근허가")
-            self.requestImageCollection()
+            DispatchQueue.global().async {
+                self.requestImageCollection()
+                DispatchQueue.main.async {
+                    self.albumListCollectionView.reloadData()
+                }
+            }
         case .denied:
             print("접근 불허")
         case .notDetermined:
@@ -63,7 +63,12 @@ class AlbumListViewController: UIViewController {
                 switch status {
                 case .authorized:
                     print("사용자가 허용함")
-                    self.requestImageCollection()
+                    DispatchQueue.global().async {
+                        self.requestImageCollection()
+                        DispatchQueue.main.async {
+                            self.albumListCollectionView.reloadData()
+                        }
+                    }
                 case .denied:
                     print("사용자가 불허함")
                 default: break
@@ -77,25 +82,41 @@ class AlbumListViewController: UIViewController {
     }
 
     private func requestImageCollection() {
+        fetchCollections.removeAll()
+        fetchAssets.removeAll()
+
         let cameraRollList = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
         let favoriteList = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumFavorites, options: nil)
         let albumList = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .albumRegular, options: nil)
 
-        addAlbums(collections: cameraRollList)
-        addAlbums(collections: favoriteList)
-        addAlbums(collections: albumList)
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
-        DispatchQueue.main.async {
-            self.albumListCollectionView.reloadData()
+        for i in 0 ..< cameraRollList.count {
+            let assets = PHAsset.fetchAssets(in: cameraRollList[i], options: fetchOptions)
+
+            if assets.count > 0 {
+                self.fetchCollections.append(cameraRollList[i])
+                self.fetchAssets.append(assets)
+            }
         }
-    }
 
-    private func addAlbums(collections: PHFetchResult<PHAssetCollection>) {
-        collections.enumerateObjects { (collection, index, object) in
-//            let photoInAlbum = PHAsset.fetchAssets(in: collection, options: nil)
-//            self.fetchAssetResult.append(photoInAlbum)
-            self.fetchAssetResult.append(collection)
-            self.collectionTitle.append(collection.localizedTitle ?? "nil")
+        for i in 0 ..< favoriteList.count {
+            let assets = PHAsset.fetchAssets(in: favoriteList[i], options: fetchOptions)
+
+            if assets.count > 0 {
+                fetchCollections.append(favoriteList[i])
+                fetchAssets.append(assets)
+            }
+        }
+
+        for i in 0 ..< albumList.count {
+            let assets = PHAsset.fetchAssets(in: albumList[i], options: fetchOptions)
+
+            if assets.count > 0 {
+                fetchCollections.append(albumList[i])
+                fetchAssets.append(assets)
+            }
         }
     }
 }
@@ -104,8 +125,8 @@ extension AlbumListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let assetOfAlbumViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AssetOfAlbumViewController") as? AssetOfAlbumViewController else { return }
 
-        let collection = self.fetchAssetResult[indexPath.item]
-        assetOfAlbumViewController.photosCollection = collection
+        assetOfAlbumViewController.fetchCollection = self.fetchCollections[indexPath.item]
+        assetOfAlbumViewController.fetchAsset = self.fetchAssets[indexPath.item]
         navigationController?.pushViewController(assetOfAlbumViewController, animated: true)
     }
 }
@@ -113,7 +134,7 @@ extension AlbumListViewController: UICollectionViewDelegate {
 extension AlbumListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fetchAssetResult.count
+        return fetchAssets.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -122,37 +143,34 @@ extension AlbumListViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-//        guard let asset = fetchAssetResult[indexPath.item].firstObject else {
-//            return UICollectionViewCell()
-//        }
-        let assets = PHAsset.fetchAssets(in: fetchAssetResult[indexPath.item] , options: nil)
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
 
-        let asset = assets.firstObject
-
-        let options = PHImageRequestOptions()
-        options.resizeMode = .fast
-        options.isSynchronous = true
-
-        cell.titleLabel.text = self.collectionTitle[indexPath.item]
-        cell.countLabel.text = String(assets.count)
-
-        if asset == nil {
-            cell.imageView.image = nil
-        } else {
-            self.imageManager.requestImage(for: asset!, targetSize: CGSize(width: asset!.pixelWidth, height: asset!.pixelHeight), contentMode: .aspectFill, options: options) { (image, _) in
-                cell.imageView.image = image
-                cell.imageView.contentMode = .scaleAspectFill
+        let requestOperation = OperationQueue()
+        requestOperation.addOperation {
+            guard let asset = self.fetchAssets[indexPath.item].firstObject else { return }
+            self.imageManager.requestImage(for: asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFill, options: nil) { (image, _) in
+                OperationQueue.main.addOperation {
+                    cell.imageView.image = image
+                }
             }
-            return cell
         }
+
+        cell.titleLabel.text = fetchCollections[indexPath.item].localizedTitle
+        cell.countLabel.text = String(fetchAssets[indexPath.item].count)
+
         return cell
     }
 }
 
 extension AlbumListViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        fetchAssetResult = []
-        collectionTitle = []
-        requestImageCollection()
+        let requestOperation = OperationQueue()
+        DispatchQueue.global().async {
+            self.requestImageCollection()
+            DispatchQueue.main.async {
+                self.albumListCollectionView.reloadData()
+            }
+        }
     }
 }
