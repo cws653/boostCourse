@@ -99,6 +99,9 @@ class AssetOfAlbumViewController: UIViewController {
 
     @objc func selectBarButtonClick(_ sender: UIBarButtonItem) {
         if selectMode == .view {
+            self.assetOfAlbumCollectionView.reloadData()
+            self.assetOfAlbumCollectionView.alpha = 1
+
             selectBarButton.title = "선택"
             trashBarButton.isEnabled = false
             shareBarButton.isEnabled = false
