@@ -189,17 +189,17 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension MovieListCollectionCV: UICollectionViewDelegateFlowLayout {
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let targetSizeX: CGFloat = collectionView.frame.width / 2 - 1
-        
+
         return CGSize(width: targetSizeX, height: 2 * targetSizeX)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }

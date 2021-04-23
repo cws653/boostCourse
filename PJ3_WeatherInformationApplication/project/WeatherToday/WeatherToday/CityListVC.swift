@@ -9,7 +9,7 @@
 import UIKit
 
 
-class CityListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CityListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     

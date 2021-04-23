@@ -8,57 +8,71 @@
 
 import UIKit
 
-class WorldCountryListVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class WorldCountryListViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
-    let cellIdentifier: String = "cell"
-    
-    var countries: [CountryStruct] = []
-    let flagimages = ["flag_kr","flag_de","flag_it","flag_us","flag_fr","flag_jp"]
-    
-    
+    @IBOutlet private weak var worldCountryListTableView: UITableView!
+    private let cellIdentifier: String = "worldCountryTableViewCell"
+    private var countryModel: [CountryModel] = []
+    private let flagimages = ["flag_kr","flag_de","flag_it","flag_us","flag_fr","flag_jp"]
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        
+        setTableView()
+        setNavigationControllerAttributes()
+        setCountryModel()
+    }
+
+    private func setTableView() {
+        self.worldCountryListTableView.delegate = self
+        self.worldCountryListTableView.dataSource = self
+    }
+
+    private func setNavigationControllerAttributes() {
         self.navigationController?.navigationBar.barTintColor = .blue
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        
+    }
+
+    private func setCountryModel() {
         let jsonDecoder: JSONDecoder = JSONDecoder()
-        guard let dataAsset: NSDataAsset = NSDataAsset(name: "countries") else {
-            return
-        }
-        
+        guard let dataAsset: NSDataAsset = NSDataAsset(name: "countries") else { return }
         do {
-            self.countries = try jsonDecoder.decode([CountryStruct].self, from: dataAsset.data)
+            self.countryModel = try jsonDecoder.decode([CountryModel].self, from: dataAsset.data)
         } catch {
             print(error.localizedDescription)
         }
-        self.tableView.reloadData()
+        self.worldCountryListTableView.reloadData()
     }
-    
-    
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let nextViewController: CityListViewController = segue.destination as? CityListViewController else { return }
+        
+        guard let cell: UITableViewCell = sender as? UITableViewCell else {
+            return
+        }
+        nextViewController.countryName = cell.textLabel?.text
+    }
+}
+
+extension WorldCountryListViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.countries.count
+        return self.countryModel.count
     }
-    
+
     func tableView( _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier, for: indexPath)
-        
-        let country: CountryStruct = self.countries[indexPath.row]
-        
+
+        let country: CountryModel = self.countryModel[indexPath.row]
+
         cell.textLabel?.text = country.koreanName
         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
         cell.backgroundColor = UIColor.white
         cell.selectionStyle = .none
-        
+
         let countryName: String = country.assetName
         switch countryName {
         case "kr": cell.imageView?.image = UIImage(named: flagimages[0])
@@ -71,20 +85,4 @@ class WorldCountryListVC: UIViewController, UITableViewDelegate, UITableViewData
         }
         return cell
     }
-    
-    
-    //  MARK: - Navigation
-    //  In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
-        guard let nextViewController: CityListVC = segue.destination as? CityListVC else {
-            return
-        }
-        
-        guard let cell: UITableViewCell = sender as? UITableViewCell else {
-            return
-        }
-        nextViewController.countryName = cell.textLabel?.text
-    }
 }
-
