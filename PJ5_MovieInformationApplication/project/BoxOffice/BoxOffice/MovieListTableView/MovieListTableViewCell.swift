@@ -10,21 +10,17 @@ import UIKit
 
 class MovieListTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var thumbImageView: UIImageView?
-    @IBOutlet weak var gradeImageView: UIImageView?
-    @IBOutlet weak var titleLabel: UILabel?
-    @IBOutlet weak var rateLabel: UILabel?
-    @IBOutlet weak var openDateLabel: UILabel?
+    @IBOutlet private weak var thumbImageView: UIImageView?
+    @IBOutlet private weak var gradeImageView: UIImageView?
+    @IBOutlet private weak var titleLabel: UILabel?
+    @IBOutlet private weak var rateLabel: UILabel?
+    @IBOutlet private weak var openDateLabel: UILabel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        self.thumbImageView?.image = nil
+        self.gradeImageView?.image = nil
     }
     
     override func prepareForReuse() {
@@ -32,6 +28,22 @@ class MovieListTableViewCell: UITableViewCell {
         
         self.thumbImageView?.image = nil
         self.gradeImageView?.image = nil
+    }
+
+    func setupUI(model: Movies, data: Data) {
+        self.thumbImageView?.image = UIImage(data: data)
+
+        switch model.grade {
+        case 0: self.gradeImageView?.image = UIImage(named: "ic_allages")
+        case 12: self.gradeImageView?.image = UIImage(named: "ic_12")
+        case 15: self.gradeImageView?.image = UIImage(named: "ic_15")
+        case 19: self.gradeImageView?.image = UIImage(named: "ic_19")
+        default: self.gradeImageView?.image = nil
+        }
+
+        self.titleLabel?.text = model.title
+        self.rateLabel?.text = model.tableUserRating + " " + model.tableReservationGrade + " " + model.tableReservationRate
+        self.openDateLabel?.text = model.tableOpenDate
     }
 
 }

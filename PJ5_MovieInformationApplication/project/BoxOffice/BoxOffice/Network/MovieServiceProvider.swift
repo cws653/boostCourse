@@ -8,14 +8,16 @@
 
 import Foundation
 
-class MovieService {
+class MovieServiceProvider {
+
+    static let shared = MovieServiceProvider()
     
-    var baseURL: String {
+    private var baseURL: String {
         return "http://connect-boxoffice.run.goorm.io/"
     }
     
-    func getJsonFromUrlWithFilter(filterType: filteringMethod,  completion:@escaping ([Movies]) -> Void) {
-        let baseWithFilterTypeURL = baseURL + "movies?order_type=" + "\(filterType.rawValue)"
+    func requestMovieList(movieSortMode: MovieSortMode,  completion:@escaping ([Movies]) -> Void) {
+        let baseWithFilterTypeURL = baseURL + "movies?order_type=" + "\(movieSortMode.rawValue)"
         guard let url = URL(string: baseWithFilterTypeURL) else {return}
         let session: URLSession = URLSession(configuration: .default)
         let dataTask: URLSessionDataTask = session.dataTask(with: url) {(datas, response, error) in
@@ -34,7 +36,7 @@ class MovieService {
         dataTask.resume()
     }
     
-    func getJsonFromUrlMovieDetail(movieId: String, completion:@escaping ([DetailContents]) -> Void) {
+    func requestMovieDetails(movieId: String, completion:@escaping ([DetailContents]) -> Void) {
         let baseWithFilterTypeURL = baseURL+"movie?id="+"\(movieId)"
         guard let url = URL(string: baseWithFilterTypeURL) else {return}
         let session: URLSession = URLSession(configuration: .default)
@@ -55,7 +57,7 @@ class MovieService {
     }
     
     
-    func getJsonFromUrlWithMoiveId(movieId: String, completion:@escaping (CommentList?) -> Void) {
+    func requestCommentList(movieId: String, completion:@escaping (CommentList?) -> Void) {
         let baseWithFilterTypeURL = baseURL+"comments?movie_id="+"\(movieId)"
         
         guard let url = URL(string: baseWithFilterTypeURL) else {return}
@@ -74,5 +76,36 @@ class MovieService {
             }
         }
         dataTask.resume()
+    }
+
+    func postComment(postComment: PostComment, completion:@escaping () -> Void) {
+        do {
+            let newPostData = try JSONEncoder().encode(postComment)
+
+            let baseWithFilterTypeURL = baseURL+"comment"
+            guard let url = URL(string: baseWithFilterTypeURL) else { return }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.httpBody = newPostData
+
+            let dataTask: URLSessionTask = URLSession.shared.dataTask(with: request) {(datas, response, error) in
+                if error != nil {
+                    print("Network Error")
+                }
+                do {
+                    if let data = datas {
+                        let parsed = try JSONDecoder().decode(Comment.self, from: data)
+                        print("parsed \(parsed)")
+                        completion()
+                    }
+                } catch {
+                    print("Error")
+                }
+            }
+            dataTask.resume()
+        } catch {
+            print("Encode data nil")
+        }
     }
 }

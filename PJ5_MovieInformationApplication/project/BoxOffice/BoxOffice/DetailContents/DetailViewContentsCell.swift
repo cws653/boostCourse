@@ -11,21 +11,10 @@ import UIKit
 class DetailViewContentsCell: UITableViewCell {
 
     @IBOutlet weak var content: UITextView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
-    internal func setUI(with movie: DetailContents) {
+    internal func setUI(with model: DetailContents) {
         
-        self.content.text = movie.synopsis
+        self.content.text = model.synopsis
         self.content.isScrollEnabled = false
         self.content.isEditable = false
     }

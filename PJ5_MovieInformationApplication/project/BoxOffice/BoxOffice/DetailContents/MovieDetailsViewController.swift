@@ -13,42 +13,41 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet private weak var tableView: UITableView?
     
     private var arrayDetailMovies:[DetailContents] = []
-    var comments: [Comment] = []
+    private var comments: [Comment] = []
+    var movies: Movies?
     
-    var viewControllerTitle: String?
-    var gradeOfMovie: Int?
-    var movieId: String?
+//    var viewControllerTitle: String?
+//    var gradeOfMovie: Int?
+//    var movieId: String?
     
-    private let movieService = MovieService()
+    private let movieService = MovieServiceProvider()
     
     // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // 네비게이션바 설정 소스
-        self.title = viewControllerTitle
-        self.navigationController?.navigationBar.barTintColor = .systemIndigo
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        
+
         self.tableView?.delegate = self
         self.tableView?.dataSource = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        guard let movieId = movieId else {
-            return
-        }
-        
-        self.movieService.getJsonFromUrlMovieDetail(movieId: movieId) { movies in
+
+        self.navigationController?.navigationBar.barTintColor = .systemIndigo
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+
+        self.title = movies?.title
+
+        guard let movieId = movies?.id else { return }
+        self.movieService.requestMovieDetails(movieId: movieId) { movies in
             DispatchQueue.main.async {
                 self.arrayDetailMovies = movies
                 self.tableView?.reloadData()
             }
         }
-        
-        self.movieService.getJsonFromUrlWithMoiveId(movieId: movieId) { commenList in
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        guard let movieId = movies?.id else { return }
+        self.movieService.requestCommentList(movieId: movieId) { commenList in
             DispatchQueue.main.async {
                 self.comments = commenList?.comments ?? []
                 self.tableView?.reloadData()
@@ -58,27 +57,22 @@ class MovieDetailsViewController: UIViewController {
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        guard let tappedImage = tapGestureRecognizer.view as? UIImageView else {
-            return
-        }
+        guard let tappedImage = tapGestureRecognizer.view as? UIImageView else { return }
         
-        guard let showVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieFullImageVC") as? MovieFullImageViewController  else {
-            return
-        }
+        guard let movieFullImageViewController = self.storyboard?.instantiateViewController(withIdentifier: "MovieFullImageVC") as? MovieFullImageViewController  else { return }
         
-        self.present(showVC, animated: false) {
-            showVC.fullScreen.image = tappedImage.image
+        self.present(movieFullImageViewController, animated: false) {
+            movieFullImageViewController.fullScreen.image = tappedImage.image
         }
     }
     
     @objc func touchUpCommentsBtn(sender: UIButton) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        if let makeCommentsVC = storyBoard.instantiateViewController(withIdentifier: "MakeCommentsVC" ) as? MakeCommentsViewController {
-            makeCommentsVC.viewControllerTitle = self.viewControllerTitle
-            makeCommentsVC.gradeOfMovie = self.gradeOfMovie
-            makeCommentsVC.movieId = self.movieId
+        if let makeCommentsViewController = storyBoard.instantiateViewController(withIdentifier: "MakeCommentsVC" ) as? MakeCommentsViewController {
+
+            makeCommentsViewController.movies = self.movies
             
-            self.navigationController?.pushViewController(makeCommentsVC, animated: true)
+            self.navigationController?.pushViewController(makeCommentsViewController, animated: true)
         }
     }
 }
@@ -86,7 +80,6 @@ class MovieDetailsViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension MovieDetailsViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 240.0
@@ -130,7 +123,6 @@ extension MovieDetailsViewController: UITableViewDelegate {
     }
 }
 
-
 // MARK: - UITableViewDataSource
 extension MovieDetailsViewController: UITableViewDataSource {
     
@@ -148,7 +140,7 @@ extension MovieDetailsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId") as? DetailViewPosterCell  else {
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "DetailViewPosterCell") as? DetailViewPosterCell  else {
                 return UITableViewCell()
             }
             
@@ -157,63 +149,63 @@ extension MovieDetailsViewController: UITableViewDataSource {
             cell.imageOfMovie.isUserInteractionEnabled = true
             cell.imageOfMovie.addGestureRecognizer(tapGestureRecognizer)
             
-            var movie: DetailContents
+            var model: DetailContents
             if self.arrayDetailMovies.isEmpty {
                 return .init()
             } else {
                 if self.arrayDetailMovies.count > indexPath.row {
-                    movie = self.arrayDetailMovies[indexPath.row]
+                    model = self.arrayDetailMovies[indexPath.row]
                 } else {
                     return .init()
                 }
             }
-            cell.setUI(with: movie)
+            cell.setUI(with: model)
             return cell
             
         } else if indexPath.section == 1 {
-            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId1") as? DetailViewContentsCell  else {
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "DetailViewContentsCell") as? DetailViewContentsCell  else {
                 return UITableViewCell()
             }
             
-            var movie: DetailContents
+            var model: DetailContents
             if self.arrayDetailMovies.isEmpty {
                 return .init()
             } else {
                 if self.arrayDetailMovies.count > indexPath.row {
-                    movie = self.arrayDetailMovies[indexPath.row]
+                    model = self.arrayDetailMovies[indexPath.row]
                 } else {
                     return .init()
                 }
             }
-            cell.setUI(with: movie)
+            cell.setUI(with: model)
             return cell
             
         } else if indexPath.section == 2 {
-            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId2") as? DetailViewCastCell  else {
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "DetailViewCastCell") as? DetailViewCastCell  else {
                 return UITableViewCell()
             }
             
-            var movie: DetailContents
+            var model: DetailContents
             if self.arrayDetailMovies.isEmpty {
                 return .init()
             } else {
                 if self.arrayDetailMovies.count > indexPath.row {
-                    movie = self.arrayDetailMovies[indexPath.row]
+                    model = self.arrayDetailMovies[indexPath.row]
                 } else {
                     return .init()
                 }
             }
-            cell.setUI(with: movie)
+            cell.setUI(with: model)
             return cell
             
         }
         else {
-            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "cellId3") as? DetailViewCommentCell else {
+            guard let cell = self.tableView?.dequeueReusableCell(withIdentifier: "DetailViewCommentCell") as? DetailViewCommentCell else {
                 return UITableViewCell()
             }
             
-            let comment: Comment = self.comments[indexPath.row]
-            cell.setUI(with: comment)
+            let model: Comment = self.comments[indexPath.row]
+            cell.setUI(with: model)
             return cell
         }
     }

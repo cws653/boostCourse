@@ -8,10 +8,6 @@
 
 import UIKit
 
-//protocol CellSetable where Self: UITableViewCell {
-//    func setUI(with movie: DetailContents)
-//}
-
 class DetailViewPosterCell: UITableViewCell {
     
     @IBOutlet weak var imageOfMovie: UIImageView!
@@ -27,42 +23,26 @@ class DetailViewPosterCell: UITableViewCell {
     @IBOutlet weak var fourthStar: UIImageView!
     @IBOutlet weak var fifthStar: UIImageView!
     @IBOutlet weak var imageOfGrade: UIImageView!
-    
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
 
-    internal func setUI(with movie: DetailContents) {
-        guard let url = URL(string: movie.image) else {
-            return
-        }
+    internal func setUI(with model: DetailContents) {
+        guard let url = URL(string: model.image) else { return }
         self.imageOfMovie.image = UIImage(named: "cinema")
         self.imageOfMovie.load(url: url)
-        self.titleOfMovie.text = movie.title
-        self.openDay.text = movie.date
-        self.genreAndDuration.text = movie.genre + "/" + String(movie.duration)
-        self.reservation_rate.text = "\(movie.reservationRate)"
-        self.user_rating.text = "\(movie.userRating)"
-        self.audience.text = "\(movie.audience)"
+        self.titleOfMovie.text = model.title
+        self.openDay.text = model.date
+        self.genreAndDuration.text = model.genre + "/" + String(model.duration)
+        self.reservation_rate.text = "\(model.reservationRate)"
+        self.user_rating.text = "\(model.userRating)"
+        self.audience.text = "\(model.audience)"
         
-        switch movie.grade {
+        switch model.grade {
         case 0: imageOfGrade.image = UIImage(named: "ic_allages")
         case 12: imageOfGrade.image = UIImage(named: "ic_12")
         case 15: imageOfGrade.image = UIImage(named: "ic_15")
         case 19: imageOfGrade.image = UIImage(named: "ic_19")
         default: break
         }
-        
-        self.setImages(with: movie.userRating)
-        
+        self.setImages(with: model.userRating)
     }
     
     private func setImages(with rating: Double) {
@@ -84,9 +64,7 @@ class DetailViewPosterCell: UITableViewCell {
     }
 }
 
-
 extension UIImageView {
-    
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }

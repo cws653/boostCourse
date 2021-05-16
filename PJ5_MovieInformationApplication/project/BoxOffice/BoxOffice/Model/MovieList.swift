@@ -16,7 +16,7 @@ struct MovieList: Codable {
 struct Movies: Codable {
     
     let grade: Int
-    let thumb:String
+    let thumb: String
     let reservationGrade: Int
     let title: String
     let reservationRate: Double

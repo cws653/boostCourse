@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum filteringMethod:Int {
+enum MovieSortMode: Int {
     case reservationRate = 0
     case quration = 1
     case open = 2
@@ -24,121 +24,91 @@ enum filteringMethod:Int {
 
 class MovieListTableViewController: UIViewController{
     
-    @IBOutlet weak var tableView: UITableView?
-    let cellIdentifier: String = "tableViewCell"
+    private let movieService: MovieServiceProvider = .shared
+    private let cellIdentifier: String = "tableViewCell"
     var arrayMovies: [Movies] = []
+
+    @IBOutlet private weak var tableView: UITableView?
+
+    @IBAction private func navigationItemAction(_ sender: UIBarButtonItem) {
+        self.showAlertController(style: UIAlertController.Style.actionSheet)
+    }
     
-    let movieService = MovieService()
-    
-    // MARK: - 뷰 상태변화
+    // MARK: - view life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        // 네비게이션바 옵션 설정
+
         self.navigationController?.navigationBar.barTintColor = .systemIndigo
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         self.navigationController?.navigationBar.tintColor = .white
         
-        
-        self.movieService.getJsonFromUrlWithFilter(filterType: .reservationRate) { movies in DispatchQueue.main.async {
-            self.arrayMovies = movies
-            self.tableView?.reloadData()
+        self.movieService.requestMovieList(movieSortMode: .reservationRate) { movies in
+            DispatchQueue.main.async {
+                self.arrayMovies = movies
+                self.tableView?.reloadData()
             }
         }
     }
-    
-    // MARK: - view life cycle
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView?.reloadData()
+        DispatchQueue.main.async {
+            self.tableView?.reloadData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.tableView?.reloadData()
+        DispatchQueue.main.async {
+            self.tableView?.reloadData()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if let navigationController = self.tabBarController?.viewControllers?[1] as? UINavigationController {
-            if let movieListCollectionCV = navigationController.viewControllers.first as? MovieListCollectionViewController {
-                movieListCollectionCV.arrayMovies = self.arrayMovies
-                movieListCollectionCV.navigationItem.title = self.navigationItem.title
+            if let movieListCollectionViewController = navigationController.viewControllers.first as? MovieListCollectionViewController {
+                movieListCollectionViewController.arrayMovies = self.arrayMovies
+                movieListCollectionViewController.navigationItem.title = self.navigationItem.title
             }
         }
     }
     
-    // 네비게이션바 아이템 액션: 데이터 정렬 방식 설정
-    @IBAction func navigationItemAction(_ sender: UIBarButtonItem) {
-        self.showAlertController(style: UIAlertController.Style.actionSheet)
-    }
-    
-    func showAlertController (style: UIAlertController.Style) {
+    private func showAlertController (style: UIAlertController.Style) {
+        let alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
+
+        let cancelAction = UIAlertAction(title: "취소", style: UIAlertAction.Style.default, handler: {(action: UIAlertAction) in print("취소버튼 선택")})
         
-        let alertController: UIAlertController
-        alertController = UIAlertController(title: "정렬방식 선택", message: "영화를 어떤 순서로 정렬할까요?", preferredStyle: style)
-        
-        let reservationServiceType: filteringMethod = .reservationRate
-        let reservationRateAction: UIAlertAction
-        reservationRateAction = UIAlertAction(title: reservationServiceType.title, style: UIAlertAction.Style.default) { _ in
-            self.movieService.getJsonFromUrlWithFilter(filterType: reservationServiceType) { movies in
-                DispatchQueue.main.async {
-                    self.navigationItem.title = reservationServiceType.title
-                    self.arrayMovies = movies
-                    self.tableView?.reloadData()
-                }
-            }
-        }
-        
-        let qurationServiceType: filteringMethod = .quration
-        let qurationAction: UIAlertAction
-        qurationAction = UIAlertAction(title: qurationServiceType.title, style: UIAlertAction.Style.default) { _ in
-            self.movieService.getJsonFromUrlWithFilter(filterType: qurationServiceType) { movies in
-                DispatchQueue.main.async {
-                    self.navigationItem.title = qurationServiceType.title
-                    self.arrayMovies = movies
-                    self.tableView?.reloadData()
-                }
-            }
-        }
-        
-        let openDayServiceType: filteringMethod = .open
-        let openDayAction: UIAlertAction
-        openDayAction = UIAlertAction(title: openDayServiceType.title, style: UIAlertAction.Style.default) { _ in
-            self.movieService.getJsonFromUrlWithFilter(filterType: openDayServiceType) { movies in
-                DispatchQueue.main.async {
-                    self.navigationItem.title = openDayServiceType.title
-                    self.arrayMovies = movies
-                    self.tableView?.reloadData()
-                }
-            }
-        }
-        
-        let cancelAction: UIAlertAction
-        cancelAction = UIAlertAction(title: "취소", style: UIAlertAction.Style.default, handler: {(action: UIAlertAction) in print("취소버튼 선택")})
-        
-        alertController.addAction(reservationRateAction)
-        alertController.addAction(qurationAction)
-        alertController.addAction(openDayAction)
+        alertController.addAction(alertActionSetting(movieSortMode: .reservationRate))
+        alertController.addAction(alertActionSetting(movieSortMode: .quration))
+        alertController.addAction(alertActionSetting(movieSortMode: .open))
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: { print("Alert controller shown")})
+    }
+
+    private func alertActionSetting(movieSortMode: MovieSortMode) -> UIAlertAction {
+        let alertAction = UIAlertAction(title: movieSortMode.title, style: UIAlertAction.Style.default) { _ in
+            self.movieService.requestMovieList(movieSortMode: movieSortMode) { movies in
+                DispatchQueue.main.async {
+                    self.navigationItem.title = movieSortMode.title
+                    self.arrayMovies = movies
+                    self.tableView?.reloadData()
+                }
+            }
+        }
+        return alertAction
     }
 }
 
 // MARK: - UITableViewDelegeate
 extension MovieListTableViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsViewController {
-            movieDetailsVC.viewControllerTitle = self.arrayMovies[indexPath.row].title
-            movieDetailsVC.movieId = self.arrayMovies[indexPath.row].id
-            movieDetailsVC.gradeOfMovie = self.arrayMovies[indexPath.row].grade
-            
-            //self.present(secondTableViewController, animated: true, completion: nil)
-            self.navigationController?.pushViewController(movieDetailsVC, animated: true)
+        if let movieDetailsViewController = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsViewController {
+            movieDetailsViewController.movies = self.arrayMovies[indexPath.row]
+
+            self.navigationController?.pushViewController(movieDetailsViewController, animated: true)
         }
     }
 }
@@ -159,32 +129,17 @@ extension MovieListTableViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let movie: Movies = self.arrayMovies[indexPath.row]
-        cell.thumbImageView?.image = nil
+        let model = self.arrayMovies[indexPath.row]
         
-        guard let imageURL: URL = URL(string: movie.thumb) else {
+        guard let imageURL: URL = URL(string: model.thumb) else {
             return UITableViewCell()
         }
         
         URLSession.shared.dataTask(with: imageURL) { data, response, error in
-            guard let data = data else {
-                return
-            }
+            guard let data = data else { return }
             
             DispatchQueue.main.async {
-                cell.thumbImageView?.image = UIImage(data: data)
-                
-                switch movie.grade {
-                case 0: cell.gradeImageView?.image = UIImage(named: "ic_allages")
-                case 12: cell.gradeImageView?.image = UIImage(named: "ic_12")
-                case 15: cell.gradeImageView?.image = UIImage(named: "ic_15")
-                case 19: cell.gradeImageView?.image = UIImage(named: "ic_19")
-                default: cell.gradeImageView?.image = nil
-                }
-                
-                cell.titleLabel?.text = movie.title
-                cell.rateLabel?.text = movie.tableUserRating + " " + movie.tableReservationGrade + " " + movie.tableReservationRate
-                cell.openDateLabel?.text = movie.tableOpenDate
+                cell.setupUI(model: model, data: data)
             }
         }.resume()
         
