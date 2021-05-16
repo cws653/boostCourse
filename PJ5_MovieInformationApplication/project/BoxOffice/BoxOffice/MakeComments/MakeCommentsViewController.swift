@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MakeCommentsVC: UIViewController {
+class MakeCommentsViewController: UIViewController {
     
     @IBOutlet weak var labelOfTitle: UILabel?
     @IBOutlet weak var imageOfGrade: UIImageView?
@@ -120,7 +120,7 @@ class MakeCommentsVC: UIViewController {
                         print("parsed \(parsed)")
                         
                         DispatchQueue.main.async {
-                            if let secondVC = self.navigationController?.viewControllers.filter { $0 is MovieDetailsVC } {
+                            if let secondVC = self.navigationController?.viewControllers.filter { $0 is MovieDetailsViewController } {
                                  self.navigationController?.popViewController(animated: true)
                             }
                         }
@@ -216,7 +216,7 @@ class MakeCommentsVC: UIViewController {
 
 
 // MARK: - UITableViewDelegate
-extension MakeCommentsVC: UITableViewDelegate {
+extension MakeCommentsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 1 {
@@ -228,7 +228,7 @@ extension MakeCommentsVC: UITableViewDelegate {
 }
 
 // MARK: - UITextViewDelegate
-extension MakeCommentsVC: UITextViewDelegate {
+extension MakeCommentsViewController: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         if contentsTextView.textColor == UIColor.systemGray4 {
             let startPosition = contentsTextView.beginningOfDocument

@@ -22,7 +22,7 @@ enum filteringMethod:Int {
     }
 }
 
-class MovieListTableVC: UIViewController{
+class MovieListTableViewController: UIViewController{
     
     @IBOutlet weak var tableView: UITableView?
     let cellIdentifier: String = "tableViewCell"
@@ -62,7 +62,7 @@ class MovieListTableVC: UIViewController{
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if let navigationController = self.tabBarController?.viewControllers?[1] as? UINavigationController {
-            if let movieListCollectionCV = navigationController.viewControllers.first as? MovieListCollectionCV {
+            if let movieListCollectionCV = navigationController.viewControllers.first as? MovieListCollectionViewController {
                 movieListCollectionCV.arrayMovies = self.arrayMovies
                 movieListCollectionCV.navigationItem.title = self.navigationItem.title
             }
@@ -128,11 +128,11 @@ class MovieListTableVC: UIViewController{
 }
 
 // MARK: - UITableViewDelegeate
-extension MovieListTableVC: UITableViewDelegate {
+extension MovieListTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsVC {
+        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsViewController {
             movieDetailsVC.viewControllerTitle = self.arrayMovies[indexPath.row].title
             movieDetailsVC.movieId = self.arrayMovies[indexPath.row].id
             movieDetailsVC.gradeOfMovie = self.arrayMovies[indexPath.row].grade
@@ -144,7 +144,7 @@ extension MovieListTableVC: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension MovieListTableVC: UITableViewDataSource {
+extension MovieListTableViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -155,7 +155,7 @@ extension MovieListTableVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell: MovieListTableCVC = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier, for: indexPath) as? MovieListTableCVC else {
+        guard let cell: MovieListTableViewCell = tableView.dequeueReusableCell(withIdentifier: self.cellIdentifier, for: indexPath) as? MovieListTableViewCell else {
             return UITableViewCell()
         }
         

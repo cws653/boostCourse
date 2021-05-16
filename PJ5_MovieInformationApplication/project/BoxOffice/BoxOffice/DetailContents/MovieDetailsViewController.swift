@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieDetailsVC: UIViewController {
+class MovieDetailsViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView?
     
@@ -62,7 +62,7 @@ class MovieDetailsVC: UIViewController {
             return
         }
         
-        guard let showVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieFullImageVC") as? MovieFullImageVC  else {
+        guard let showVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieFullImageVC") as? MovieFullImageViewController  else {
             return
         }
         
@@ -73,7 +73,7 @@ class MovieDetailsVC: UIViewController {
     
     @objc func touchUpCommentsBtn(sender: UIButton) {
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-        if let makeCommentsVC = storyBoard.instantiateViewController(withIdentifier: "MakeCommentsVC" ) as? MakeCommentsVC {
+        if let makeCommentsVC = storyBoard.instantiateViewController(withIdentifier: "MakeCommentsVC" ) as? MakeCommentsViewController {
             makeCommentsVC.viewControllerTitle = self.viewControllerTitle
             makeCommentsVC.gradeOfMovie = self.gradeOfMovie
             makeCommentsVC.movieId = self.movieId
@@ -85,7 +85,7 @@ class MovieDetailsVC: UIViewController {
 
 
 // MARK: - UITableViewDelegate
-extension MovieDetailsVC: UITableViewDelegate {
+extension MovieDetailsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
@@ -132,7 +132,7 @@ extension MovieDetailsVC: UITableViewDelegate {
 
 
 // MARK: - UITableViewDataSource
-extension MovieDetailsVC: UITableViewDataSource {
+extension MovieDetailsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4

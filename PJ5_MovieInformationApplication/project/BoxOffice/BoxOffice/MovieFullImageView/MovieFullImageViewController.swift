@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieFullImageVC: UIViewController {
+class MovieFullImageViewController: UIViewController {
 
     @IBOutlet var fullScreen: UIImageView!
      

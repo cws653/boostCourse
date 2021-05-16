@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieListCollectionCV: UIViewController {
+class MovieListCollectionViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView?
     let cellIdentifier = "collectionViewCell"
@@ -55,7 +55,7 @@ class MovieListCollectionCV: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if let navigationController = self.tabBarController?.viewControllers?[0] as? UINavigationController {
-            if let movieListTableCV = navigationController.viewControllers.first as? MovieListTableVC {
+            if let movieListTableCV = navigationController.viewControllers.first as? MovieListTableViewController {
                 movieListTableCV.arrayMovies = self.arrayMovies
                 movieListTableCV.navigationItem.title = self.navigationItem.title
             }
@@ -119,10 +119,10 @@ class MovieListCollectionCV: UIViewController {
 }
 
 // MARK: - UICollectionViewDelegate
-extension MovieListCollectionCV: UICollectionViewDelegate {
+extension MovieListCollectionViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsVC {
+        if let movieDetailsVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsVC") as? MovieDetailsViewController {
             movieDetailsVC.viewControllerTitle = self.arrayMovies[indexPath.row].title
             movieDetailsVC.movieId = self.arrayMovies[indexPath.row].id
             movieDetailsVC.gradeOfMovie = self.arrayMovies[indexPath.row].grade
@@ -134,7 +134,7 @@ extension MovieListCollectionCV: UICollectionViewDelegate {
 
 
 // MARK: - UICollectionViewDataSource
-extension MovieListCollectionCV: UICollectionViewDataSource {
+extension MovieListCollectionViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -144,7 +144,7 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell:MovieListCollectionCVC = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? MovieListCollectionCVC else {
+        guard let cell:MovieListCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? MovieListCollectionViewCell else {
             return UICollectionViewCell()
         }
         
@@ -188,7 +188,7 @@ extension MovieListCollectionCV: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
-extension MovieListCollectionCV: UICollectionViewDelegateFlowLayout {
+extension MovieListCollectionViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let targetSizeX: CGFloat = collectionView.frame.width / 2 - 1

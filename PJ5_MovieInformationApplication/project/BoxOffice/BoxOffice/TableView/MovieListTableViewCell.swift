@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieListTableCVC: UITableViewCell {
+class MovieListTableViewCell: UITableViewCell {
     
     @IBOutlet weak var thumbImageView: UIImageView?
     @IBOutlet weak var gradeImageView: UIImageView?
